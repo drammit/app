@@ -12,6 +12,7 @@
     "ordered-imports": false,
     "prefer-conditional-expression": false,
     "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"],
+    "no-console": [true, "log", "error"],
     // ESLint rules for TSLint (tslint-eslint-rules).
     "no-constant-condition": true,
     "no-control-regex": true,
