@@ -1,6 +1,7 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
-import { AppLoading } from 'expo';
+import { AppLoading, Font } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 
 import AppNavigator from './src/AppNavigator';
 
@@ -16,7 +17,9 @@ class App extends React.Component<{}, AppState> {
   };
 
   private async setup() {
-    return;
+    await Font.loadAsync({
+      ...Ionicons.font,
+    });
   }
 
   public render() {

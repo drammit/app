@@ -28,6 +28,7 @@
     "valid-typeof": true,
     // tslint-react rules.
     "jsx-no-lambda": false,
+    "jsx-boolean-value": false,
     "jsx-no-multiline-js": false,
     "jsx-wrap-multiline": false,
     "import-name": [ true, { "react": "React" }]
