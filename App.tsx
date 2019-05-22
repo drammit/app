@@ -2,8 +2,12 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import { StyleProvider } from 'native-base';
 
 import AppNavigator from './src/AppNavigator';
+
+import getTheme from './src/native-base-theme/components';
+import theme from './src/native-base-theme/variables/platform';
 
 const AppContainer = createAppContainer(AppNavigator);
 
@@ -33,7 +37,11 @@ class App extends React.Component<{}, AppState> {
       );
     }
 
-    return <AppContainer />;
+    return (
+      <StyleProvider style={getTheme(theme)}>
+        <AppContainer />
+      </StyleProvider>
+    );
   }
 }
 
