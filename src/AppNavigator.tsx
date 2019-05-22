@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 
-import Welcome from './Screens/Welcome/Welcome';
+import Welcome from './screens/Welcome/Welcome';
 
 const AppNavigator = createStackNavigator(
   {
