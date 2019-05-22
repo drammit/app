@@ -1,6 +1,6 @@
 {
   "rulesDirectory": ["node_modules/tslint-eslint-rules/dist/rules"],
-  "extends": ["tslint:latest", "tslint-react", "tslint-config-airbnb"],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-airbnb"],
   "linterOptions": {
     "exclude": ["node_modules/**/*"]
   },
@@ -11,6 +11,7 @@
     "no-duplicate-imports": false,
     "ordered-imports": false,
     "prefer-conditional-expression": false,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"],
     // ESLint rules for TSLint (tslint-eslint-rules).
     "no-constant-condition": true,
     "no-control-regex": true,
