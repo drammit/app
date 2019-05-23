@@ -2,11 +2,12 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { View, Text, Button } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
-import { Formik } from 'formik';
+import { Formik, FormikActions } from 'formik';
 import * as Yup from 'yup';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import TextInput from '../../components/Form/TextInput';
+import ErrorMessage from '../../components/Form/ErrorMessage';
 
 import colors from '../../config/colors';
 
@@ -50,6 +51,18 @@ class Login extends React.Component<LoginProps> {
 
   private passwordRef = React.createRef<any>();
 
+  public onSubmit(values: any, { setSubmitting, setStatus }: FormikActions<any>) {
+    setStatus();
+
+    setTimeout(
+      () => {
+        setStatus(new Error('Testing out error'));
+        setSubmitting(false);
+      },
+      1000,
+    );
+  }
+
   public render() {
     const { navigation } = this.props;
 
@@ -57,7 +70,7 @@ class Login extends React.Component<LoginProps> {
       <SafeWithHeader style={{ flex: 1 }}>
         <Formik
           initialValues={{ email: '', password: '' }}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={this.onSubmit}
           validationSchema={LoginSchema}
         >
           {props => (
@@ -83,11 +96,17 @@ class Login extends React.Component<LoginProps> {
                 secureTextEntry
                 returnKeyType="send"
                 textContentType="password"
-                onSubmitEditing={props.handleSubmit}
+                onSubmitEditing={props.isSubmitting ? () => undefined : props.handleSubmit}
               />
-              <Button block style={styles.loginButton} onPress={props.handleSubmit}>
+              <Button
+                disabled={props.isSubmitting}
+                block
+                style={styles.loginButton}
+                onPress={props.isSubmitting ? () => undefined : props.handleSubmit}
+              >
                 <Text>Sign In</Text>
               </Button>
+              {props.status && (<ErrorMessage>{props.status.message}</ErrorMessage>)}
               <Button transparent style={styles.forgotButton}>
                 <Text>Forgot password?</Text>
               </Button>

@@ -1,15 +1,8 @@
 import React, { RefObject } from 'react';
-import { Icon, Input, Item, NativeBase, Text } from 'native-base';
-import { StyleSheet } from 'react-native';
-import colors from '../../config/colors';
+import { Icon, Input, Item, NativeBase } from 'native-base';
 import { FormikProps } from 'formik';
 
-const styles = StyleSheet.create({
-  errorMessage: {
-    color: colors.red,
-    marginTop: 12,
-  },
-});
+import ErrorMessage from './ErrorMessage';
 
 function inputProps(props: FormikProps<any>, name: string) {
   return {
@@ -41,9 +34,7 @@ const TextInput = ({ setRef, formikProps, ...props }: TextInputProps) => {
           onBlur={extraProps.handleBlur}
         />
       </Item>
-      {extraProps.error && extraProps.touched && (
-        <Text style={styles.errorMessage}>{extraProps.error}</Text>
-      )}
+      <ErrorMessage>{extraProps.touched && extraProps.error}</ErrorMessage>
     </>
   );
 };
