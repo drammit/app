@@ -10,9 +10,11 @@ import colors from './config/colors';
 const WelcomeStack = createStackNavigator(
   {
     Login: {
+      path: 'login',
       screen: Login,
     },
     SignUp: {
+      path: 'signup',
       screen: SignUp,
     },
     Welcome: {
