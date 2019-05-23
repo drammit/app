@@ -4,10 +4,11 @@ import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import Welcome from './screens/Welcome/Welcome';
 import Login from './screens/Login/Login';
 import SignUp from './screens/Login/SignUp';
+import Timeline from './screens/Timeline/Timeline';
 
 import colors from './config/colors';
 
-const WelcomeStack = createStackNavigator(
+const AuthStack = createStackNavigator(
   {
     Login: {
       path: 'login',
@@ -28,16 +29,35 @@ const WelcomeStack = createStackNavigator(
       },
       headerTintColor: '#fff',
     },
-    initialRouteName: 'Login',
+    initialRouteName: 'Welcome',
+  },
+);
+
+const MainStack = createStackNavigator(
+  {
+    Timeline: {
+      path: 'timeline',
+      screen: Timeline,
+    },
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: colors.green,
+      },
+      headerTintColor: '#fff',
+    },
+    initialRouteName: 'Timeline',
   },
 );
 
 const AppNavigator = createSwitchNavigator(
   {
-    WelcomeStack,
+    AuthStack,
+    MainStack,
   },
   {
-    initialRouteName: 'WelcomeStack',
+    initialRouteName: 'AuthStack',
   },
 );
 

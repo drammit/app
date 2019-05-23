@@ -53,12 +53,14 @@ class Login extends React.Component<LoginProps> {
 
   private passwordRef = React.createRef<any>();
 
-  public onSubmit(values: any, { setSubmitting, setStatus }: FormikActions<any>) {
+  private onSubmit = (values: any, { setSubmitting, setStatus }: FormikActions<any>) => {
+    const { navigation } = this.props;
     setStatus();
 
     authenticate(values.email, values.password)
-      .then((result) => {
-        console.log(result);
+      .then(() => {
+        setSubmitting(false);
+        navigation.navigate('MainStack');
       })
       .catch((e) => {
         setStatus(e);
