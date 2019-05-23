@@ -11,6 +11,8 @@ import ErrorMessage from '../../components/Form/ErrorMessage';
 
 import colors from '../../config/colors';
 
+import { authenticate } from './api';
+
 const styles = StyleSheet.create({
   container: {
     padding: 15,
@@ -54,13 +56,14 @@ class Login extends React.Component<LoginProps> {
   public onSubmit(values: any, { setSubmitting, setStatus }: FormikActions<any>) {
     setStatus();
 
-    setTimeout(
-      () => {
-        setStatus(new Error('Testing out error'));
+    authenticate(values.email, values.password)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((e) => {
+        setStatus(e);
         setSubmitting(false);
-      },
-      1000,
-    );
+      });
   }
 
   public render() {
