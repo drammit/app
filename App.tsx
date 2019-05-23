@@ -6,8 +6,10 @@ import { StyleProvider } from 'native-base';
 
 import AppNavigator from './src/AppNavigator';
 
-import getTheme from './src/native-base-theme/components';
-import theme from './src/native-base-theme/variables/platform';
+// @ts-ignore
+import components from './src/native-base-theme/components';
+// @ts-ignore
+import platform from './src/native-base-theme/variables/platform';
 
 const AppContainer = createAppContainer(AppNavigator);
 
@@ -38,7 +40,7 @@ class App extends React.Component<{}, AppState> {
     }
 
     return (
-      <StyleProvider style={getTheme(theme)}>
+      <StyleProvider style={components(platform)}>
         <AppContainer />
       </StyleProvider>
     );
