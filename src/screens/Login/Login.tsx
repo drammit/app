@@ -1,13 +1,22 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Text, Item, Icon, Input, Button } from 'native-base';
+import { View, Text, Button } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
+import TextInput from '../../components/Form/TextInput';
+
+import colors from '../../config/colors';
 
 const styles = StyleSheet.create({
   container: {
     padding: 15,
+  },
+  errorMessage: {
+    color: colors.red,
+    marginTop: 12,
   },
   forgotButton: {
     marginTop: 12,
@@ -24,6 +33,14 @@ const styles = StyleSheet.create({
   },
 });
 
+const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .required('Email address or username is required'),
+  password: Yup.string()
+    .min(6, 'Password you entered is too short')
+    .required('Password is required'),
+});
+
 type LoginProps = NavigationInjectedProps;
 
 class Login extends React.Component<LoginProps> {
@@ -31,27 +48,52 @@ class Login extends React.Component<LoginProps> {
     title: 'Login',
   };
 
+  private passwordRef = React.createRef<any>();
+
   public render() {
     const { navigation } = this.props;
 
     return (
       <SafeWithHeader style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <Item>
-            <Icon active name="person" />
-            <Input placeholder="Email address or username" />
-          </Item>
-          <Item>
-            <Icon active name="unlock" />
-            <Input secureTextEntry placeholder="Password" />
-          </Item>
-          <Button block style={styles.loginButton}>
-            <Text>Sign In</Text>
-          </Button>
-          <Button transparent style={styles.forgotButton}>
-            <Text>Forgot password?</Text>
-          </Button>
-        </View>
+        <Formik
+          initialValues={{ email: '', password: '' }}
+          onSubmit={(values) => console.log(values)}
+          validationSchema={LoginSchema}
+        >
+          {props => (
+            <View style={styles.container}>
+              <TextInput
+                name="email"
+                icon="person"
+                formikProps={props}
+                placeholder="Email address or username"
+                returnKeyType="next"
+                textContentType="emailAddress"
+                autoFocus
+                onSubmitEditing={() => {
+                  if (this.passwordRef.current) this.passwordRef.current._root.focus();
+                }}
+              />
+              <TextInput
+                name="password"
+                icon="unlock"
+                setRef={this.passwordRef}
+                placeholder="Password"
+                formikProps={props}
+                secureTextEntry
+                returnKeyType="send"
+                textContentType="password"
+                onSubmitEditing={props.handleSubmit}
+              />
+              <Button block style={styles.loginButton} onPress={props.handleSubmit}>
+                <Text>Sign In</Text>
+              </Button>
+              <Button transparent style={styles.forgotButton}>
+                <Text>Forgot password?</Text>
+              </Button>
+            </View>
+          )}
+        </Formik>
         <View style={styles.signupContainer}>
           <Text>Don't have an account yet?</Text>
           <Button transparent onPress={() => navigation.navigate('SignUp')}>

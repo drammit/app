@@ -8,13 +8,15 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.1",
+    "@types/yup": "^0.26.13",
     "expo": "^32.0.0",
     "formik": "^1.5.7",
     "native-base": "^2.12.1",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-navigation": "^3.11.0",
-    "tslib": "^1.9.3"
+    "tslib": "^1.9.3",
+    "yup": "^0.27.0"
   },
   "devDependencies": {
     "@types/expo": "^32.0.13",

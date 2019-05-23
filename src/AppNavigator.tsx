@@ -28,7 +28,7 @@ const WelcomeStack = createStackNavigator(
       },
       headerTintColor: '#fff',
     },
-    initialRouteName: 'Welcome',
+    initialRouteName: 'Login',
   },
 );
 
