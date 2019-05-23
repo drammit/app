@@ -5,7 +5,7 @@
     "exclude": ["node_modules/**/*"]
   },
   "rules": {
-    "array-type": [true, "generic"],
+    "array-type": [true, "array"],
     "interface-name": [true, "never-prefix"],
     "member-ordering": false,
     "no-duplicate-imports": false,
@@ -13,6 +13,7 @@
     "prefer-conditional-expression": false,
     "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"],
     "no-console": [true, "log", "error"],
+    "object-shorthand-properties-first": false,
     // ESLint rules for TSLint (tslint-eslint-rules).
     "no-constant-condition": true,
     "no-control-regex": true,

@@ -11,6 +11,8 @@ import components from './src/native-base-theme/components';
 // @ts-ignore
 import platform from './src/native-base-theme/variables/platform';
 
+import { getItemsAsync } from './src/core/storage';
+
 const AppContainer = createAppContainer(AppNavigator);
 
 interface AppState {
@@ -23,9 +25,13 @@ class App extends React.Component<{}, AppState> {
   };
 
   private async setup() {
+    // preload fonts
     await Font.loadAsync({
       ...Ionicons.font,
     });
+
+    // preload AsyncStorage values
+    await getItemsAsync(['jwt']);
   }
 
   public render() {
