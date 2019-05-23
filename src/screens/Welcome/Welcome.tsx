@@ -124,11 +124,11 @@ class Welcome extends React.Component<{}, WelcomeState> {
               }],
             }}
           >
-            <Button iconLeft primary full style={{ marginBottom: 16 }}>
+            <Button iconLeft primary block style={{ marginBottom: 16 }}>
               <Icon name="mail" />
               <Text>Continue with Email</Text>
             </Button>
-            <Button iconLeft info full style={{ marginBottom: 16 }}>
+            <Button iconLeft info block style={{ marginBottom: 16 }}>
               <Icon type="FontAwesome5" name="facebook-f" />
               <Text>Login with Facebook</Text>
             </Button>
