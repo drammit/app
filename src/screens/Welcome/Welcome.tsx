@@ -8,8 +8,10 @@ import {
   Easing,
 } from 'react-native';
 import { View, Text, H3, Button, Icon } from 'native-base';
+import { NavigationInjectedProps } from 'react-navigation';
 
 import Logo from '../../components/Logo/Logo';
+import SafeWithoutHeader from '../../components/Pages/SafeWithoutHeader';
 
 const styles = StyleSheet.create({
   bottom: {
@@ -41,15 +43,17 @@ const styles = StyleSheet.create({
   },
 });
 
+type WelcomeProps = NavigationInjectedProps;
+
 interface WelcomeState {
   topAnim: Animated.Value;
   bottomAnim: Animated.Value;
 }
 
-class Welcome extends React.Component<{}, WelcomeState> {
+class Welcome extends React.Component<WelcomeProps, WelcomeState> {
   private static navigationOptions = {
     header: null,
-    title: 'Welcome',
+    title: 'Start',
   };
 
   public state = {
@@ -81,6 +85,7 @@ class Welcome extends React.Component<{}, WelcomeState> {
 
   public render() {
     const { topAnim, bottomAnim } = this.state;
+    const { navigation } = this.props;
 
     return (
       <ImageBackground
@@ -90,7 +95,7 @@ class Welcome extends React.Component<{}, WelcomeState> {
           width: '100%',
         }}
       >
-        <SafeAreaView style={styles.container}>
+        <SafeWithoutHeader style={styles.container}>
           <Animated.View
             style={{
               ...styles.top,
@@ -124,7 +129,13 @@ class Welcome extends React.Component<{}, WelcomeState> {
               }],
             }}
           >
-            <Button iconLeft primary block style={{ marginBottom: 16 }}>
+            <Button
+              iconLeft
+              primary
+              block
+              style={{ marginBottom: 16 }}
+              onPress={() => navigation.navigate('Login')}
+            >
               <Icon name="mail" />
               <Text>Continue with Email</Text>
             </Button>
@@ -132,11 +143,11 @@ class Welcome extends React.Component<{}, WelcomeState> {
               <Icon type="FontAwesome5" name="facebook-f" />
               <Text>Login with Facebook</Text>
             </Button>
-            <Button light transparent full>
+            <Button light transparent full onPress={() => navigation.navigate('SignUp')}>
               <Text>New here? Create an account</Text>
             </Button>
           </Animated.View>
-        </SafeAreaView>
+        </SafeWithoutHeader>
       </ImageBackground>
     );
   }
