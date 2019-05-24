@@ -12,14 +12,14 @@ export function setItemAsync(key: string, data: string, prefix: boolean = true) 
 }
 
 export function getItemAsync(key: string, prefix: boolean = true) {
-  return AsyncStorage.getItem(prefix ? makeKey(key) : key);
+  return AsyncStorage.getItem(prefix ? makeKey(key) : key).then(value => JSON.parse(value || ''));
 }
 
 export function getItemsAsync(keys: string[], prefix: boolean = true) {
   return AsyncStorage.multiGet(prefix ? keys.map(makeKey) : keys)
     .then((values: [string, string][]) => {
       values.forEach(([key, value]) => {
-        setItem(key.replace(storeName, ''), value, true);
+        setItem(key.replace(`${storeName}:`, ''), JSON.parse(value), true);
       });
 
       return values;

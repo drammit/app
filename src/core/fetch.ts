@@ -1,4 +1,4 @@
-import { setItem, getItem } from './storage';
+import { setJWT, getJWT } from './jwt';
 
 const API_ROOT = 'http://localhost:3030';
 
@@ -7,7 +7,7 @@ function createUrl(url: string) {
 }
 
 function handleJWT(response: Response) {
-  if (response.headers.has('jwt')) setItem('jwt', response.headers.get('jwt') || '');
+  if (response.headers.has('jwt')) setJWT(response.headers.get('jwt'));
   return response;
 }
 
@@ -16,8 +16,8 @@ async function handleApiError(response: Response) {
   return response;
 }
 
-export function post(url: string, data: any) {
-  const jwt = getItem('jwt');
+export function post(url: string, data?: any) {
+  const jwt = getJWT();
 
   const headers: HeadersInit_ = {
     Accept: 'application/json',
@@ -28,13 +28,17 @@ export function post(url: string, data: any) {
     headers.Authorization = `Bearer ${jwt}`;
   }
 
+  const params = {
+    body: data ? JSON.stringify(data) : undefined,
+    headers,
+    method: 'POST',
+  };
+
+  console.log(url, params);
+
   return fetch(
     createUrl(url),
-    {
-      body: JSON.stringify(data),
-      headers,
-      method: 'POST',
-    },
+    params,
   )
     .then(handleApiError)
     .then(handleJWT)

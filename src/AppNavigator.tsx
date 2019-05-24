@@ -1,6 +1,7 @@
 import React from 'react';
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 
+import AuthLoading from './screens/Login/AuthLoading';
 import Welcome from './screens/Welcome/Welcome';
 import Login from './screens/Login/Login';
 import SignUp from './screens/Login/SignUp';
@@ -53,11 +54,12 @@ const MainStack = createStackNavigator(
 
 const AppNavigator = createSwitchNavigator(
   {
+    AuthLoading,
     AuthStack,
     MainStack,
   },
   {
-    initialRouteName: 'AuthStack',
+    initialRouteName: 'AuthLoading',
   },
 );
 
