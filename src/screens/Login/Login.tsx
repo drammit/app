@@ -87,7 +87,6 @@ class Login extends React.Component<LoginProps> {
                 placeholder="Email address or username"
                 returnKeyType="next"
                 textContentType="emailAddress"
-                autoFocus
                 onSubmitEditing={() => {
                   if (this.passwordRef.current) this.passwordRef.current._root.focus();
                 }}
