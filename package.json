@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.1",
+    "@types/react-redux": "^7.0.9",
+    "@types/remote-redux-devtools": "^0.5.3",
     "@types/yup": "^0.26.13",
     "expo": "^32.0.0",
     "formik": "^1.5.7",
@@ -15,6 +17,10 @@
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-navigation": "^3.11.0",
+    "react-redux": "^7.0.3",
+    "redux": "^4.0.1",
+    "redux-listeners": "^0.4.1",
+    "remote-redux-devtools": "^0.5.16",
     "tslib": "^1.9.3",
     "yup": "^0.27.0"
   },

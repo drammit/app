@@ -11,6 +11,9 @@ import ErrorMessage from '../../components/Form/ErrorMessage';
 
 import colors from '../../config/colors';
 
+import { dispatch } from '../../store/store';
+import { login } from '../../store/actions/auth';
+
 import { authenticate } from './api';
 
 const styles = StyleSheet.create({
@@ -53,14 +56,13 @@ class Login extends React.Component<LoginProps> {
 
   private passwordRef = React.createRef<any>();
 
-  private onSubmit = (values: any, { setSubmitting, setStatus }: FormikActions<any>) => {
-    const { navigation } = this.props;
+  private onSubmit = (values: any, { setSubmitting, setStatus, resetForm }: FormikActions<any>) => {
     setStatus();
 
     authenticate(values.email, values.password)
       .then(() => {
-        setSubmitting(false);
-        navigation.navigate('MainStack');
+        dispatch(login());
+        resetForm();
       })
       .catch((e) => {
         setStatus(e);

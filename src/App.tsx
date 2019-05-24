@@ -3,6 +3,7 @@ import { createAppContainer } from 'react-navigation';
 import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleProvider } from 'native-base';
+import { Provider } from 'react-redux';
 
 import AppNavigator from './AppNavigator';
 
@@ -12,6 +13,8 @@ import components from './native-base-theme/components';
 import platform from './native-base-theme/variables/platform';
 
 import { getItemsAsync } from './core/storage';
+
+import store from './store/store';
 
 const AppContainer = createAppContainer(AppNavigator);
 
@@ -46,9 +49,11 @@ class App extends React.Component<{}, AppState> {
     }
 
     return (
-      <StyleProvider style={components(platform)}>
-        <AppContainer />
-      </StyleProvider>
+      <Provider store={store}>
+        <StyleProvider style={components(platform)}>
+          <AppContainer />
+        </StyleProvider>
+      </Provider>
     );
   }
 }
