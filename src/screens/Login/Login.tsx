@@ -61,8 +61,8 @@ class Login extends React.Component<LoginProps> {
 
     authenticate(values.email, values.password)
       .then(() => {
-        dispatch(login());
         resetForm();
+        dispatch(login());
       })
       .catch((e) => {
         setStatus(e);

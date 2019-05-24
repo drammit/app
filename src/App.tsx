@@ -1,5 +1,5 @@
 import React from 'react';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, NavigationContainerComponent } from 'react-navigation';
 import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleProvider } from 'native-base';
@@ -13,10 +13,15 @@ import components from './native-base-theme/components';
 import platform from './native-base-theme/variables/platform';
 
 import { getItemsAsync } from './core/storage';
+import { setTopLevelNavigator } from './core/navigation';
 
 import store from './store/store';
 
 const AppContainer = createAppContainer(AppNavigator);
+
+function setupTopLevelNavigator(ref: NavigationContainerComponent) {
+  setTopLevelNavigator(ref);
+}
 
 interface AppState {
   isReady: boolean;
@@ -51,7 +56,7 @@ class App extends React.Component<{}, AppState> {
     return (
       <Provider store={store}>
         <StyleProvider style={components(platform)}>
-          <AppContainer />
+          <AppContainer ref={setupTopLevelNavigator} />
         </StyleProvider>
       </Provider>
     );

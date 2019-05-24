@@ -1,8 +1,10 @@
 import { ReduxListener } from 'redux-listeners';
 
+import { navigate } from '../../core/navigation';
+
 const listeners: { [type: string]: ReduxListener } = {
-  LOGIN: (dispatch, action) => {
-    console.log(action);
+  LOGIN: () => {
+    navigate('MainStack');
   },
 };
 
