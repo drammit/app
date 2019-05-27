@@ -34,7 +34,7 @@ export function post(url: string, data?: any) {
     method: 'POST',
   };
 
-  console.log(url, params);
+  console.info(url, params);
 
   return fetch(
     createUrl(url),

@@ -5,6 +5,9 @@ import { NavigationInjectedProps } from 'react-navigation';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 
+import { dispatch } from '../../store/store';
+import { logout } from '../../store/actions/auth';
+
 const styles = StyleSheet.create({
   container: {
     padding: 15,
@@ -26,7 +29,7 @@ class Timeline extends React.Component<TimelineProps> {
       <SafeWithHeader style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text>Timeline!</Text>
-          <Button block style={styles.submitButton}>
+          <Button block style={styles.submitButton} onPress={() => dispatch(logout())}>
             <Text>Log out</Text>
           </Button>
         </View>

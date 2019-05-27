@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
 import { ImageBackground } from 'react-native';
 
-import { isJWTExpired } from '../../core/jwt';
+import { isJWTExpired, hasJWT } from '../../core/jwt';
 
 import { dispatch } from '../../store/store';
 import { init } from '../../store/actions/app';
@@ -19,6 +19,12 @@ class AuthLoadingScreen extends React.Component<NavigationInjectedProps> {
 
   private async validateAuth() {
     const { navigation } = this.props;
+
+    if (!hasJWT()) {
+      console.info('No JWT found, go to auth');
+      navigation.navigate('AuthStack');
+      return;
+    }
 
     if (isJWTExpired()) {
       try {

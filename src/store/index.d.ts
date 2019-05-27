@@ -7,4 +7,8 @@ declare interface LoginAction {
   type: 'LOGIN';
 }
 
-declare type DrammitAction = LoginAction | InitAction;
+declare interface LogoutAction {
+  type: 'LOGOUT';
+}
+
+declare type DrammitAction = LoginAction | LogoutAction | InitAction;

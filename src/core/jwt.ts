@@ -18,6 +18,11 @@ function decodePayload(jwt: string) {
   }
 }
 
+export function hasJWT() {
+  const jwt = getItem('jwt');
+  return Boolean(jwt);
+}
+
 export function isJWTExpired() {
   const jwt = getItem('jwt');
   const payload = decodePayload(jwt);
