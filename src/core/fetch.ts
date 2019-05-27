@@ -16,23 +16,31 @@ async function handleApiError(response: Response) {
   return response;
 }
 
-export function post(url: string, data?: any) {
+type RequestMethod = 'GET' | 'POST';
+
+export function request(method: RequestMethod = 'GET', url: string, data?: any) {
   const jwt = getJWT();
 
   const headers: HeadersInit_ = {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
   };
 
   if (jwt) {
     headers.Authorization = `Bearer ${jwt}`;
   }
 
-  const params = {
-    body: data ? JSON.stringify(data) : undefined,
+  if (method === 'POST') {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  const params: RequestInit = {
     headers,
-    method: 'POST',
+    method,
   };
+
+  if (method === 'POST' && data) {
+    params.body = JSON.stringify(data);
+  }
 
   console.info(url, params);
 
@@ -43,4 +51,12 @@ export function post(url: string, data?: any) {
     .then(handleApiError)
     .then(handleJWT)
     .then(response => response.json());
+}
+
+export function get(url: string) {
+  return request('GET', url);
+}
+
+export function post(url: string, data?: any) {
+  return request('POST', url, data);
 }

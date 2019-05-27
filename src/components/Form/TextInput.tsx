@@ -26,13 +26,13 @@ const TextInput = ({ setRef, formikProps, ...props }: TextInputProps) => {
   return (
     <>
       <Item error={Boolean(extraProps.error && extraProps.touched)}>
-        {props.icon && <Icon active name={props.icon} />}
         <Input
           {...props}
           ref={setRef}
           onChangeText={extraProps.handleChange}
           onBlur={extraProps.handleBlur}
         />
+        {props.icon && <Icon active name={props.icon} />}
       </Item>
       <ErrorMessage>{extraProps.touched && extraProps.error}</ErrorMessage>
     </>

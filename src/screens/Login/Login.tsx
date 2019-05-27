@@ -88,7 +88,10 @@ class Login extends React.Component<LoginProps> {
                 formikProps={props}
                 placeholder="Email address or username"
                 returnKeyType="next"
-                textContentType="emailAddress"
+                textContentType="username"
+                keyboardType="email-address"
+                autoCorrect={false}
+                autoFocus
                 onSubmitEditing={() => {
                   if (this.passwordRef.current) this.passwordRef.current._root.focus();
                 }}
@@ -105,9 +108,9 @@ class Login extends React.Component<LoginProps> {
                 onSubmitEditing={props.isSubmitting ? () => undefined : props.handleSubmit}
               />
               <Button
-                disabled={props.isSubmitting}
                 block
                 style={styles.loginButton}
+                disabled={props.isSubmitting}
                 onPress={props.isSubmitting ? () => undefined : props.handleSubmit}
               >
                 <Text>Sign In</Text>
