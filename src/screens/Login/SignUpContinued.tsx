@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'native-base';
+import { View, Text, Button, Content } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import * as Yup from 'yup';
 import { Formik, FormikActions } from 'formik';
@@ -8,10 +8,22 @@ import { StyleSheet } from 'react-native';
 import TextInput from '../../components/Form/TextInput';
 import ErrorMessage from '../../components/Form/ErrorMessage';
 import ImagePicker from '../../components/Form/ImagePicker';
+import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 
 const styles = StyleSheet.create({
   container: {
     padding: 15,
+  },
+  form: {
+    flexDirection: 'row',
+  },
+  image: {
+    marginRight: 15,
+    marginTop: 15,
+  },
+  inputs: {
+    width: 'auto',
+    flexGrow: 1,
   },
   intro: {
     lineHeight: 24,
@@ -47,52 +59,59 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
 
   public render() {
     return (
-      <Formik
-        initialValues={{ username: '', fullName: '' }}
-        onSubmit={this.onSubmit}
-        validationSchema={SignupSchema}
-      >
-        {props => (
-          <View style={styles.container}>
-            <Text style={styles.intro}>
-              Almost done! Tell us a bit about yourself.
-            </Text>
-            <ImagePicker placeholder="Choose Profile Picture" />
-            <TextInput
-              name="username"
-              autoFocus
-              formikProps={props}
-              placeholder="Pick your username"
-              returnKeyType="next"
-              textContentType="username"
-              keyboardType="email-address"
-              autoCorrect={false}
-              onSubmitEditing={() => {
-                if (this.fullNamedRef.current) this.fullNamedRef.current._root.focus();
-              }}
-            />
-            <TextInput
-              name="fullName"
-              formikProps={props}
-              setRef={this.fullNamedRef}
-              placeholder="Full name (optional)"
-              returnKeyType="send"
-              textContentType="name"
-              autoCorrect={false}
-              onSubmitEditing={props.isSubmitting ? () => undefined : props.handleSubmit}
-            />
-            <Button
-              block
-              style={styles.submitButton}
-              disabled={props.isSubmitting}
-              onPress={props.isSubmitting ? () => undefined : props.handleSubmit}
-            >
-              <Text>Complete Sign Up</Text>
-            </Button>
-            {props.status && (<ErrorMessage>{props.status.message}</ErrorMessage>)}
-          </View>
-        )}
-      </Formik>
+      <SafeWithHeader style={{ flex: 1 }}>
+        <Formik
+          initialValues={{ username: '', fullName: '' }}
+          onSubmit={this.onSubmit}
+          validationSchema={SignupSchema}
+        >
+          {props => (
+            <Content padder>
+              <Text style={styles.intro}>
+                Almost done! Tell us a bit about yourself.
+              </Text>
+              <View style={styles.form}>
+                <View style={styles.image}>
+                  <ImagePicker placeholder="Choose Profile Picture" />
+                </View>
+                <View style={styles.inputs}>
+                  <TextInput
+                    name="username"
+                    formikProps={props}
+                    placeholder="Pick your username"
+                    returnKeyType="next"
+                    textContentType="username"
+                    keyboardType="email-address"
+                    autoCorrect={false}
+                    onSubmitEditing={() => {
+                      if (this.fullNamedRef.current) this.fullNamedRef.current._root.focus();
+                    }}
+                  />
+                  <TextInput
+                    name="fullName"
+                    formikProps={props}
+                    setRef={this.fullNamedRef}
+                    placeholder="Full name (optional)"
+                    returnKeyType="send"
+                    textContentType="name"
+                    autoCorrect={false}
+                    onSubmitEditing={props.isSubmitting ? () => undefined : props.handleSubmit}
+                  />
+                </View>
+              </View>
+              <Button
+                block
+                style={styles.submitButton}
+                disabled={props.isSubmitting}
+                onPress={props.isSubmitting ? () => undefined : props.handleSubmit}
+              >
+                <Text>Complete Sign Up</Text>
+              </Button>
+              {props.status && (<ErrorMessage>{props.status.message}</ErrorMessage>)}
+            </Content>
+          )}
+        </Formik>
+      </SafeWithHeader>
     );
   }
 }

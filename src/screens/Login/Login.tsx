@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Text, Button } from 'native-base';
+import { View, Text, Button, Content } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { Formik, FormikActions } from 'formik';
 import * as Yup from 'yup';
@@ -15,9 +15,6 @@ import { login } from '../../store/actions/auth';
 import { authenticate } from './api';
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 15,
-  },
   forgotButton: {
     marginTop: 12,
   },
@@ -75,7 +72,7 @@ class Login extends React.Component<LoginProps> {
           validationSchema={LoginSchema}
         >
           {props => (
-            <View style={styles.container}>
+            <Content padder>
               <TextInput
                 name="email"
                 icon="person"
@@ -85,7 +82,6 @@ class Login extends React.Component<LoginProps> {
                 textContentType="username"
                 keyboardType="email-address"
                 autoCorrect={false}
-                autoFocus
                 onSubmitEditing={() => {
                   if (this.passwordRef.current) this.passwordRef.current._root.focus();
                 }}
@@ -113,7 +109,7 @@ class Login extends React.Component<LoginProps> {
               <Button transparent style={styles.forgotButton}>
                 <Text>Forgot password?</Text>
               </Button>
-            </View>
+            </Content>
           )}
         </Formik>
         <View style={styles.signupContainer}>

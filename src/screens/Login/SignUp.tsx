@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Text, Item, Input, Button } from 'native-base';
+import { View, Text, Button, Content } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { Formik, FormikActions } from 'formik';
 import * as Yup from 'yup';
@@ -12,9 +12,6 @@ import ErrorMessage from '../../components/Form/ErrorMessage';
 import { emailExists } from './api';
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 15,
-  },
   intro: {
     lineHeight: 24,
     marginBottom: 16,
@@ -81,7 +78,7 @@ class SignUp extends React.Component<SignUpProps> {
           validationSchema={SignupSchema}
         >
           {props => (
-            <View style={styles.container}>
+            <Content padder>
               <Text style={styles.intro}>
                 First, provide your email address and a desired password.
               </Text>
@@ -118,7 +115,7 @@ class SignUp extends React.Component<SignUpProps> {
                 <Text>Continue</Text>
               </Button>
               {props.status && (<ErrorMessage>{props.status.message}</ErrorMessage>)}
-            </View>
+            </Content>
           )}
         </Formik>
         <View style={styles.loginContainer}>
