@@ -21,15 +21,19 @@ class AuthLoadingScreen extends React.Component<NavigationInjectedProps> {
     const { navigation } = this.props;
 
     if (isJWTExpired()) {
-      const refreshed = await refreshToken();
-      console.log(refreshed);
+      try {
+        await refreshToken();
+        console.info('Expired token successfully refreshed');
+      } catch (err) {
+        console.info('Expired token not refreshed');
+        navigation.navigate('AuthStack');
+        return;
+      }
+    } else {
+      console.info('Token is still valid');
     }
 
-    navigation.navigate('AuthStack');
-    // if (!jwt) {
-    // } else {
-    //   navigation.navigate('MainStack');
-    // }
+    navigation.navigate('MainStack');
   }
 
   public render() {

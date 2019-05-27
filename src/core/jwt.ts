@@ -22,5 +22,5 @@ export function isJWTExpired() {
   const jwt = getItem('jwt');
   const payload = decodePayload(jwt);
 
-  return (+new Date() / 1000) > payload.exp;
+  return (Date.now() / 1000) > payload.exp;
 }

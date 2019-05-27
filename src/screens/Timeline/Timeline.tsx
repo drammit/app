@@ -22,8 +22,6 @@ class Timeline extends React.Component<TimelineProps> {
   };
 
   public render() {
-    const { navigation } = this.props;
-
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <View style={styles.container}>
