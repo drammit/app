@@ -2,7 +2,7 @@ import React from 'react';
 import { createAppContainer, NavigationContainerComponent } from 'react-navigation';
 import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
-import { StyleProvider } from 'native-base';
+import { StyleProvider, Root } from 'native-base';
 import { Provider } from 'react-redux';
 
 import AppNavigator from './AppNavigator';
@@ -56,7 +56,9 @@ class App extends React.Component<{}, AppState> {
     return (
       <Provider store={store}>
         <StyleProvider style={components(platform)}>
-          <AppContainer ref={setupTopLevelNavigator} />
+          <Root>
+            <AppContainer ref={setupTopLevelNavigator} />
+          </Root>
         </StyleProvider>
       </Provider>
     );
