@@ -10,6 +10,10 @@ import ErrorMessage from '../../components/Form/ErrorMessage';
 import ImagePicker from '../../components/Form/ImagePicker';
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 
+import { userExists, registerUser } from './api';
+
+import { fileFromURI } from '../../core/files';
+
 const styles = StyleSheet.create({
   container: {
     padding: 15,
@@ -22,8 +26,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   inputs: {
-    width: 'auto',
     flexGrow: 1,
+    width: 'auto',
   },
   intro: {
     lineHeight: 24,
@@ -54,7 +58,30 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
 
     setStatus();
 
-    console.log(values);
+    userExists(values.username)
+      .then((exists) => {
+        setSubmitting(false);
+
+        if (exists) {
+          setStatus(new Error(`Username '${values.username}' is already in use`));
+          return false;
+        }
+
+        const email = navigation.getParam('email');
+        const password = navigation.getParam('password');
+
+        return registerUser(
+          email,
+          password,
+          values.username,
+          values.fullName,
+          fileFromURI(values.avatar),
+        );
+      })
+      .catch((e) => {
+        setStatus(e);
+        setSubmitting(false);
+      });
   }
 
   public render() {
@@ -72,7 +99,11 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
               </Text>
               <View style={styles.form}>
                 <View style={styles.image}>
-                  <ImagePicker placeholder="Choose Profile Picture" />
+                  <ImagePicker
+                    name="avatar"
+                    formikProps={props}
+                    placeholder="Choose Profile Picture"
+                  />
                 </View>
                 <View style={styles.inputs}>
                   <TextInput

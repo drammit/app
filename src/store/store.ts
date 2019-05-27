@@ -6,12 +6,14 @@ import listeners from './listeners';
 
 export const listenMiddleware = createMiddleware();
 
+const middlewares = [
+  applyMiddleware(listenMiddleware),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+];
+
 export const store = createStore(
   reducers,
-  compose(
-    applyMiddleware(listenMiddleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  ),
+  compose(...middlewares.filter(m => Boolean(m))),
 );
 
 listeners(listenMiddleware);

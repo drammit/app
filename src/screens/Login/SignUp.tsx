@@ -56,7 +56,7 @@ class SignUp extends React.Component<SignUpProps> {
         setSubmitting(false);
 
         if (exists) {
-          setStatus(new Error('Email address already in use'));
+          setStatus(new Error(`'${values.email}' is already in use`));
         } else {
           navigation.navigate('SignUpContinued', values);
         }
@@ -86,7 +86,7 @@ class SignUp extends React.Component<SignUpProps> {
                 name="email"
                 icon="mail"
                 formikProps={props}
-                placeholder="Email address or username"
+                placeholder="Your email address"
                 returnKeyType="next"
                 textContentType="emailAddress"
                 keyboardType="email-address"
@@ -99,7 +99,7 @@ class SignUp extends React.Component<SignUpProps> {
                 name="password"
                 icon="unlock"
                 setRef={this.passwordRef}
-                placeholder="Password"
+                placeholder="Enter a password"
                 formikProps={props}
                 secureTextEntry
                 returnKeyType="send"

@@ -6,6 +6,7 @@ import { ImagePicker, Permissions } from 'expo';
 import { checkAndAskPersmissionsFor } from '../../core/permissions';
 
 import colors from '../../config/colors';
+import { FormikProps } from 'formik';
 
 const styles = StyleSheet.create({
   button: {
@@ -25,18 +26,25 @@ const styles = StyleSheet.create({
   },
 });
 
-interface ImagePickerProps {
-  placeholder: string;
-}
-
-interface ImagePickerState {
-  image: null | string;
-}
-
-class ImagePickerWrapper extends React.Component<ImagePickerProps, ImagePickerState> {
-  public state = {
-    image: null,
+function imageInputProps(props: FormikProps<any>, name: string) {
+  return {
+    handleChange: props.handleChange(name),
+    value: props.values[name],
   };
+}
+
+interface ImagePickerProps {
+  name: string;
+  placeholder: string;
+  formikProps: FormikProps<any>;
+}
+
+class ImagePickerWrapper extends React.Component<ImagePickerProps> {
+  private extraProps = () => {
+    const { formikProps, name } = this.props;
+
+    return imageInputProps(formikProps, name);
+  }
 
   private pickImage = async () => {
     if (!await checkAndAskPersmissionsFor(Permissions.CAMERA_ROLL)) {
@@ -50,7 +58,7 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps, ImagePickerSt
       quality: 0.7,
     });
 
-    if (!result.cancelled) this.setState({ image: result.uri });
+    if (!result.cancelled) this.extraProps().handleChange(result.uri);
   }
 
   private openCamera = async () => {
@@ -68,12 +76,15 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps, ImagePickerSt
       quality: 0.7,
     });
 
-    if (!result.cancelled) this.setState({ image: result.uri });
+    if (!result.cancelled) this.extraProps().handleChange(result.uri);
   }
 
   private imagePicker = () => {
     const { placeholder } = this.props;
-    const { image } = this.state;
+
+    const extraProps = this.extraProps();
+
+    const image = extraProps.value;
 
     const options = image
       ? ['Open Camera Roll', 'Use Camera', 'Remove Current Image', 'Cancel']
@@ -98,7 +109,7 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps, ImagePickerSt
             break;
           case 2: {
             if (image) {
-              this.setState({ image: null });
+              extraProps.handleChange(null);
             }
           }
         }
@@ -107,8 +118,9 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps, ImagePickerSt
   }
 
   public render() {
-    const { image } = this.state;
     const { placeholder } = this.props;
+
+    const image = this.extraProps().value;
 
     return (
       <View>

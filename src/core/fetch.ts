@@ -17,9 +17,19 @@ async function handleApiError(response: Response) {
 }
 
 type RequestMethod = 'GET' | 'POST';
+interface RequestBody {
+  [key: string]: string | FileUpload;
+}
 
-export function request(method: RequestMethod = 'GET', url: string, data?: any) {
+export function request(method: RequestMethod = 'GET', url: string, data?: RequestBody) {
   const jwt = getJWT();
+  const hasFile = Object.keys(data || {})
+    .some(key => Boolean(
+      data
+      && data[key]
+      && typeof data[key] !== 'string'
+      && (data[key] as FileUpload).uri,
+    ));
 
   const headers: HeadersInit_ = {
     Accept: 'application/json',
@@ -29,8 +39,12 @@ export function request(method: RequestMethod = 'GET', url: string, data?: any) 
     headers.Authorization = `Bearer ${jwt}`;
   }
 
-  if (method === 'POST') {
+  if (method === 'POST' && !hasFile) {
     headers['Content-Type'] = 'application/json';
+  }
+
+  if (method === 'POST' && hasFile) {
+    headers['Content-Type'] = 'multipart/form-data';
   }
 
   const params: RequestInit = {
@@ -38,8 +52,16 @@ export function request(method: RequestMethod = 'GET', url: string, data?: any) 
     method,
   };
 
-  if (method === 'POST' && data) {
+  if (method === 'POST' && data && !hasFile) {
     params.body = JSON.stringify(data);
+  }
+
+  if (method === 'POST' && data && hasFile) {
+    const formData = new FormData();
+
+    Object.keys(data).forEach(key => formData.append(key, data[key]));
+
+    params.body = formData;
   }
 
   console.info(url, params);
@@ -57,6 +79,6 @@ export function get(url: string) {
   return request('GET', url);
 }
 
-export function post(url: string, data?: any) {
+export function post(url: string, data?: RequestBody) {
   return request('POST', url, data);
 }
