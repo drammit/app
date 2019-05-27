@@ -4,8 +4,10 @@ import { NavigationInjectedProps } from 'react-navigation';
 import * as Yup from 'yup';
 import { Formik, FormikActions } from 'formik';
 import { StyleSheet } from 'react-native';
+
 import TextInput from '../../components/Form/TextInput';
 import ErrorMessage from '../../components/Form/ErrorMessage';
+import ImagePicker from '../../components/Form/ImagePicker';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,6 +57,7 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
             <Text style={styles.intro}>
               Almost done! Tell us a bit about yourself.
             </Text>
+            <ImagePicker placeholder="Choose Profile Picture" />
             <TextInput
               name="username"
               autoFocus

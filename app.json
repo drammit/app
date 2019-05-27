@@ -25,5 +25,9 @@
     "ios": {
       "supportsTablet": true
     }
+  },
+  "infoPlist": {
+    "NSPhotoLibraryUsageDescription": "Give Drammit access to your photos to use them in the app.",
+    "NSCameraUsageDescription": "Allow Drammit to use your camera."
   }
 }
