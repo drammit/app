@@ -9,8 +9,6 @@ import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import TextInput from '../../components/Form/TextInput';
 import ErrorMessage from '../../components/Form/ErrorMessage';
 
-import colors from '../../config/colors';
-
 import { dispatch } from '../../store/store';
 import { login } from '../../store/actions/auth';
 
@@ -19,10 +17,6 @@ import { authenticate } from './api';
 const styles = StyleSheet.create({
   container: {
     padding: 15,
-  },
-  errorMessage: {
-    color: colors.red,
-    marginTop: 12,
   },
   forgotButton: {
     marginTop: 12,

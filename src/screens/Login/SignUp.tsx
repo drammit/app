@@ -11,10 +11,6 @@ import ErrorMessage from '../../components/Form/ErrorMessage';
 
 import { emailExists } from './api';
 
-import { authenticate } from './api';
-import { dispatch } from '../../store/store';
-import { login } from '../../store/actions/auth';
-
 const styles = StyleSheet.create({
   container: {
     padding: 15,
