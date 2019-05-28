@@ -2,8 +2,6 @@ import { setJWT } from '../../core/jwt';
 
 import { navigate } from '../../core/navigation';
 
-import { clearUserInfo } from '../actions/app';
-
 const listeners: DispatchListener[] = [
   {
     listener: () => {
@@ -12,10 +10,8 @@ const listeners: DispatchListener[] = [
     type: 'LOGIN',
   },
   {
-    listener: (dispatch) => {
+    listener: () => {
       setJWT(null);
-      dispatch(clearUserInfo());
-
       navigate('AuthStack');
     },
     type: 'LOGOUT',

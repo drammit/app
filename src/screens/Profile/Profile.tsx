@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 
 import { getUser } from '../../store/selectors/user';
+import { getProfile } from '../../store/selectors/profile';
 import { setUserInfo } from '../../store/actions/app';
 import { dispatch } from '../../store/store';
 
 type ProfileProps = {
-  user: StoreUser;
+  loginUser: StoreUser;
 } & NavigationInjectedProps;
 
 class Profile extends React.Component<ProfileProps> {
@@ -21,18 +22,16 @@ class Profile extends React.Component<ProfileProps> {
   }
 
   public componentDidMount(): void {
-    const { navigation, user } = this.props;
+    const { navigation, loginUser } = this.props;
 
     const idParam: null | number = navigation.getParam('id', null);
-    const userId = idParam || user.id;
+    const userId = idParam || loginUser.id;
 
     console.log(userId, 'mount');
   }
 
   public render() {
-    const { navigation, user } = this.props;
-
-    console.log('render', user.id);
+    const { navigation } = this.props;
 
     return (
       <SafeWithHeader style={{ flex: 1 }}>
@@ -53,7 +52,8 @@ class Profile extends React.Component<ProfileProps> {
 }
 
 const mapStateToProps = (state: StoreShape) => ({
-  user: getUser(state),
+  loginUser: getUser(state),
+  profile: getProfile(getUser(state).id)(state),
 });
 
 export default connect(mapStateToProps)(Profile);

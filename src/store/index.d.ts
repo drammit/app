@@ -45,6 +45,14 @@ declare interface StoreUser {
   avatar: string;
 }
 
+declare interface StoreProfile {
+  id: number;
+  username: string;
+  name?: string;
+  avatar?: string;
+}
+
 declare interface StoreShape {
   user: StoreUser;
+  profiles: { [key: number]: StoreProfile | undefined | Error };
 }
