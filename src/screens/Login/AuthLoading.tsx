@@ -22,22 +22,22 @@ async function validateAuth() {
       await refreshToken();
       info('Expired token successfully refreshed');
       dispatch(login());
+      return;
     } catch (err) {
       info('Expired token not refreshed');
       dispatch(logout());
       return;
     }
-  } else {
-    info('Token is still valid');
-    dispatch(login());
   }
 
-  dispatch(init());
+  info('Token is still valid');
+  dispatch(login());
+  return;
 }
 
 class AuthLoadingScreen extends React.Component {
   public componentDidMount(): void {
-    validateAuth();
+    validateAuth().then(() => dispatch(init()));
   }
 
   public render() {

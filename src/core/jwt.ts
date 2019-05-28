@@ -18,6 +18,10 @@ function decodePayload(jwt: string) {
   }
 }
 
+export function getJWTPayload() {
+  return decodePayload(getJWT());
+}
+
 export function hasJWT() {
   const jwt = getItem('jwt');
   return Boolean(jwt);
