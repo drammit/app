@@ -5,7 +5,6 @@ import { isJWTExpired, hasJWT } from '../../core/jwt';
 import { info } from '../../core/log';
 
 import { dispatch } from '../../store/store';
-import { init } from '../../store/actions/app';
 import { login, logout } from '../../store/actions/auth';
 
 import { refreshToken } from './api';
@@ -37,7 +36,7 @@ async function validateAuth() {
 
 class AuthLoadingScreen extends React.Component {
   public componentDidMount(): void {
-    validateAuth().then(() => dispatch(init()));
+    validateAuth().then(() => info('Auth resolved'));
   }
 
   public render() {
