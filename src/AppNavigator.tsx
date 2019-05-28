@@ -20,6 +20,13 @@ import Profile from './screens/Profile/Profile';
 
 import colors from './config/colors';
 
+const defaultStackNavigationOptions = {
+  headerStyle: {
+    backgroundColor: colors.green,
+  },
+  headerTintColor: colors.light,
+};
+
 const AuthStack = createStackNavigator(
   {
     Login: {
@@ -39,13 +46,21 @@ const AuthStack = createStackNavigator(
     },
   },
   {
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: colors.green,
-      },
-      headerTintColor: '#fff',
-    },
+    defaultNavigationOptions: defaultStackNavigationOptions,
     initialRouteName: 'Welcome',
+  },
+);
+
+const ProfileStack = createStackNavigator(
+  {
+    Profile: {
+      path: 'profile',
+      screen: Profile,
+    },
+  },
+  {
+    defaultNavigationOptions: defaultStackNavigationOptions,
+    initialRouteName: 'Profile',
   },
 );
 
@@ -69,6 +84,7 @@ const MainStack = createBottomTabNavigator(
       path: 'timeline',
       screen: Timeline,
     },
+    // tslint:disable-next-line:object-literal-sort-keys
     Search: {
       path: 'search',
       screen: Search,
@@ -78,8 +94,8 @@ const MainStack = createBottomTabNavigator(
       screen: Notifications,
     },
     Profile: {
-      path: 'profile',
-      screen: Profile,
+      path: 'profile/:id',
+      screen: ProfileStack,
     },
   },
   {
@@ -101,7 +117,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Timeline',
+    initialRouteName: 'Profile',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,

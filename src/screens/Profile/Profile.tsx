@@ -5,6 +5,9 @@ import { NavigationInjectedProps } from 'react-navigation';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 
+import { select } from '../../store/store';
+import { getUser } from '../../store/selectors/user';
+
 const styles = StyleSheet.create({
   container: {
     padding: 15,
@@ -17,9 +20,20 @@ const styles = StyleSheet.create({
 type TimelineProps = NavigationInjectedProps;
 
 class Profile extends React.Component<TimelineProps> {
-  private static navigationOptions = {
-    title: 'Profile',
-  };
+  private static navigationOptions = ({ navigation }: NavigationInjectedProps) => {
+    return {
+      title: navigation.getParam('username', ''),
+    };
+  }
+
+  public componentDidMount(): void {
+    const { navigation } = this.props;
+
+    const idParam: null | number = navigation.getParam('id', null);
+    const userId = idParam || 0;
+
+    console.log(select(getUser));
+  }
 
   public render() {
     return (

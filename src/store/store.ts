@@ -22,4 +22,6 @@ export const dispatch = (action: DrammitAction) => {
   store.dispatch(action);
 };
 
+export const select = (selector: (state: StoreShape) => any) => selector(store.getState());
+
 export default store;

@@ -11,6 +11,10 @@ declare interface InitAction {
 
 declare interface LoginAction {
   type: 'LOGIN';
+  id: number;
+  username: string;
+  name?: string;
+  avatar?: string;
 }
 
 declare interface LogoutAction {
@@ -31,3 +35,12 @@ declare interface ClearUserInfoAction {
 
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction;
+
+declare interface StoreShape {
+  user: {
+    id: number;
+    username: string;
+    name: string;
+    avatar: string;
+  };
+}

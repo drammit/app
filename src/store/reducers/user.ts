@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 const id = (state: number = 0, action: DrammitAction): number => {
   switch (action.type) {
+    case 'LOGIN':
     case 'SET_USER_INFO':
       return action.id;
     default:
@@ -11,6 +12,7 @@ const id = (state: number = 0, action: DrammitAction): number => {
 
 const username = (state: string = '', action: DrammitAction): string => {
   switch (action.type) {
+    case 'LOGIN':
     case 'SET_USER_INFO':
       return action.username;
     default:
@@ -20,6 +22,7 @@ const username = (state: string = '', action: DrammitAction): string => {
 
 const name = (state: string = '', action: DrammitAction): string => {
   switch (action.type) {
+    case 'LOGIN':
     case 'SET_USER_INFO':
       return action.name || '';
     default:
@@ -29,6 +32,7 @@ const name = (state: string = '', action: DrammitAction): string => {
 
 const avatar = (state: string = '', action: DrammitAction): string => {
   switch (action.type) {
+    case 'LOGIN':
     case 'SET_USER_INFO':
       return action.avatar || '';
     default:
