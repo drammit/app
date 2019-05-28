@@ -44,7 +44,7 @@ interface MessageProps {
 
 const Message = ({ children, error = false }: MessageProps) => (
   <View style={createViewStyle(error).style}>
-    <Icon name="alert" style={{ color: colors.light, fontSize: 40, marginRight: 20 }}/>
+    {error && <Icon name="alert" style={{ color: colors.light, fontSize: 40, marginRight: 20 }}/>}
     <Text textBreakStrategy="simple" style={createTextStyle(error).style}>
       {children}
     </Text>
