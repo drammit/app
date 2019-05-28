@@ -4,9 +4,9 @@ import auth from './auth';
 
 const createListeners = (listenMiddleware: ReduxListenerMiddleware) => {
   [
-    auth,
-  ].forEach((listeners) => {
-    Object.keys(listeners).forEach(type => listenMiddleware.addListener(type, listeners[type]));
+    ...auth,
+  ].forEach((listener) => {
+    listenMiddleware.addListener(listener.type, listener.listener);
   });
 };
 

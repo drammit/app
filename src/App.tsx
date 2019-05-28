@@ -14,6 +14,7 @@ import platform from './native-base-theme/variables/platform';
 
 import { getItemsAsync } from './core/storage';
 import { setTopLevelNavigator } from './core/navigation';
+import { warn } from './core/log';
 
 import store from './store/store';
 
@@ -48,7 +49,7 @@ class App extends React.Component<{}, AppState> {
         <AppLoading
           startAsync={this.setup}
           onFinish={() => this.setState({ isReady: true })}
-          onError={e => console.warn(e)}
+          onError={warn}
         />
       );
     }

@@ -1,17 +1,21 @@
-import { ReduxListener } from 'redux-listeners';
-
 import { setJWT } from '../../core/jwt';
 
 import { navigate } from '../../core/navigation';
 
-const listeners: { [type: string]: ReduxListener } = {
-  LOGIN: () => {
-    navigate('MainStack');
+const listeners: DispatchListener[] = [
+  {
+    listener: () => {
+      navigate('MainStack');
+    },
+    type: 'LOGIN',
   },
-  LOGOUT: () => {
-    setJWT(null);
-    navigate('AuthStack');
+  {
+    listener: () => {
+      setJWT(null);
+      navigate('AuthStack');
+    },
+    type: 'LOGOUT',
   },
-};
+];
 
 export default listeners;

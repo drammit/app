@@ -1,4 +1,5 @@
 import { setJWT, getJWT } from './jwt';
+import { info } from './log';
 
 const API_ROOT = 'http://localhost:3030';
 
@@ -18,10 +19,11 @@ async function handleApiError(response: Response) {
 
 type RequestMethod = 'GET' | 'POST';
 interface RequestBody {
-  [key: string]: string | FileUpload;
+  [key: string]: string | FileUpload | undefined;
 }
 
 export function request(method: RequestMethod = 'GET', url: string, data?: RequestBody) {
+  const reqId = +new Date();
   const jwt = getJWT();
   const hasFile = Object.keys(data || {})
     .some(key => Boolean(
@@ -64,7 +66,7 @@ export function request(method: RequestMethod = 'GET', url: string, data?: Reque
     params.body = formData;
   }
 
-  console.info(url, params);
+  info('req', reqId, url, params);
 
   return fetch(
     createUrl(url),
@@ -72,7 +74,11 @@ export function request(method: RequestMethod = 'GET', url: string, data?: Reque
   )
     .then(handleApiError)
     .then(handleJWT)
-    .then(response => response.json());
+    .then(response => response.json())
+    .then((response: any) => {
+      info('res', reqId, url, response);
+      return response;
+    });
 }
 
 export function get(url: string) {

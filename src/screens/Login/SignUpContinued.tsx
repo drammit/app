@@ -14,6 +14,9 @@ import { userExists, registerUser } from './api';
 
 import { fileFromURI } from '../../core/files';
 
+import { dispatch } from '../../store/store';
+import { login } from '../../store/actions/auth';
+
 const styles = StyleSheet.create({
   container: {
     padding: 15,
@@ -53,7 +56,7 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
 
   private fullNamedRef = React.createRef<any>();
 
-  private onSubmit = (values: any, { setSubmitting, setStatus }: FormikActions<any>) => {
+  private onSubmit = (values: any, { setSubmitting, setStatus, resetForm }: FormikActions<any>) => {
     const { navigation } = this.props;
 
     setStatus();
@@ -77,6 +80,16 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
           values.fullName,
           fileFromURI(values.avatar),
         );
+      })
+      .then((registered) => {
+        if (registered) {
+          resetForm();
+          dispatch(login());
+          return;
+        }
+
+        setStatus(new Error('Something went wrong while registering.'));
+        setSubmitting(false);
       })
       .catch((e) => {
         setStatus(e);
