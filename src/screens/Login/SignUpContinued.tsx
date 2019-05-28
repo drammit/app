@@ -65,10 +65,7 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
       .then((exists) => {
         setSubmitting(false);
 
-        if (exists) {
-          setStatus(new Error(`Username '${values.username}' is already in use`));
-          return false;
-        }
+        if (exists) throw new Error(`Username '${values.username}' is already in use`);
 
         const email = navigation.getParam('email');
         const password = navigation.getParam('password');
@@ -82,14 +79,10 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
         );
       })
       .then((registered) => {
-        if (registered) {
-          resetForm();
-          dispatch(login());
-          return;
-        }
+        if (!registered) throw new Error('Something went wrong while registering.');
 
-        setStatus(new Error('Something went wrong while registering.'));
-        setSubmitting(false);
+        resetForm();
+        dispatch(login());
       })
       .catch((e) => {
         setStatus(e);
@@ -143,6 +136,7 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
                   />
                 </View>
               </View>
+              {props.status && (<ErrorMessage>{props.status.message}</ErrorMessage>)}
               <Button
                 block
                 style={styles.submitButton}
@@ -151,7 +145,6 @@ class SignUpContinued extends React.Component<SignUpContinuedProps> {
               >
                 <Text>Complete Sign Up</Text>
               </Button>
-              {props.status && (<ErrorMessage>{props.status.message}</ErrorMessage>)}
             </Content>
           )}
         </Formik>
