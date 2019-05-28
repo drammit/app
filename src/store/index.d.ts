@@ -36,11 +36,15 @@ declare interface ClearUserInfoAction {
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction;
 
+/* Shape of the store */
+
+declare interface StoreUser {
+  id: number;
+  username: string;
+  name: string;
+  avatar: string;
+}
+
 declare interface StoreShape {
-  user: {
-    id: number;
-    username: string;
-    name: string;
-    avatar: string;
-  };
+  user: StoreUser;
 }

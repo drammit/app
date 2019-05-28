@@ -1,1 +1,1 @@
-export const getUser = (state: StoreShape) => state.user;
+export const getUser = (state: StoreShape): StoreUser => state.user;

@@ -1,25 +1,19 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { View, Text } from 'native-base';
+import { Text, Button, Content } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
+import { connect } from 'react-redux';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 
-import { select } from '../../store/store';
 import { getUser } from '../../store/selectors/user';
+import { setUserInfo } from '../../store/actions/app';
+import { dispatch } from '../../store/store';
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 15,
-  },
-  submitButton: {
-    marginTop: 24,
-  },
-});
+type ProfileProps = {
+  user: StoreUser;
+} & NavigationInjectedProps;
 
-type TimelineProps = NavigationInjectedProps;
-
-class Profile extends React.Component<TimelineProps> {
+class Profile extends React.Component<ProfileProps> {
   private static navigationOptions = ({ navigation }: NavigationInjectedProps) => {
     return {
       title: navigation.getParam('username', ''),
@@ -27,23 +21,39 @@ class Profile extends React.Component<TimelineProps> {
   }
 
   public componentDidMount(): void {
-    const { navigation } = this.props;
+    const { navigation, user } = this.props;
 
     const idParam: null | number = navigation.getParam('id', null);
-    const userId = idParam || 0;
+    const userId = idParam || user.id;
 
-    console.log(select(getUser));
+    console.log(userId, 'mount');
   }
 
   public render() {
+    const { navigation, user } = this.props;
+
+    console.log('render', user.id);
+
     return (
       <SafeWithHeader style={{ flex: 1 }}>
-        <View style={styles.container}>
+        <Content padder>
           <Text>Profile</Text>
-        </View>
+
+          <Button onPress={() => navigation.push('Profile', { id: 19 })}>
+            <Text>Go to other profile</Text>
+          </Button>
+
+          <Button onPress={() => dispatch(setUserInfo(1, 'Harry'))}>
+            <Text>Update user info</Text>
+          </Button>
+        </Content>
       </SafeWithHeader>
     );
   }
 }
 
-export default Profile;
+const mapStateToProps = (state: StoreShape) => ({
+  user: getUser(state),
+});
+
+export default connect(mapStateToProps)(Profile);
