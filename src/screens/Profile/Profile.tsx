@@ -17,15 +17,19 @@ type ProfileProps = {
 
 class Profile extends React.Component<ProfileProps> {
   private static navigationOptions = ({ navigation }: NavigationInjectedProps) => {
-    return {
-      title: navigation.getParam('username', ''),
-    };
+    const username = navigation.getParam('username', '');
+
+    return { title: username };
   }
 
   public render() {
     const { navigation, profile } = this.props;
 
-    console.log(profile);
+    if (profile && !(profile instanceof Error)) {
+      const navUsername = navigation.getParam('username', '');
+
+      if (navUsername !== profile.username) navigation.setParams({ username: profile.username });
+    }
 
     return (
       <SafeWithHeader style={{ flex: 1 }}>
