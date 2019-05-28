@@ -6,12 +6,15 @@ import {
 } from 'react-navigation';
 
 let navigator: NavigationContainerComponent;
-const queuedNavigations: NavigationAction[] = [];
+let queuedNavigations: NavigationAction[] = [];
 
 export function setTopLevelNavigator(navigatorRef: NavigationContainerComponent) {
   navigator = navigatorRef;
 
-  if (queuedNavigations.length > 0) queuedNavigations.forEach(navigator.dispatch);
+  if (queuedNavigations.length > 0) {
+    queuedNavigations.forEach(navigator.dispatch);
+    queuedNavigations = [];
+  }
 }
 
 export function navigate(routeName: string, params?: NavigationParams) {
