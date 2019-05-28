@@ -1,5 +1,10 @@
 import React from 'react';
-import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
+import {
+  createSwitchNavigator,
+  createStackNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation';
+import { Icon } from 'native-base';
 
 import AuthLoading from './screens/Login/AuthLoading';
 
@@ -9,6 +14,9 @@ import SignUp from './screens/Login/SignUp';
 import SignUpContinued from './screens/Login/SignUpContinued';
 
 import Timeline from './screens/Timeline/Timeline';
+import Search from './screens/Search/Search';
+import Notifications from './screens/Notifications/Notifications';
+import Profile from './screens/Profile/Profile';
 
 import colors from './config/colors';
 
@@ -41,21 +49,63 @@ const AuthStack = createStackNavigator(
   },
 );
 
-const MainStack = createStackNavigator(
+function iconByRoutename(routeName: string) {
+  switch (routeName) {
+    case 'Profile':
+      return 'contact';
+    case 'Search':
+      return 'search';
+    case 'Notifications':
+      return 'notifications-outline';
+    case 'Timeline':
+    default:
+      return 'list';
+  }
+}
+
+const MainStack = createBottomTabNavigator(
   {
     Timeline: {
       path: 'timeline',
       screen: Timeline,
     },
+    Search: {
+      path: 'search',
+      screen: Search,
+    },
+    Notifications: {
+      path: 'notifications',
+      screen: Notifications,
+    },
+    Profile: {
+      path: 'profile',
+      screen: Profile,
+    },
   },
   {
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: colors.green,
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const name = iconByRoutename(navigation.state.routeName);
+
+        return (
+          <Icon
+            active={focused}
+            style={{
+              color: tintColor,
+              fontSize: 24,
+            }}
+            color={tintColor || ''}
+            fontSize={12}
+            name={name}
+          />
+        );
       },
-      headerTintColor: '#fff',
-    },
+    }),
     initialRouteName: 'Timeline',
+    tabBarOptions: {
+      activeTintColor: colors.lightGreen,
+      inactiveTintColor: colors.grey1,
+    },
   },
 );
 
