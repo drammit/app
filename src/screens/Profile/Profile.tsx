@@ -12,6 +12,7 @@ import { dispatch } from '../../store/store';
 
 type ProfileProps = {
   loginUser: StoreUser;
+  profile: StoreProfile;
 } & NavigationInjectedProps;
 
 class Profile extends React.Component<ProfileProps> {
@@ -21,17 +22,10 @@ class Profile extends React.Component<ProfileProps> {
     };
   }
 
-  public componentDidMount(): void {
-    const { navigation, loginUser } = this.props;
-
-    const idParam: null | number = navigation.getParam('id', null);
-    const userId = idParam || loginUser.id;
-
-    console.log(userId, 'mount');
-  }
-
   public render() {
-    const { navigation } = this.props;
+    const { navigation, profile } = this.props;
+
+    console.log(profile);
 
     return (
       <SafeWithHeader style={{ flex: 1 }}>
@@ -51,9 +45,18 @@ class Profile extends React.Component<ProfileProps> {
   }
 }
 
-const mapStateToProps = (state: StoreShape) => ({
-  loginUser: getUser(state),
-  profile: getProfile(getUser(state).id)(state),
-});
+const mapStateToProps = (state: StoreShape, otherProps: ProfileProps) => {
+  const loginUser = getUser(state);
+
+  const idParam: null | number = otherProps.navigation.getParam('id', null);
+  const userId = idParam || loginUser.id;
+
+  const profile = getProfile(userId)(state);
+
+  return {
+    loginUser,
+    profile,
+  };
+};
 
 export default connect(mapStateToProps)(Profile);

@@ -32,6 +32,6 @@
     "jsx-boolean-value": false,
     "jsx-no-multiline-js": false,
     "jsx-wrap-multiline": false,
-    "import-name": [ true, { "react": "React" }]
+    "import-name": false
   }
 }

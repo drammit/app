@@ -33,8 +33,29 @@ declare interface ClearUserInfoAction {
   type: 'CLEAR_USER_INFO';
 }
 
+declare interface FetchInformationAction {
+  type: 'LOADER_FETCH';
+  key: string | number;
+  table: string;
+}
+
+declare interface FetchInformationSuccessAction {
+  type: 'LOADER_FETCH_SUCCESS';
+  key: string | number;
+  table: string;
+  payload: any;
+}
+
+declare interface FetchInformationFailedAction {
+  type: 'LOADER_FETCH_FAILED';
+  key: string | number;
+  table: string;
+  error: Error;
+}
+
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
-  | ClearUserInfoAction;
+  | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
+  | FetchInformationFailedAction;
 
 /* Shape of the store */
 
@@ -45,14 +66,25 @@ declare interface StoreUser {
   avatar: string;
 }
 
-declare interface StoreProfile {
+declare interface ProfileShape {
   id: number;
   username: string;
   name?: string;
   avatar?: string;
 }
 
+declare type StoreProfile = ProfileShape | undefined | Error;
+
+declare interface StoreProfiles {
+  [key: number]: StoreProfile;
+}
+
+declare interface StoreLoading {
+  [table: string]: (string|number)[];
+}
+
 declare interface StoreShape {
   user: StoreUser;
-  profiles: { [key: number]: StoreProfile | undefined | Error };
+  loading: StoreLoading;
+  profiles: StoreProfiles;
 }
