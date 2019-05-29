@@ -7,7 +7,7 @@ import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Message from '../../components/Message/Message';
 
 import { getUser } from '../../store/selectors/user';
-import { getProfile } from '../../store/selectors/profile';
+import { getProfile } from '../../store/loadables/profiles';
 import { setUserInfo } from '../../store/actions/app';
 import { dispatch } from '../../store/store';
 

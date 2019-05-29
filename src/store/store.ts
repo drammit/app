@@ -4,6 +4,8 @@ import { createMiddleware } from 'redux-listeners';
 import reducers from './reducers';
 import listeners from './listeners';
 
+import { profiles } from './loadables/profiles';
+
 export const listenMiddleware = createMiddleware();
 
 const middlewares = [
@@ -12,7 +14,9 @@ const middlewares = [
 ];
 
 export const store = createStore(
-  reducers,
+  reducers({
+    profiles,
+  }),
   compose(...middlewares.filter(m => Boolean(m))),
 );
 
@@ -21,7 +25,5 @@ listeners(listenMiddleware);
 export const dispatch = (action: DrammitAction) => {
   store.dispatch(action);
 };
-
-export const select = (selector: (state: StoreShape) => any) => selector(store.getState());
 
 export default store;

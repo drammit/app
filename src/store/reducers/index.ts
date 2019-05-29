@@ -1,11 +1,10 @@
-import { combineReducers } from 'redux';
+import { combineReducers, Reducer } from 'redux';
 
 import loading from '../loader/reducer';
-import profiles from './profiles';
 import user from './user';
 
-export default combineReducers({
+export default (extraReducers?: { [key: string]: Reducer }) => combineReducers({
+  ...extraReducers,
   loading,
-  profiles,
   user,
 });
