@@ -13,8 +13,26 @@ function handleJWT(response: Response) {
   return response;
 }
 
+function errorNameByCode(status: number) {
+  if (status === 403) {
+    return 'FetchAuthError';
+  }
+
+  if (status === 404) {
+    return 'FetchNotFoundError';
+  }
+
+  return 'FetchError';
+}
+
 async function handleApiError(response: Response) {
-  if (!response.ok) throw new Error(await response.text());
+  if (!response.ok) {
+    const message = await response.text();
+    throw {
+      message,
+      name: errorNameByCode(response.status),
+    };
+  }
   return response;
 }
 

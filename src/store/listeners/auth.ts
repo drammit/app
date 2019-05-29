@@ -27,7 +27,11 @@ const listeners: DispatchListener[] = [
         info('Expired token successfully refreshed');
       } catch (err) {
         info('Expired token not refreshed');
-        dispatch(logout());
+
+        if (err.name === 'FetchAuthError') {
+          info('Refresh token invalid');
+          dispatch(logout());
+        }
       }
     },
     type: 'REFRESH_AUTH',
