@@ -73,6 +73,11 @@ declare interface StoreUser {
 declare interface ProfileShape {
   id: number;
   username: string;
+  createdAt: Date;
+  followers: number;
+  follows: number;
+  reviews: number;
+  subscription: boolean;
   name?: string;
   avatar?: string;
 }

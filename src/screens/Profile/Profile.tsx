@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Message from '../../components/Message/Message';
+import Avatar from '../../components/User/Avatar';
 
 import { getUser } from '../../store/selectors/user';
 import { getProfile } from '../../store/loadables/profiles';
@@ -54,7 +55,7 @@ class Profile extends React.Component<ProfileProps> {
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <Content padder>
-          <Text>Profile</Text>
+          <Avatar uri={profile.avatar} />
 
           <Button onPress={() => navigation.push('Profile', { id: 19 })}>
             <Text>Go to other profile</Text>

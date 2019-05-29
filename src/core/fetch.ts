@@ -1,7 +1,8 @@
+import { envVar } from './env';
 import { setJWT, getJWT } from './jwt';
 import { info } from './log';
 
-const API_ROOT = 'http://localhost:3030';
+const API_ROOT = envVar('API_ROOT');
 
 function createUrl(url: string) {
   return [API_ROOT, url].join('');

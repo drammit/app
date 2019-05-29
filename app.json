@@ -24,6 +24,9 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "extra": {
+      "API_ROOT": "http://localhost:3030"
     }
   },
   "infoPlist": {
