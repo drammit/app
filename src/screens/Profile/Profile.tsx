@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, Button, Content } from 'native-base';
+import { View, StyleSheet } from 'react-native';
+import { Text, Button, Content, H3 } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -11,6 +12,32 @@ import { getUser } from '../../store/selectors/user';
 import { getProfile } from '../../store/loadables/profiles';
 import { setUserInfo } from '../../store/actions/app';
 import { dispatch } from '../../store/store';
+
+import colors from '../../config/colors';
+
+const styles = StyleSheet.create({
+  figureItem: {
+    alignItems: 'center',
+  },
+  figureItemName: {
+    color: colors.grey1,
+    fontSize: 14,
+  },
+  figureItemNumber: {
+    fontSize: 18,
+  },
+  figureItems: {
+    flexDirection: 'row',
+    flexGrow: 1,
+    justifyContent: 'space-around',
+  },
+  topbar: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+});
 
 type ProfileProps = {
   loginUser: StoreUser;
@@ -55,7 +82,29 @@ class Profile extends React.Component<ProfileProps> {
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <Content padder>
-          <Avatar uri={profile.avatar} />
+          <View style={styles.topbar}>
+            <Avatar uri={profile.avatar} />
+
+            <View style={styles.figureItems}>
+              <View style={styles.figureItem}>
+                <Text style={styles.figureItemNumber}>{profile.drams}</Text>
+                <Text style={styles.figureItemName}>Drams</Text>
+              </View>
+
+              <View style={styles.figureItem}>
+                <Text style={styles.figureItemNumber}>{profile.followers}</Text>
+                <Text style={styles.figureItemName}>Followers</Text>
+              </View>
+
+              <View style={styles.figureItem}>
+                <Text style={styles.figureItemNumber}>{profile.following}</Text>
+                <Text style={styles.figureItemName}>Following</Text>
+              </View>
+            </View>
+          </View>
+          <View>
+            <H3>{profile.name || profile.username}</H3>
+          </View>
 
           <Button onPress={() => navigation.push('Profile', { id: 19 })}>
             <Text>Go to other profile</Text>

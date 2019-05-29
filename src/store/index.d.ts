@@ -75,8 +75,8 @@ declare interface ProfileShape {
   username: string;
   createdAt: Date;
   followers: number;
-  follows: number;
-  reviews: number;
+  following: number;
+  drams: number;
   subscription: boolean;
   name?: string;
   avatar?: string;
