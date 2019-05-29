@@ -16,7 +16,9 @@ import SignUpContinued from './screens/Login/SignUpContinued';
 import Timeline from './screens/Timeline/Timeline';
 import Search from './screens/Search/Search';
 import Notifications from './screens/Notifications/Notifications';
+
 import Profile from './screens/Profile/Profile';
+import ProfileSettings from './screens/Profile/Settings';
 
 import colors from './config/colors';
 
@@ -56,6 +58,10 @@ const ProfileStack = createStackNavigator(
     Profile: {
       path: 'profile',
       screen: Profile,
+    },
+    ProfileSettings: {
+      path: 'profile-settings',
+      screen: ProfileSettings,
     },
   },
   {
