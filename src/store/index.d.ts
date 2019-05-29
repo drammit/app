@@ -21,6 +21,10 @@ declare interface LogoutAction {
   type: 'LOGOUT';
 }
 
+declare interface RefreshAuthAction {
+  type: 'REFRESH_AUTH';
+}
+
 declare interface SetUserInfoAction {
   type: 'SET_USER_INFO';
   id: number;
@@ -55,7 +59,7 @@ declare interface FetchInformationFailedAction {
 
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
-  | FetchInformationFailedAction;
+  | FetchInformationFailedAction | RefreshAuthAction;
 
 /* Shape of the store */
 
