@@ -1,12 +1,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Text, Button } from 'native-base';
+import { View } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 
-import SafeWithHeader from '../../components/Pages/SafeWithHeader';
-
-import { dispatch } from '../../store/store';
-import { logout } from '../../store/actions/auth';
+import SafeWithSlimHeader from '../../components/Pages/SafeWithSlimHeader';
+import Dram from '../../components/Dram/Dram';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,19 +19,21 @@ type TimelineProps = NavigationInjectedProps;
 
 class Timeline extends React.Component<TimelineProps> {
   private static navigationOptions = {
+    header: null,
     title: 'Timeline',
   };
 
   public render() {
     return (
-      <SafeWithHeader style={{ flex: 1 }}>
+      <SafeWithSlimHeader style={{ flex: 1 }}>
         <View style={styles.container}>
-          <Text>Timeline!</Text>
-          <Button block style={styles.submitButton} onPress={() => dispatch(logout())}>
-            <Text>Log out</Text>
-          </Button>
+          <Dram />
+          <Dram />
+          <Dram />
+          <Dram />
+          <Dram />
         </View>
-      </SafeWithHeader>
+      </SafeWithSlimHeader>
     );
   }
 }

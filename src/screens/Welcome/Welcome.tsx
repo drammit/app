@@ -3,7 +3,6 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
-  SafeAreaView,
   Animated,
   Easing,
 } from 'react-native';

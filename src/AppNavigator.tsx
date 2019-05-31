@@ -14,6 +14,8 @@ import SignUp from './screens/Login/SignUp';
 import SignUpContinued from './screens/Login/SignUpContinued';
 
 import Timeline from './screens/Timeline/Timeline';
+import DramDetails from './screens/Timeline/DramDetails';
+
 import Search from './screens/Search/Search';
 import Notifications from './screens/Notifications/Notifications';
 
@@ -21,6 +23,7 @@ import Profile from './screens/Profile/Profile';
 import ProfileSettings from './screens/Profile/Settings';
 
 import colors from './config/colors';
+import Dram from './components/Dram/Dram';
 
 const defaultStackNavigationOptions = {
   headerStyle: {
@@ -50,6 +53,23 @@ const AuthStack = createStackNavigator(
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
     initialRouteName: 'Welcome',
+  },
+);
+
+const TimelineStack = createStackNavigator(
+  {
+    DramDetails: {
+      path: 'dram',
+      screen: DramDetails,
+    },
+    Timeline: {
+      path: 'timeline',
+      screen: Timeline,
+    },
+  },
+  {
+    defaultNavigationOptions: defaultStackNavigationOptions,
+    initialRouteName: 'Timeline',
   },
 );
 
@@ -88,7 +108,7 @@ const MainStack = createBottomTabNavigator(
   {
     Timeline: {
       path: 'timeline',
-      screen: Timeline,
+      screen: TimelineStack,
     },
     // tslint:disable-next-line:object-literal-sort-keys
     Search: {
@@ -123,7 +143,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Profile',
+    initialRouteName: 'Timeline',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,
