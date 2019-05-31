@@ -1,17 +1,25 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { View } from 'native-base';
+import { Content, View } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 
 import SafeWithSlimHeader from '../../components/Pages/SafeWithSlimHeader';
 import Dram from '../../components/Dram/Dram';
+import Logo from '../../components/Logo/Logo';
+
+import colors from '../../config/colors';
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 15,
+  header: {
+    backgroundColor: colors.green,
+    flex: 1,
+    justifyContent: 'center',
   },
-  submitButton: {
-    marginTop: 24,
+  mainContainer: {
+    backgroundColor: colors.white,
+  },
+  parentContainer: {
+    backgroundColor: colors.green,
   },
 });
 
@@ -26,13 +34,23 @@ class Timeline extends React.Component<TimelineProps> {
   public render() {
     return (
       <SafeWithSlimHeader style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <Dram />
-          <Dram />
-          <Dram />
-          <Dram />
-          <Dram />
-        </View>
+        <Content style={styles.parentContainer}>
+          <View style={styles.header}>
+            <Logo width={160} color={colors.light} />
+          </View>
+          <Content contentContainerStyle={styles.mainContainer} padder>
+            <Dram />
+            <Dram />
+            <Dram />
+            <Dram />
+            <Dram />
+            <Dram />
+            <Dram />
+            <Dram />
+            <Dram />
+            <Dram />
+          </Content>
+        </Content>
       </SafeWithSlimHeader>
     );
   }
