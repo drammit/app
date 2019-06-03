@@ -10,17 +10,8 @@ import Logo from '../../components/Logo/Logo';
 import colors from '../../config/colors';
 
 const styles = StyleSheet.create({
-  header: {
-    alignItems: 'center',
-    backgroundColor: colors.green,
-    flex: 1,
-    padding: 12,
-  },
   mainContainer: {
     backgroundColor: colors.white,
-  },
-  parentContainer: {
-    backgroundColor: colors.green,
   },
 });
 
