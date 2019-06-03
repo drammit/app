@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Content, View } from 'native-base';
+import { StyleSheet, RefreshControl } from 'react-native';
+import { Content } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 
-import SafeWithSlimHeader from '../../components/Pages/SafeWithSlimHeader';
+import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Dram from '../../components/Dram/Dram';
 import Logo from '../../components/Logo/Logo';
 
@@ -11,9 +11,10 @@ import colors from '../../config/colors';
 
 const styles = StyleSheet.create({
   header: {
+    alignItems: 'center',
     backgroundColor: colors.green,
     flex: 1,
-    justifyContent: 'center',
+    padding: 12,
   },
   mainContainer: {
     backgroundColor: colors.white,
@@ -25,33 +26,61 @@ const styles = StyleSheet.create({
 
 type TimelineProps = NavigationInjectedProps;
 
-class Timeline extends React.Component<TimelineProps> {
+interface TimelineState {
+  refreshing: boolean;
+}
+
+class Timeline extends React.Component<TimelineProps, TimelineState> {
   private static navigationOptions = {
-    header: null,
+    headerTitle: (
+      <Logo width={120} color={colors.light} />
+    ),
     title: 'Timeline',
   };
 
+  public state = {
+    refreshing: false,
+  };
+
+  public onRefresh = () => {
+    this.setState({ refreshing: true });
+    setTimeout(
+      () => {
+        this.setState({ refreshing: false });
+      },
+      1000,
+    );
+  }
+
   public render() {
+    const { refreshing } = this.state;
+
     return (
-      <SafeWithSlimHeader style={{ flex: 1 }}>
-        <Content style={styles.parentContainer}>
-          <View style={styles.header}>
-            <Logo width={160} color={colors.light} />
-          </View>
-          <Content contentContainerStyle={styles.mainContainer} padder>
-            <Dram />
-            <Dram />
-            <Dram />
-            <Dram />
-            <Dram />
-            <Dram />
-            <Dram />
-            <Dram />
-            <Dram />
-            <Dram />
-          </Content>
+      <SafeWithHeader style={{ flex: 1 }}>
+        <Content
+          contentContainerStyle={styles.mainContainer}
+          padder
+          refreshing={refreshing}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={this.onRefresh}
+              tintColor={colors.grey4}
+            />
+          }
+        >
+          <Dram />
+          <Dram />
+          <Dram />
+          <Dram />
+          <Dram />
+          <Dram />
+          <Dram />
+          <Dram />
+          <Dram />
+          <Dram />
         </Content>
-      </SafeWithSlimHeader>
+      </SafeWithHeader>
     );
   }
 }
