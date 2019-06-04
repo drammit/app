@@ -23,7 +23,18 @@ const loading = (state: boolean = false, action: DrammitAction): boolean => {
   }
 };
 
+const refreshing = (state: boolean = false, action: DrammitAction): boolean => {
+  switch (action.type) {
+    case 'FETCH_USER_TIMELINE_SUCCESS':
+    case 'FETCH_TIMELINE_SUCCESS':
+      return false;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   items,
   loading,
+  refreshing,
 });
