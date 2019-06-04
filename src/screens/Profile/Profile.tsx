@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 });
 
 type ProfileProps = {
-  loginUser: StoreUser;
+  loginUser: StoreCurrentUser;
   profile: StoreProfile;
 } & NavigationInjectedProps;
 

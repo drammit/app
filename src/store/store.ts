@@ -4,11 +4,6 @@ import { createMiddleware } from 'redux-listeners';
 import reducers from './reducers';
 import listeners from './listeners';
 
-import { drams } from './entities/drams';
-import { profiles } from './entities/profiles';
-import { users } from './entities/users';
-import { whiskies } from './entities/whiskies';
-
 export const listenMiddleware = createMiddleware();
 
 const middlewares = [
@@ -16,13 +11,8 @@ const middlewares = [
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 ];
 
-export const store = createStore(
-  reducers({
-    drams,
-    profiles,
-    users,
-    whiskies,
-  }),
+export const store = createStore<StoreShape, DrammitAction, any, any>(
+  reducers({}),
   compose(...middlewares.filter(m => Boolean(m))),
 );
 

@@ -72,7 +72,7 @@ declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserIn
 
 /* Shape of the store */
 
-declare interface StoreUser {
+declare interface StoreCurrentUser {
   id: number;
   username: string;
   name: string;
@@ -89,16 +89,48 @@ declare interface DramShape {
   rating: number;
 }
 
-declare interface ProfileShape {
+declare type StoreDram = DramShape | undefined | Error;
+
+declare interface StoreDrams {
+  [key: number]: StoreDram;
+}
+
+declare interface UserShape {
   id: number;
   username: string;
+  subscription: boolean;
+  name?: string;
+  avatar?: string;
+}
+
+declare type StoreUser = UserShape | undefined | Error;
+
+declare interface StoreUsers {
+  [key: number]: StoreUser;
+}
+
+declare interface WhiskyShape {
+  id: number;
+  name: string;
+  fullName: string;
+  size: string;
+  age: number;
+  abv: number;
+  year: string;
+  image?: string;
+}
+
+declare type StoreWhisky = WhiskyShape | undefined | Error;
+
+declare interface StoreWhiskies {
+  [key: number]: StoreWhisky;
+}
+
+declare interface ProfileShape extends UserShape {
   createdAt: Date;
   followers: number;
   following: number;
   drams: number;
-  subscription: boolean;
-  name?: string;
-  avatar?: string;
 }
 
 declare type StoreProfile = ProfileShape | undefined | Error;
@@ -107,20 +139,15 @@ declare interface StoreProfiles {
   [key: number]: StoreProfile;
 }
 
-declare type StoreDram = DramShape | undefined | Error;
-
-declare interface StoreDrams {
-  [key: number]: StoreDram;
-}
-
 declare interface StoreLoading {
   [table: string]: (string|number)[];
 }
 
 declare interface StoreShape {
-  user: StoreUser;
+  user: StoreCurrentUser;
   loading: StoreLoading;
   profiles: StoreProfiles;
-  users: StoreProfiles;
+  users: StoreUsers;
   drams: StoreDrams;
+  whiskies: StoreWhiskies;
 }

@@ -2,6 +2,7 @@ import { isLoading } from './selector';
 import { dispatch } from '../store';
 import { fetch } from './actions';
 import { registerResolver } from './listeners';
+import { Reducer } from 'redux';
 
 function createLoader<T>({
   table,
@@ -16,9 +17,9 @@ function createLoader<T>({
   defaultValue: T;
   fetchTypes?: string[];
   resolver: (id: string | number) => Promise<any>;
-  reducer?: (state: T, action: DrammitAction) => T;
+  reducer?: Reducer;
 }): [
-  (state: T, action: DrammitAction) => T,
+  (state: T | undefined, action: DrammitAction) => T,
   (state: StoreShape) => T,
   (key: number | string) => (state: StoreShape) => any
 ] {
@@ -26,7 +27,7 @@ function createLoader<T>({
   registerResolver(table, resolver);
 
   // create reducer
-  const combinedReducer = (state: T = defaultValue, action: DrammitAction) => {
+  const combinedReducer = (state: T = defaultValue, action: DrammitAction): T => {
     // Check for types to handle payload merging
     const handleAction = (action as any);
 
