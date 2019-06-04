@@ -57,9 +57,18 @@ declare interface FetchInformationFailedAction {
   error: Error;
 }
 
+declare interface TimelinePayload {
+  drams: DramShape[];
+}
+
+declare interface FetchTimelineSuccessAction {
+  type: 'FETCH_TIMELINE_SUCCESS';
+  payload: TimelinePayload;
+}
+
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
-  | FetchInformationFailedAction | RefreshAuthAction;
+  | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction;
 
 /* Shape of the store */
 
@@ -68,6 +77,16 @@ declare interface StoreUser {
   username: string;
   name: string;
   avatar: string;
+}
+
+declare interface DramShape {
+  UserId: number;
+  WhiskyId: number;
+  id: number;
+  image?: string;
+  message?: string;
+  name: string;
+  rating: number;
 }
 
 declare interface ProfileShape {
@@ -88,6 +107,12 @@ declare interface StoreProfiles {
   [key: number]: StoreProfile;
 }
 
+declare type StoreDram = DramShape | undefined | Error;
+
+declare interface StoreDrams {
+  [key: number]: StoreDram;
+}
+
 declare interface StoreLoading {
   [table: string]: (string|number)[];
 }
@@ -96,4 +121,6 @@ declare interface StoreShape {
   user: StoreUser;
   loading: StoreLoading;
   profiles: StoreProfiles;
+  users: StoreProfiles;
+  drams: StoreDrams;
 }

@@ -10,7 +10,7 @@ import Message from '../../components/Message/Message';
 import Avatar from '../../components/User/Avatar';
 
 import { getUser } from '../../store/selectors/user';
-import { getProfile } from '../../store/loadables/profiles';
+import { getProfile } from '../../store/entities/profiles';
 
 import colors from '../../config/colors';
 

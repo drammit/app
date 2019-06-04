@@ -4,7 +4,10 @@ import { createMiddleware } from 'redux-listeners';
 import reducers from './reducers';
 import listeners from './listeners';
 
-import { profiles } from './loadables/profiles';
+import { drams } from './entities/drams';
+import { profiles } from './entities/profiles';
+import { users } from './entities/users';
+import { whiskies } from './entities/whiskies';
 
 export const listenMiddleware = createMiddleware();
 
@@ -15,7 +18,10 @@ const middlewares = [
 
 export const store = createStore(
   reducers({
+    drams,
     profiles,
+    users,
+    whiskies,
   }),
   compose(...middlewares.filter(m => Boolean(m))),
 );

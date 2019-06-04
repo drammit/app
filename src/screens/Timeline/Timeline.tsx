@@ -3,6 +3,11 @@ import { StyleSheet, RefreshControl } from 'react-native';
 import { Content } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 
+import { getDrams } from './api';
+
+import { dispatch } from '../../store/store';
+import { receiveTimeline } from '../../store/actions/timeline';
+
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Dram from '../../components/Dram/Dram';
 import Logo from '../../components/Logo/Logo';
@@ -33,14 +38,20 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
     refreshing: false,
   };
 
+  public static fetchTimeline() {
+    return getDrams()
+      .then((result: TimelinePayload) => dispatch(receiveTimeline(result)));
+  }
+
+  public componentDidMount(): void {
+    Timeline.fetchTimeline();
+  }
+
   public onRefresh = () => {
     this.setState({ refreshing: true });
-    setTimeout(
-      () => {
-        this.setState({ refreshing: false });
-      },
-      1000,
-    );
+    Timeline.fetchTimeline()
+      .then(() => this.setState({ refreshing: false }))
+      .catch(() => this.setState({ refreshing: false }));
   }
 
   public render() {
