@@ -3,7 +3,11 @@ import { fetch } from './actions';
 import { registerResolver } from './listeners';
 import { Dispatch, Reducer } from 'redux';
 
-function createLoader<T>({
+/**
+ * T: Type of table shape
+ *  E:
+ */
+function createLoader<T, E>({
   table,
   defaultValue,
   pk = 'id',
@@ -20,7 +24,7 @@ function createLoader<T>({
 }): [
   (state: T | undefined, action: DrammitAction) => T,
   (state: StoreShape) => T,
-  (key: number | string) => (state: StoreShape, dispatch: Dispatch) => any
+  (key: number | string) => (state: StoreShape, dispatch: Dispatch) => E
 ] {
   // add resolver to listeners
   registerResolver(table, resolver);

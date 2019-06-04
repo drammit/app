@@ -1,12 +1,17 @@
 import { combineReducers } from 'redux';
 
-const items = (state: Timeline['items'] = [], action: DrammitAction): Timeline['items'] => {
+const items = (
+  state: StoreTimeline['items'] = [],
+  action: DrammitAction,
+): StoreTimeline['items'] => {
   switch (action.type) {
     case 'FETCH_USER_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_SUCCESS':
       return [
         ...state,
-        ...action.payload.drams.map(dram => dram.id),
+        ...action.payload.drams
+          .map(dram => dram.id)
+          .filter(id => state.indexOf(id) === -1),
       ];
     default:
       return state;
@@ -15,6 +20,8 @@ const items = (state: Timeline['items'] = [], action: DrammitAction): Timeline['
 
 const loading = (state: boolean = false, action: DrammitAction): boolean => {
   switch (action.type) {
+    case 'FETCH_TIMELINE':
+      return true;
     case 'FETCH_USER_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_SUCCESS':
       return false;
@@ -25,6 +32,8 @@ const loading = (state: boolean = false, action: DrammitAction): boolean => {
 
 const refreshing = (state: boolean = false, action: DrammitAction): boolean => {
   switch (action.type) {
+    case 'FETCH_TIMELINE_REFRESH':
+      return true;
     case 'FETCH_USER_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_SUCCESS':
       return false;

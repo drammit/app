@@ -61,6 +61,16 @@ declare interface TimelinePayload {
   drams: DramShape[];
 }
 
+declare interface FetchTimelineAction {
+  type: 'FETCH_TIMELINE';
+  from?: Date;
+}
+
+declare interface FetchTimelineRefreshAction {
+  type: 'FETCH_TIMELINE_REFRESH';
+  from?: Date;
+}
+
 declare interface FetchTimelineSuccessAction {
   type: 'FETCH_TIMELINE_SUCCESS';
   payload: TimelinePayload;
@@ -75,7 +85,7 @@ declare interface FetchUserTimelineSuccessAction {
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
-  | FetchUserTimelineSuccessAction;
+  | FetchUserTimelineSuccessAction | FetchTimelineAction | FetchTimelineRefreshAction;
 
 /* Shape of the store */
 
@@ -90,10 +100,10 @@ declare interface DramShape {
   UserId: number;
   WhiskyId: number;
   id: number;
-  image?: string;
-  message?: string;
   name: string;
   rating: number;
+  image?: string;
+  message?: string;
 }
 
 declare type StoreDram = DramShape | undefined | Error;
@@ -150,14 +160,14 @@ declare interface StoreLoading {
   [table: string]: (string|number)[];
 }
 
-declare interface Timeline {
+declare interface StoreTimeline {
   loading: boolean;
   refreshing: boolean;
   items: DramShape['id'][];
 }
 
 declare interface StoreTimelines {
-  [key: number]: Timeline;
+  [key: number]: StoreTimeline;
 }
 
 declare interface StoreShape {
@@ -167,6 +177,6 @@ declare interface StoreShape {
   users: StoreUsers;
   drams: StoreDrams;
   whiskies: StoreWhiskies;
-  timeline: Timeline;
+  timeline: StoreTimeline;
   timelines: StoreTimelines;
 }

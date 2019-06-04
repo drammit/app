@@ -1,12 +1,16 @@
 import React from 'react';
 import { StyleSheet, RefreshControl } from 'react-native';
-import { Content } from 'native-base';
+import { Content, Spinner } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
-
-import { getDrams } from './api';
+import { connect } from 'react-redux';
 
 import { dispatch } from '../../store/store';
-import { receiveTimeline } from '../../store/actions/timeline';
+import { fetchTimeline, refreshTimeline } from '../../store/actions/timeline';
+import {
+  getTimelineItems,
+  isTimelineLoading,
+  isTimelineRefreshing,
+} from '../../store/selectors/timeline';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Dram from '../../components/Dram/Dram';
@@ -20,13 +24,13 @@ const styles = StyleSheet.create({
   },
 });
 
-type TimelineProps = NavigationInjectedProps;
-
-interface TimelineState {
-  refreshing: boolean;
+interface TimelineProps extends NavigationInjectedProps {
+  isLoading: boolean;
+  isRefreshing: boolean;
+  timeline: StoreTimeline['items'];
 }
 
-class Timeline extends React.Component<TimelineProps, TimelineState> {
+class Timeline extends React.Component<TimelineProps> {
   private static navigationOptions = {
     headerTitle: (
       <Logo width={120} color={colors.light} />
@@ -34,13 +38,8 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
     title: 'Timeline',
   };
 
-  public state = {
-    refreshing: false,
-  };
-
   public static fetchTimeline() {
-    return getDrams()
-      .then((result: TimelinePayload) => dispatch(receiveTimeline(result)));
+    dispatch(fetchTimeline());
   }
 
   public componentDidMount(): void {
@@ -48,43 +47,39 @@ class Timeline extends React.Component<TimelineProps, TimelineState> {
   }
 
   public onRefresh = () => {
-    this.setState({ refreshing: true });
-    Timeline.fetchTimeline()
-      .then(() => this.setState({ refreshing: false }))
-      .catch(() => this.setState({ refreshing: false }));
+    // @TODO add newer than date
+    dispatch(refreshTimeline());
   }
 
   public render() {
-    const { refreshing } = this.state;
+    const { isRefreshing, isLoading, timeline } = this.props;
 
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <Content
           contentContainerStyle={styles.mainContainer}
           padder
-          refreshing={refreshing}
+          refreshing={isRefreshing}
           refreshControl={
             <RefreshControl
-              refreshing={refreshing}
+              refreshing={isRefreshing}
               onRefresh={this.onRefresh}
               tintColor={colors.grey4}
             />
           }
         >
-          <Dram />
-          <Dram />
-          <Dram />
-          <Dram />
-          <Dram />
-          <Dram />
-          <Dram />
-          <Dram />
-          <Dram />
-          <Dram />
+          {timeline.map(id => <Dram key={id} id={id} />)}
+          {isLoading && <Spinner />}
         </Content>
       </SafeWithHeader>
     );
   }
 }
 
-export default Timeline;
+const mapStateToProps = (state: StoreShape) => ({
+  isLoading: isTimelineLoading(state),
+  isRefreshing: isTimelineRefreshing(state),
+  timeline: getTimelineItems(state),
+});
+
+export default connect(mapStateToProps)(Timeline);
