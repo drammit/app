@@ -12,7 +12,7 @@ const middlewares = [
 ];
 
 export const store = createStore<StoreShape, DrammitAction, any, any>(
-  reducers({}),
+  reducers(),
   compose(...middlewares.filter(m => Boolean(m))),
 );
 
