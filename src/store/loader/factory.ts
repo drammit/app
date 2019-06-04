@@ -1,8 +1,7 @@
 import { isLoading } from './selector';
-import { dispatch } from '../store';
 import { fetch } from './actions';
 import { registerResolver } from './listeners';
-import { Reducer } from 'redux';
+import { Dispatch, Reducer } from 'redux';
 
 function createLoader<T>({
   table,
@@ -21,7 +20,7 @@ function createLoader<T>({
 }): [
   (state: T | undefined, action: DrammitAction) => T,
   (state: StoreShape) => T,
-  (key: number | string) => (state: StoreShape) => any
+  (key: number | string) => (state: StoreShape, dispatch: Dispatch) => any
 ] {
   // add resolver to listeners
   registerResolver(table, resolver);
@@ -68,7 +67,7 @@ function createLoader<T>({
   // @ts-ignore
   const getAll = (state: StoreShape): T => state[table];
 
-  const getEntry = (key: number | string) => (state: StoreShape) => {
+  const getEntry = (key: number | string) => (state: StoreShape, dispatch: Dispatch) => {
     // @ts-ignore
     const entry = getAll(state)[key];
 

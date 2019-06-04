@@ -158,7 +158,7 @@ const mapStateToProps = (state: StoreShape, otherProps: ProfileProps) => {
   const idParam: null | number = otherProps.navigation.getParam('id', null);
   const userId = idParam || loginUser.id;
 
-  const profile = getProfile(userId)(state);
+  const profile = getProfile(userId)(state, dispatch);
 
   return {
     loginUser,

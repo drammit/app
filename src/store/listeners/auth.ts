@@ -1,9 +1,9 @@
 import { setJWT } from '../../core/jwt';
-
 import { navigate } from '../../core/navigation';
-import { refreshToken } from '../../screens/Login/api';
 import { info } from '../../core/log';
-import { dispatch } from '../store';
+
+import { refreshToken } from '../../screens/Login/api';
+
 import { logout } from '../actions/auth';
 
 const listeners: DispatchListener[] = [
@@ -21,7 +21,7 @@ const listeners: DispatchListener[] = [
     type: 'LOGOUT',
   },
   {
-    listener: async () => {
+    listener: async (dispatch) => {
       try {
         await refreshToken();
         info('Expired token successfully refreshed');
