@@ -1,5 +1,6 @@
 import { combineReducers, Reducer } from 'redux';
 
+import { distilleries } from '../entities/distilleries';
 import { drams } from '../entities/drams';
 import { profiles } from '../entities/profiles';
 import { users } from '../entities/users';
@@ -12,6 +13,7 @@ import timelines from './timelines';
 
 export default (extraReducers?: { [key: string]: Reducer }) => combineReducers({
   ...extraReducers,
+  distilleries,
   drams,
   loading,
   profiles,

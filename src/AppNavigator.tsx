@@ -58,6 +58,10 @@ const AuthStack = createStackNavigator(
 
 const TimelineStack = createStackNavigator(
   {
+    Distillery: {
+      path: 'distillery',
+      screen: DramDetails,
+    },
     DramDetails: {
       path: 'dram',
       screen: DramDetails,

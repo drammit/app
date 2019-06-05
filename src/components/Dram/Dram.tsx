@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, CardItem, Body, Text, Button, Thumbnail, Left } from 'native-base';
+import { Card, CardItem, Body, Text, Left } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
@@ -8,12 +8,14 @@ import { distanceInWordsToNow } from 'date-fns';
 import { getDram } from '../../store/entities/drams';
 import { getWhisky } from '../../store/entities/whiskies';
 import { getUser } from '../../store/entities/users';
+import { getDistillery } from '../../store/entities/distilleries';
 import { dispatch } from '../../store/store';
 
 import Rating from './Rating';
 import Message from '../Message/Message';
 import Avatar from '../User/Avatar';
 import UsernameLink from '../User/UsernameLink';
+import DistilleryNameLink from '../Distillery/NameLink';
 
 import colors from '../../config/colors';
 
@@ -32,15 +34,21 @@ interface DramProps extends DramBaseProps, NavigationInjectedProps {
   dram: StoreDram;
   user: StoreUser;
   whisky: StoreWhisky;
+  distillery: StoreDistillery;
 }
 
-const Dram = ({ id, dram, user, whisky, navigation }: DramProps) => {
-  if (!dram || !user || !whisky) {
+const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => {
+  if (!dram || !user || !whisky || !distillery) {
     // @todo: Placeholders
     return null;
   }
 
-  if (dram instanceof Error || user instanceof Error || whisky instanceof Error) {
+  if (
+    dram instanceof Error
+    || user instanceof Error
+    || whisky instanceof Error
+    || distillery instanceof Error
+  ) {
     return (
       <Card>
         <CardItem>
@@ -84,26 +92,32 @@ const Dram = ({ id, dram, user, whisky, navigation }: DramProps) => {
           <Text>
             {dram.name}
           </Text>
+          <DistilleryNameLink distillery={distillery} />
         </Body>
       </CardItem>
-      <CardItem>
-        <Button onPress={() => navigation.navigate('DramDetails')}>
-          <Text>Go to details</Text>
-        </Button>
-      </CardItem>
+      {/*<CardItem bordered>*/}
+      {/*  <Button onPress={() => navigation.navigate('DramDetails')}>*/}
+      {/*    <Text>Go to details</Text>*/}
+      {/*  </Button>*/}
+      {/*</CardItem>*/}
     </Card>
   );
 };
 
 const mapStateToProps = (state: StoreShape, ownProps: DramBaseProps) => {
   const dram = getDram(ownProps.id)(state, dispatch);
+  const whisky = dram && !(dram instanceof Error)
+    ? getWhisky(dram.WhiskyId)(state, dispatch) : undefined;
+  const user = dram && !(dram instanceof Error)
+    ? getUser(dram.UserId)(state, dispatch) : undefined;
+  const distillery = whisky && !(whisky instanceof Error)
+    ? getDistillery(whisky.DistilleryId)(state, dispatch) : undefined;
 
   return {
+    distillery,
     dram,
-    user: dram && !(dram instanceof Error)
-      ? getUser(dram.UserId)(state, dispatch) : undefined,
-    whisky: dram && !(dram instanceof Error)
-      ? getWhisky(dram.WhiskyId)(state, dispatch) : undefined,
+    user,
+    whisky,
   };
 };
 

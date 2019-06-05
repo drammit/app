@@ -128,6 +128,9 @@ declare interface StoreUsers {
 }
 
 declare interface WhiskyShape {
+  DistilleryId: number;
+  BottlerId: number;
+  CategoryId: number;
   id: number;
   name: string;
   fullName: string;
@@ -142,6 +145,20 @@ declare type StoreWhisky = WhiskyShape | undefined | Error;
 
 declare interface StoreWhiskies {
   [key: number]: StoreWhisky;
+}
+
+declare interface DistilleryShape {
+  CountryId: number;
+  RegionId: number;
+  id: number;
+  name: string;
+  image?: string;
+}
+
+declare type StoreDistillery = DistilleryShape | undefined | Error;
+
+declare interface StoreDistilleries {
+  [key: number]: StoreDistillery;
 }
 
 declare interface ProfileShape extends UserShape {
@@ -172,12 +189,13 @@ declare interface StoreTimelines {
 }
 
 declare interface StoreShape {
-  user: StoreCurrentUser;
-  loading: StoreLoading;
+  distilleries: StoreDistilleries;
+  drams: StoreDrams;
   profiles: StoreProfiles;
   users: StoreUsers;
-  drams: StoreDrams;
   whiskies: StoreWhiskies;
+  user: StoreCurrentUser;
+  loading: StoreLoading;
   timeline: StoreTimeline;
   timelines: StoreTimelines;
 }
