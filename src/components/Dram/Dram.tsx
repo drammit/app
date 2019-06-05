@@ -6,10 +6,14 @@ import { connect } from 'react-redux';
 import { getDram } from '../../store/entities/drams';
 import { dispatch } from '../../store/store';
 
+import Rating from './Rating';
 import Message from '../Message/Message';
 
-interface DramProps extends NavigationInjectedProps {
-  id: DramShape['id'];
+interface DramBaseProps {
+  id: number;
+}
+
+interface DramProps extends DramBaseProps, NavigationInjectedProps {
   dram: StoreDram;
 }
 
@@ -35,9 +39,7 @@ const Dram = ({ id, dram, navigation }: DramProps) => {
     <Card>
       <CardItem>
         <Body>
-          <Text>
-            {dram.rating}
-          </Text>
+          <Rating rating={dram.rating} />
           <Text>
             {dram.name}
           </Text>
@@ -55,8 +57,9 @@ const Dram = ({ id, dram, navigation }: DramProps) => {
   );
 }
 
-const mapStateToProps = (state: StoreShape, ownProps: DramProps) => ({
+const mapStateToProps = (state: StoreShape, ownProps: DramBaseProps) => ({
   dram: getDram(ownProps.id)(state, dispatch),
+  // @todo get whisky and user
 });
 
 export default connect(mapStateToProps)(withNavigation(Dram));

@@ -69,7 +69,7 @@ class Timeline extends React.Component<TimelineProps> {
           }
         >
           {timeline.map(id => <Dram key={id} id={id} />)}
-          {isLoading && <Spinner />}
+          {isLoading && <Spinner color={colors.grey3} />}
         </Content>
       </SafeWithHeader>
     );
