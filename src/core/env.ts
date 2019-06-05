@@ -1,6 +1,6 @@
 import { Constants } from 'expo';
 
-type EnvKey = 'API_ROOT';
+type EnvKey = 'API_ROOT' | 'STATIC_ROOT';
 
 export function envVar(key: EnvKey) {
   if (!Constants.manifest.extra) return undefined;

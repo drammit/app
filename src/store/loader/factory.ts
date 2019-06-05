@@ -5,7 +5,7 @@ import { Dispatch, Reducer } from 'redux';
 
 /**
  * T: Type of table shape
- *  E:
+ * E: Type of table entry shape
  */
 function createLoader<T, E>({
   table,
@@ -71,7 +71,9 @@ function createLoader<T, E>({
   // @ts-ignore
   const getAll = (state: StoreShape): T => state[table];
 
-  const getEntry = (key: number | string) => (state: StoreShape, dispatch: Dispatch) => {
+  const getEntry = (key?: number | string) => (state: StoreShape, dispatch: Dispatch) => {
+    if (!key) return undefined;
+
     // @ts-ignore
     const entry = getAll(state)[key];
 

@@ -104,6 +104,7 @@ declare interface DramShape {
   rating: number;
   image?: string;
   message?: string;
+  createdAt: Date;
 }
 
 declare type StoreDram = DramShape | undefined | Error;

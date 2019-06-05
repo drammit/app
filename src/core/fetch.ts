@@ -85,7 +85,7 @@ export function request(method: RequestMethod = 'GET', url: string, data?: Reque
     params.body = formData;
   }
 
-  info('req', reqId, url, params);
+  // info('req', reqId, url, params);
 
   return fetch(
     createUrl(url),
@@ -95,7 +95,7 @@ export function request(method: RequestMethod = 'GET', url: string, data?: Reque
     .then(handleJWT)
     .then(response => response.json())
     .then((response: any) => {
-      info('res', reqId, url, response);
+      // info('res', reqId, url, response);
       return response;
     });
 }

@@ -3,7 +3,7 @@ import { Image, PixelRatio } from 'react-native';
 
 import { envVar } from '../../core/env';
 
-const API_ROOT = envVar('API_ROOT');
+const STATIC_ROOT = envVar('STATIC_ROOT');
 
 function createExtension(size: number): string {
   if (size > 360) {
@@ -32,7 +32,7 @@ interface AvatarProps {
 
 const Avatar = ({ uri, size = 90 }: AvatarProps) => {
   const completeUri = [
-    API_ROOT,
+    STATIC_ROOT,
     '/avatars/',
     uri,
     createExtension(size * PixelRatio.get()),

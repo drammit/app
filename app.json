@@ -26,7 +26,8 @@
       "supportsTablet": true
     },
     "extra": {
-      "API_ROOT": "http://localhost:3030"
+      "API_ROOT": "http://localhost:3030",
+      "STATIC_ROOT": "http://localhost:3030/static"
     }
   },
   "infoPlist": {

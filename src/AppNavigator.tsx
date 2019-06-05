@@ -66,6 +66,10 @@ const TimelineStack = createStackNavigator(
       path: 'timeline',
       screen: Timeline,
     },
+    UserProfile: {
+      path: 'user-profile',
+      screen: Profile,
+    },
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
