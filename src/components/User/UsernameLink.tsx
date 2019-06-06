@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   username: {
     color: colors.green,
     fontWeight: '700',
+    marginRight: 3,
   },
 });
 

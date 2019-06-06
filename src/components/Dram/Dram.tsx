@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Card, CardItem, Body, Text, Left } from 'native-base';
+import { StyleSheet, View } from 'react-native';
+import { Card, CardItem, Body, Text, Left, Button, Right } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
@@ -13,6 +13,8 @@ import { dispatch } from '../../store/store';
 
 import Rating from './Rating';
 import Image from './Image';
+import Slainte from './Slainte';
+import Comment from './Comment';
 import Message from '../Message/Message';
 import Avatar from '../User/Avatar';
 import UsernameLink from '../User/UsernameLink';
@@ -22,9 +24,24 @@ import WhiskyNameLink from '../Whisky/NameLink';
 import colors from '../../config/colors';
 
 const styles = StyleSheet.create({
+  button: {
+    flexGrow: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   date: {
     color: colors.grey,
     fontSize: 14,
+  },
+  slainteList: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 4,
+    marginTop: 8,
   },
 });
 
@@ -62,6 +79,8 @@ const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => 
     );
   }
 
+  const slainte = false;
+
   const headerContent = (
     <Body>
       <UsernameLink user={user} />
@@ -79,21 +98,21 @@ const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => 
           </Left>
         ) : headerContent}
       </CardItem>
-      {dram.message ? (
-        <CardItem>
-          <Body>
-            <Text>
-              {dram.message}
-            </Text>
-          </Body>
-        </CardItem>
-      ) : null}
       {dram.image ? (
         <CardItem cardBody>
           <Image uri={dram.image} />
         </CardItem>
       ) : null}
-      <CardItem>
+      {dram.message ? (
+        <CardItem>
+          <Body>
+            <Text style={{ marginTop: dram.image ? 8 : 0 }}>
+              {dram.message}
+            </Text>
+          </Body>
+        </CardItem>
+      ) : null}
+      <CardItem bordered>
         <Body>
           <Rating rating={dram.rating} />
           <WhiskyNameLink
@@ -106,13 +125,39 @@ const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => 
             whisky={whisky}
           />
           <DistilleryNameLink distillery={distillery} />
+
+          <View style={styles.slainteList}>
+            <Slainte style={{ marginRight: 6 }} height={16} />
+            <UsernameLink user={user} />
+            <UsernameLink user={user} />
+          </View>
         </Body>
       </CardItem>
-      {/*<CardItem bordered>*/}
-      {/*  <Button onPress={() => navigation.navigate('DramDetails')}>*/}
-      {/*    <Text>Go to details</Text>*/}
-      {/*  </Button>*/}
-      {/*</CardItem>*/}
+      <CardItem cardBody style={styles.buttonContainer}>
+        <Button
+          first
+          style={{
+            ...styles.button,
+            borderColor: colors.grey5,
+            borderRightWidth: 1,
+          }}
+          full
+          transparent
+          onPress={() => navigation.navigate('DramDetails')}
+        >
+          <Slainte active={slainte} />
+          <Text style={{ color: slainte ? colors.deepOrange : colors.grey1 }}>Slàinte</Text>
+        </Button>
+        <Button
+          style={styles.button}
+          full
+          transparent
+          onPress={() => navigation.navigate('DramDetails', { id: dram.id, comment: true })}
+        >
+          <Comment />
+          <Text style={{ color: colors.grey2 }}>Comment</Text>
+        </Button>
+      </CardItem>
     </Card>
   );
 };
