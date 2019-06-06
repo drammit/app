@@ -10,7 +10,7 @@ interface RatingStarProps {
 }
 
 const RatingStart = ({ width = 20, color = colors.orange, state = 'full' }: RatingStarProps) => (
-  <Svg
+  <Svg.Svg
     width={width}
     height={width}
     viewBox="0 0 500 500"
@@ -29,7 +29,7 @@ const RatingStart = ({ width = 20, color = colors.orange, state = 'full' }: Rati
       v402.7l133.3,70.2c2.8,1.4,5.8,2.2,8.7,2.2c3.9,0,7.8-1.2,11.1-3.6c5.8-4.2,8.7-11.3,7.5-18.4
       l-25.5-148.5L493,211.9C498.1,206.9,500,199.4,497.8,192.6z"
     />
-  </Svg>
+  </Svg.Svg>
 );
 
 export default RatingStart;

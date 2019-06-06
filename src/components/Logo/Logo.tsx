@@ -14,7 +14,7 @@ const Logo = ({ width = 400, color = colors.green }: LogoProps) => {
   const ratio = 88.9 / 596.3;
 
   return (
-    <Svg
+    <Svg.Svg
       height={width * ratio}
       width={width}
       viewBox="0 0 596.3 88.9"
@@ -70,7 +70,7 @@ const Logo = ({ width = 400, color = colors.green }: LogoProps) => {
         h0.9c0.1,0,8.6-0.4,16.8-0.4c9.1,0,17.2,0.4,17.3,0.4h0.9v-5.1l-4.5-0.7c-4.5-0.7-6.9-2-6.9-6.9
         V8.6h12.2c7.7,0,11.6,3.4,11.6,10.2v0.7l4.6,0.9l1.4-20.3L592.3,0.1z"
       />
-    </Svg>
+    </Svg.Svg>
   );
 };
 

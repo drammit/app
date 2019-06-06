@@ -1,6 +1,7 @@
 import React from 'react';
 import { createAppContainer, NavigationContainerComponent } from 'react-navigation';
-import { AppLoading, Font } from 'expo';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleProvider, Root } from 'native-base';
 import { Provider } from 'react-redux';
