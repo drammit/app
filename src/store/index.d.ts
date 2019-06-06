@@ -134,6 +134,7 @@ declare interface WhiskyShape {
   id: number;
   name: string;
   fullName: string;
+  bottlingSerie: string;
   size: string;
   age: number;
   abv: number;

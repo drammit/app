@@ -16,6 +16,7 @@ import Message from '../Message/Message';
 import Avatar from '../User/Avatar';
 import UsernameLink from '../User/UsernameLink';
 import DistilleryNameLink from '../Distillery/NameLink';
+import WhiskyNameLink from '../Whisky/NameLink';
 
 import colors from '../../config/colors';
 
@@ -89,9 +90,15 @@ const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => 
       <CardItem>
         <Body>
           <Rating rating={dram.rating} />
-          <Text>
-            {dram.name}
-          </Text>
+          <WhiskyNameLink
+            size={18}
+            style={{
+              fontWeight: '500',
+              marginBottom: 6,
+              marginTop: 6,
+            }}
+            whisky={whisky}
+          />
           <DistilleryNameLink distillery={distillery} />
         </Body>
       </CardItem>

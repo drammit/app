@@ -1,21 +1,18 @@
 import React from 'react';
 import { Text } from 'native-base';
-import { StyleSheet } from 'react-native';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-
-const styles = StyleSheet.create({
-  username: {
-    fontSize: 14,
-  },
-});
 
 interface NameLinkProps extends NavigationInjectedProps {
   distillery: DistilleryShape;
+  style?: any;
 }
 
-const NameLink = ({ distillery, navigation }: NameLinkProps) => (
+const NameLink = ({ style = {}, distillery, navigation }: NameLinkProps) => (
   <Text
-    style={styles.username}
+    style={{
+      fontSize: 14,
+      ...style,
+    }}
     onPress={() => navigation.navigate('Distillery', { id: distillery.id })}
   >
     distilled by {distillery.name}
