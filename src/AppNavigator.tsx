@@ -74,6 +74,10 @@ const TimelineStack = createStackNavigator(
       path: 'user-profile',
       screen: Profile,
     },
+    Whisky: {
+      path: 'whisky',
+      screen: DramDetails,
+    },
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,

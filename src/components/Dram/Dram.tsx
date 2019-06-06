@@ -12,6 +12,7 @@ import { getDistillery } from '../../store/entities/distilleries';
 import { dispatch } from '../../store/store';
 
 import Rating from './Rating';
+import Image from './Image';
 import Message from '../Message/Message';
 import Avatar from '../User/Avatar';
 import UsernameLink from '../User/UsernameLink';
@@ -85,6 +86,11 @@ const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => 
               {dram.message}
             </Text>
           </Body>
+        </CardItem>
+      ) : null}
+      {dram.image ? (
+        <CardItem cardBody>
+          <Image uri={dram.image} />
         </CardItem>
       ) : null}
       <CardItem>
