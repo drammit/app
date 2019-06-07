@@ -9,7 +9,7 @@ interface SlainteProps {
   style?: any;
 }
 
-const Slainte = ({ active = false, height = 22, style = {} }: SlainteProps) => {
+const IconSlainte = ({ active = false, height = 22, style = {} }: SlainteProps) => {
   const currentColor = active ? colors.deepOrange : colors.grey2;
 
   return (
@@ -84,4 +84,4 @@ const Slainte = ({ active = false, height = 22, style = {} }: SlainteProps) => {
   );
 }
 
-export default Slainte;
+export default IconSlainte;

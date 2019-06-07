@@ -101,6 +101,12 @@ declare interface DramSlainteShape {
   createdAt: Date;
 }
 
+declare interface DramCommentShape {
+  UserId: number;
+  comment: string;
+  createdAt: Date;
+}
+
 declare interface DramShape {
   UserId: number;
   WhiskyId: number;
@@ -108,6 +114,7 @@ declare interface DramShape {
   name: string;
   rating: number;
   slaintes: DramSlainteShape[];
+  comments: DramCommentShape[];
   image?: string;
   message?: string;
   createdAt: Date;

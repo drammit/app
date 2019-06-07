@@ -13,8 +13,8 @@ import { dispatch } from '../../store/store';
 
 import Rating from './Rating';
 import Image from './Image';
-import Slainte from './Slainte';
-import Comment from './Comment';
+import IconSlainte from './IconSlainte';
+import IconComment from './IconComment';
 import Message from '../Message/Message';
 import Avatar from '../User/Avatar';
 import UsernameLink from '../User/UsernameLink';
@@ -49,14 +49,28 @@ interface DramBaseProps {
   id: number;
 }
 
+type CommentWithUser = DramCommentShape & { user: StoreUser };
+type SlainteWithUser = DramSlainteShape & { user: StoreUser };
+
 interface DramProps extends DramBaseProps, NavigationInjectedProps {
+  comments: CommentWithUser[];
   dram: StoreDram;
+  slaintes: SlainteWithUser[];
   user: StoreUser;
   whisky: StoreWhisky;
   distillery: StoreDistillery;
 }
 
-const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => {
+const Dram = ({
+  id,
+  dram,
+  user,
+  whisky,
+  distillery,
+  slaintes,
+  comments,
+  navigation,
+}: DramProps) => {
   if (!dram || !user || !whisky || !distillery) {
     // @todo: Placeholders
     return null;
@@ -126,11 +140,15 @@ const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => 
           />
           <DistilleryNameLink distillery={distillery} />
 
-          <View style={styles.slainteList}>
-            <Slainte style={{ marginRight: 6 }} height={16} />
-            <UsernameLink user={user} />
-            <UsernameLink user={user} />
-          </View>
+          {slaintes.length > 0 && (
+            <View style={styles.slainteList}>
+              <IconSlainte style={{ marginRight: 6 }} height={16} />
+              {slaintes
+                .filter(s => s.user && !(s.user instanceof Error))
+                .map(s => <UsernameLink key={s.UserId} user={(s.user as UserShape)} />)
+              }
+            </View>
+          )}
         </Body>
       </CardItem>
       <CardItem cardBody style={styles.buttonContainer}>
@@ -145,7 +163,7 @@ const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => 
           transparent
           onPress={() => navigation.navigate('DramDetails')}
         >
-          <Slainte active={slainte} />
+          <IconSlainte active={slainte} />
           <Text style={{ color: slainte ? colors.deepOrange : colors.grey1 }}>Slàinte</Text>
         </Button>
         <Button
@@ -154,7 +172,7 @@ const Dram = ({ id, dram, user, whisky, distillery, navigation }: DramProps) => 
           transparent
           onPress={() => navigation.navigate('DramDetails', { id: dram.id, comment: true })}
         >
-          <Comment />
+          <IconComment />
           <Text style={{ color: colors.grey2 }}>Comment</Text>
         </Button>
       </CardItem>
@@ -170,10 +188,20 @@ const mapStateToProps = (state: StoreShape, ownProps: DramBaseProps) => {
     ? getUser(dram.UserId)(state, dispatch) : undefined;
   const distillery = whisky && !(whisky instanceof Error)
     ? getDistillery(whisky.DistilleryId)(state, dispatch) : undefined;
+  const slaintes = dram && !(dram instanceof Error) ? dram.slaintes.map(s => ({
+    ...s,
+    user: getUser(s.UserId)(state, dispatch),
+  })) : [];
+  const comments = dram && !(dram instanceof Error) ? dram.comments.map(c => ({
+    ...c,
+    user: getUser(c.UserId)(state, dispatch),
+  })) : [];
 
   return {
+    comments,
     distillery,
     dram,
+    slaintes,
     user,
     whisky,
   };

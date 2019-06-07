@@ -8,7 +8,7 @@ interface CommentProps {
   height?: number;
 }
 
-const Comment = ({ active = false, height = 22 }: CommentProps) => {
+const IconComment = ({ active = false, height = 22 }: CommentProps) => {
   const currentColor = active ? colors.deepOrange : colors.grey2;
 
   return (
@@ -23,4 +23,4 @@ const Comment = ({ active = false, height = 22 }: CommentProps) => {
   );
 }
 
-export default Comment;
+export default IconComment;
