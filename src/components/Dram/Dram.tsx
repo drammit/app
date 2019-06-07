@@ -93,7 +93,8 @@ const Dram = ({
     );
   }
 
-  const slainte = false;
+  const dramSlaintes = slaintes.filter(s => s.user && !(s.user instanceof Error));
+  const slainte = dramSlaintes.some(s => s.UserId === user.id);
 
   const headerContent = (
     <Body>
@@ -140,13 +141,10 @@ const Dram = ({
           />
           <DistilleryNameLink distillery={distillery} />
 
-          {slaintes.length > 0 && (
+          {dramSlaintes.length > 0 && (
             <View style={styles.slainteList}>
               <IconSlainte style={{ marginRight: 6 }} height={16} />
-              {slaintes
-                .filter(s => s.user && !(s.user instanceof Error))
-                .map(s => <UsernameLink key={s.UserId} user={(s.user as UserShape)} />)
-              }
+              {dramSlaintes.map(s => <UsernameLink key={s.UserId} user={(s.user as UserShape)} />)}
             </View>
           )}
         </Body>
