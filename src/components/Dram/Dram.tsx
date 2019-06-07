@@ -118,7 +118,7 @@ const Dram = ({
       </CardItem>
       {dram.image ? (
         <CardItem cardBody>
-          <Image uri={dram.image} />
+          <Image aspectRatio={16 / 9} uri={dram.image} />
         </CardItem>
       ) : null}
       {dram.message ? (
