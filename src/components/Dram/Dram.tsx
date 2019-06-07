@@ -130,7 +130,7 @@ const Dram = ({
           </Body>
         </CardItem>
       ) : null}
-      <CardItem bordered>
+      <CardItem>
         <Body>
           <Rating rating={dram.rating} />
           <WhiskyNameLink
@@ -143,15 +143,18 @@ const Dram = ({
             whisky={whisky}
           />
           <DistilleryNameLink distillery={distillery} />
-
-          {dramSlaintes.length > 0 && (
+        </Body>
+      </CardItem>
+      {dramSlaintes.length > 0 && (
+        <CardItem bordered>
+          <Body>
             <View style={styles.slainteList}>
               <IconSlainte style={{ marginRight: 6 }} height={16} />
               {dramSlaintes.map(s => <UsernameLink key={s.UserId} user={(s.user as UserShape)} />)}
             </View>
-          )}
-        </Body>
-      </CardItem>
+          </Body>
+        </CardItem>
+      )}
       <CardItem cardBody style={styles.buttonContainer}>
         <Button
           first
