@@ -96,12 +96,18 @@ declare interface StoreCurrentUser {
   avatar: string;
 }
 
+declare interface DramSlainteShape {
+  UserId: number;
+  createdAt: Date;
+}
+
 declare interface DramShape {
   UserId: number;
   WhiskyId: number;
   id: number;
   name: string;
   rating: number;
+  slaintes: DramSlainteShape[];
   image?: string;
   message?: string;
   createdAt: Date;
@@ -163,6 +169,7 @@ declare interface StoreDistilleries {
 }
 
 declare interface ProfileShape extends UserShape {
+  id: number;
   createdAt: Date;
   followers: number;
   following: number;
