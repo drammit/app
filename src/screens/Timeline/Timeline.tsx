@@ -57,6 +57,7 @@ class Timeline extends React.Component<TimelineProps> {
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <Content
+          onScroll={(e) => { console.log(e.nativeEvent.contentOffset) }}
           contentContainerStyle={styles.mainContainer}
           padder
           refreshing={isRefreshing}
