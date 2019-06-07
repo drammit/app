@@ -10,8 +10,8 @@ interface DramImageProps {
 }
 
 const DramImage = ({ uri }: DramImageProps) => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState<string | number>('auto');
+  const [height, setHeight] = useState(263);
 
   const completeUri = [
     STATIC_ROOT,
@@ -21,16 +21,20 @@ const DramImage = ({ uri }: DramImageProps) => {
   ].join('');
 
   return (
-    <Image
-      source={{ uri: completeUri }}
-      resizeMode="cover"
+    <View
       style={{ flex: 1, width, height }}
       onLayout={(e) => {
         const newWidth = e.nativeEvent.layout.width;
         setWidth(newWidth);
         setHeight(newWidth * 0.75);
       }}
-    />
+    >
+      <Image
+        source={{ uri: completeUri }}
+        resizeMode="cover"
+        style={{ flex: 1, width, height }}
+      />
+    </View>
   );
 }
 

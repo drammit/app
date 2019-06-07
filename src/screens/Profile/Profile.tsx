@@ -9,7 +9,7 @@ import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Message from '../../components/Message/Message';
 import Avatar from '../../components/User/Avatar';
 
-import { getUser } from '../../store/selectors/user';
+import { getCurrentUser } from '../../store/selectors/user';
 import { getProfile } from '../../store/entities/profiles';
 
 import colors from '../../config/colors';
@@ -153,7 +153,7 @@ class Profile extends React.Component<ProfileProps> {
 }
 
 const mapStateToProps = (state: StoreShape, otherProps: ProfileProps) => {
-  const loginUser = getUser(state);
+  const loginUser = getCurrentUser(state);
 
   const idParam: null | number = otherProps.navigation.getParam('id', null);
   const userId = idParam || loginUser.id;

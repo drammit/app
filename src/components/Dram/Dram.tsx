@@ -5,6 +5,7 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
 
+import { getCurrentUser } from '../../store/selectors/user';
 import { getDram } from '../../store/entities/drams';
 import { getWhisky } from '../../store/entities/whiskies';
 import { getUser } from '../../store/entities/users';
@@ -54,6 +55,7 @@ type SlainteWithUser = DramSlainteShape & { user: StoreUser };
 
 interface DramProps extends DramBaseProps, NavigationInjectedProps {
   comments: CommentWithUser[];
+  currentUser: StoreCurrentUser;
   dram: StoreDram;
   slaintes: SlainteWithUser[];
   user: StoreUser;
@@ -69,6 +71,7 @@ const Dram = ({
   distillery,
   slaintes,
   comments,
+  currentUser,
   navigation,
 }: DramProps) => {
   if (!dram || !user || !whisky || !distillery) {
@@ -94,7 +97,7 @@ const Dram = ({
   }
 
   const dramSlaintes = slaintes.filter(s => s.user && !(s.user instanceof Error));
-  const slainte = dramSlaintes.some(s => s.UserId === user.id);
+  const slainte = dramSlaintes.some(s => s.UserId === currentUser.id);
 
   const headerContent = (
     <Body>
@@ -197,6 +200,7 @@ const mapStateToProps = (state: StoreShape, ownProps: DramBaseProps) => {
 
   return {
     comments,
+    currentUser: getCurrentUser(state),
     distillery,
     dram,
     slaintes,
