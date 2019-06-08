@@ -1,9 +1,9 @@
-export const fetchTimeline = (from?: Date): FetchTimelineAction => ({
+export const fetchTimeline = (from?: number): FetchTimelineAction => ({
   from,
   type: 'FETCH_TIMELINE',
 });
 
-export const refreshTimeline = (from?: Date): FetchTimelineRefreshAction => ({
+export const refreshTimeline = (from?: number): FetchTimelineRefreshAction => ({
   from,
   type: 'FETCH_TIMELINE_REFRESH',
 });

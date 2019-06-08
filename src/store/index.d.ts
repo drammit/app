@@ -63,12 +63,12 @@ declare interface TimelinePayload {
 
 declare interface FetchTimelineAction {
   type: 'FETCH_TIMELINE';
-  from?: Date;
+  from?: number;
 }
 
 declare interface FetchTimelineRefreshAction {
   type: 'FETCH_TIMELINE_REFRESH';
-  from?: Date;
+  from?: number;
 }
 
 declare interface FetchTimelineSuccessAction {

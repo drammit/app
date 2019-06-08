@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, RefreshControl } from 'react-native';
+import { StyleSheet, RefreshControl, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { Content, Spinner } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -51,13 +51,27 @@ class Timeline extends React.Component<TimelineProps> {
     dispatch(refreshTimeline());
   }
 
+  public onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { isLoading, timeline } = this.props;
+
+    if (!isLoading) {
+      const { layoutMeasurement, contentSize, contentOffset } = e.nativeEvent;
+
+      const bottom = layoutMeasurement.height + contentOffset.y;
+
+      if (bottom > (contentSize.height - layoutMeasurement.height)) {
+        dispatch(fetchTimeline(Math.min(...timeline)));
+      }
+    }
+  }
+
   public render() {
     const { isRefreshing, isLoading, timeline } = this.props;
 
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <Content
-          onScroll={(e) => { console.log(e.nativeEvent.contentOffset) }}
+          onScroll={this.onScroll}
           contentContainerStyle={styles.mainContainer}
           padder
           refreshing={isRefreshing}

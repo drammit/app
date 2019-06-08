@@ -1,3 +1,3 @@
 import { get } from '../../core/fetch';
 
-export const getDrams = (from: Date = new Date()) => get(`/dram/list?from=${+from}`);
+export const getDrams = (from?: number) => get(`/dram/list?from=${from}`);
