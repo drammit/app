@@ -68,7 +68,7 @@ declare interface FetchTimelineAction {
 
 declare interface FetchTimelineRefreshAction {
   type: 'FETCH_TIMELINE_REFRESH';
-  from?: number;
+  until?: number;
 }
 
 declare interface FetchTimelineSuccessAction {

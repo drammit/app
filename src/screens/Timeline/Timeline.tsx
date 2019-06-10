@@ -38,8 +38,8 @@ class Timeline extends React.Component<TimelineProps> {
     title: 'Timeline',
   };
 
-  public static fetchTimeline() {
-    dispatch(fetchTimeline());
+  public static fetchTimeline(from?: number) {
+    dispatch(fetchTimeline(from));
   }
 
   public componentDidMount(): void {
@@ -47,8 +47,11 @@ class Timeline extends React.Component<TimelineProps> {
   }
 
   public onRefresh = () => {
-    // @TODO add newer than date
-    dispatch(refreshTimeline());
+    const { isLoading, timeline } = this.props;
+
+    if (!isLoading) {
+      dispatch(refreshTimeline(Math.max(...timeline)));
+    }
   }
 
   public onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -60,7 +63,7 @@ class Timeline extends React.Component<TimelineProps> {
       const bottom = layoutMeasurement.height + contentOffset.y;
 
       if (bottom > (contentSize.height - layoutMeasurement.height)) {
-        dispatch(fetchTimeline(Math.min(...timeline)));
+        Timeline.fetchTimeline(Math.min(...timeline));
       }
     }
   }

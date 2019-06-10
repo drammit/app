@@ -1,3 +1,7 @@
+import { stringify } from 'query-string';
+
 import { get } from '../../core/fetch';
 
-export const getDrams = (from?: number) => get(`/dram/list?from=${from}`);
+interface GetDramsParams { from?: number; until?: number; }
+
+export const getDrams = (params: GetDramsParams) => get(`/dram/list?${stringify(params)}`);

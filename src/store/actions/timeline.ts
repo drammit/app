@@ -3,9 +3,9 @@ export const fetchTimeline = (from?: number): FetchTimelineAction => ({
   type: 'FETCH_TIMELINE',
 });
 
-export const refreshTimeline = (from?: number): FetchTimelineRefreshAction => ({
-  from,
+export const refreshTimeline = (until?: number): FetchTimelineRefreshAction => ({
   type: 'FETCH_TIMELINE_REFRESH',
+  until,
 });
 
 export const receiveTimeline = (payload: TimelinePayload): FetchTimelineSuccessAction => ({

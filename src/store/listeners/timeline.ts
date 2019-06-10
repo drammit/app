@@ -5,10 +5,17 @@ import { receiveTimeline } from '../actions/timeline';
 const listeners: DispatchListener[] = [
   {
     listener: (dispatch, action: FetchTimelineAction) => {
-      getDrams(action.from)
+      getDrams({ from: action.from })
         .then((result: TimelinePayload) => dispatch(receiveTimeline(result)));
     },
-    type: ['FETCH_TIMELINE', 'FETCH_TIMELINE_REFRESH'],
+    type: ['FETCH_TIMELINE'],
+  },
+  {
+    listener: (dispatch, action: FetchTimelineRefreshAction) => {
+      getDrams({ until: action.until })
+        .then((result: TimelinePayload) => dispatch(receiveTimeline(result)));
+    },
+    type: ['FETCH_TIMELINE_REFRESH'],
   },
 ];
 

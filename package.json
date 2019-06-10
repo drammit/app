@@ -20,6 +20,7 @@
     "expo-font": "^5.0.1",
     "formik": "^1.5.7",
     "native-base": "^2.12.1",
+    "query-string": "^6.7.0",
     "react": "^16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-svg": "^9.4.0",
