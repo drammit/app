@@ -176,7 +176,7 @@ const Dram = ({
           transparent
           onPress={() => navigation.navigate('DramDetails', { id: dram.id, comment: true })}
         >
-          <IconComment />
+          <IconComment height={18} />
           <Text style={{ color: colors.grey2 }}>Comment</Text>
         </Button>
       </CardItem>
