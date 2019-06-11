@@ -12,6 +12,7 @@ import { getUser, getUsers } from '../../store/entities/users';
 import { getDistillery } from '../../store/entities/distilleries';
 import { slainteDram } from '../../store/actions/dram';
 
+import Comment from './Comment';
 import Rating from './Rating';
 import Image from './Image';
 import IconSlainte from './IconSlainte';
@@ -126,6 +127,8 @@ const Dram = ({
 
   const goToDetails = () => navigation.navigate('DramDetails', { id: dram.id });
   const dramSlaintes = slaintes.filter(s => s.user && !(s.user instanceof Error));
+  const dramComments = comments
+    .filter(c => c.user && !(c.user instanceof Error));
   const slainte = dramSlaintes.some(s => s.UserId === currentUser.id);
 
   const goToDetailsProps = {
@@ -197,7 +200,7 @@ const Dram = ({
           </Body>
         </CardItem>
       )}
-      <CardItem cardBody style={styles.buttonContainer}>
+      <CardItem cardBody bordered={dramComments.length > 0} style={styles.buttonContainer}>
         <Button
           first
           style={{
@@ -222,6 +225,26 @@ const Dram = ({
           <Text style={{ color: colors.grey2 }}>Comment</Text>
         </Button>
       </CardItem>
+      {dramComments.length > 0 ? (
+        <CardItem {...goToDetailsProps}>
+          <Body>
+            {dramComments
+              .filter((c, index) => (isCompact && index < 2) || !isCompact)
+              .map(c => (
+                <Comment
+                  disableLink={isCompact}
+                  key={c.createdAt.toString()}
+                  comment={c.comment}
+                  user={c.user}
+                  createdAt={c.createdAt}
+                />
+              ))}
+            {isCompact && dramComments.length > 2 ? (
+              <Text style={{ color: colors.grey2 }}>Read more comments...</Text>
+            ) : null}
+          </Body>
+        </CardItem>
+      ) : null}
     </Card>
   );
 };

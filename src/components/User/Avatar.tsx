@@ -28,9 +28,10 @@ function createExtension(size: number): string {
 interface AvatarProps {
   uri?: string;
   size?: number;
+  style?: any;
 }
 
-const Avatar = ({ uri, size = 90 }: AvatarProps) => {
+const Avatar = ({ uri, size = 90, style }: AvatarProps) => {
   const completeUri = [
     STATIC_ROOT,
     '/avatars/',
@@ -43,6 +44,7 @@ const Avatar = ({ uri, size = 90 }: AvatarProps) => {
       source={{ uri: completeUri }}
       resizeMode="cover"
       style={{
+        ...style,
         borderRadius: size / 2,
         height: size,
         width: size,
