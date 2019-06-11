@@ -1,4 +1,4 @@
-import { getDrams } from '../../screens/Timeline/api';
+import { getDrams } from '../../components/Dram/api';
 
 import { receiveTimeline } from '../actions/timeline';
 

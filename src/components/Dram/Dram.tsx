@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, CardItem, Body, Text, Left, Button } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
@@ -8,8 +8,9 @@ import { distanceInWordsToNow } from 'date-fns';
 import { getCurrentUser } from '../../store/selectors/user';
 import { getDram } from '../../store/entities/drams';
 import { getWhisky } from '../../store/entities/whiskies';
-import { getUser } from '../../store/entities/users';
+import { getUser, getUsers } from '../../store/entities/users';
 import { getDistillery } from '../../store/entities/distilleries';
+import { slainteDram } from '../../store/actions/dram';
 
 import Rating from './Rating';
 import Image from './Image';
@@ -59,50 +60,52 @@ const Dram = ({
   const dispatch = useDispatch();
   const currentUser: StoreCurrentUser = useSelector(getCurrentUser);
   const dram: StoreDram = useSelector((state: StoreShape) => getDram(id)(state, dispatch));
-
-  if (!dram) {
-    // @todo: Placeholders
-    return null;
-  }
-
-  if (dram instanceof Error) {
-    return (
-      <Card>
-        <CardItem>
-          <Body>
-            <Message error>{`Something went wrong:\n${dram.message}`}</Message>
-          </Body>
-        </CardItem>
-      </Card>
-    );
-  }
+  const onSlainte = useCallback(() => dispatch(slainteDram(id, currentUser.id)), [id, currentUser]);
+  const users = useSelector((state: StoreShape) => getUsers(state));
+  const selectUser = useCallback((UserId: number) => users[UserId], [users]);
 
   const whisky: StoreWhisky = useSelector(
-    (state: StoreShape) => getWhisky(dram.WhiskyId)(state, dispatch),
+    (state: StoreShape) => dram && !(dram instanceof Error)
+      ? getWhisky(dram.WhiskyId)(state, dispatch)
+      : undefined,
   );
   const user: StoreUser = useSelector(
-    (state: StoreShape) => getUser(dram.UserId)(state, dispatch),
+    (state: StoreShape) => dram && !(dram instanceof Error)
+      ? getUser(dram.UserId)(state, dispatch)
+      : undefined,
   );
-  const distillery: StoreDistillery = whisky && !(whisky instanceof Error)
-    ? useSelector((state: StoreShape) => getDistillery(whisky.DistilleryId)(state, dispatch))
-    : undefined;
-  const slaintes: SlainteWithUser[] = dram.slaintes.map((s: DramSlainteShape) => ({
-    ...s,
-    user: useSelector((state: StoreShape) => getUser(s.UserId)(state, dispatch)),
-  }));
-  const comments: CommentWithUser[] = dram.comments.map((c: DramCommentShape) => ({
-    ...c,
-    user: useSelector((state: StoreShape) => getUser(c.UserId)(state, dispatch)),
-  }));
+  const distillery: StoreDistillery = useSelector(
+    (state: StoreShape) => whisky && !(whisky instanceof Error)
+      ? getDistillery(whisky.DistilleryId)(state, dispatch)
+      : undefined,
+  );
+  const slaintes: SlainteWithUser[] = dram && !(dram instanceof Error)
+    ? dram.slaintes.map((s: DramSlainteShape) => ({
+      ...s,
+      user: selectUser(s.UserId),
+    }))
+    : [];
+  const comments: CommentWithUser[] = dram && !(dram instanceof Error)
+    ? dram.comments.map((c: DramCommentShape) => ({
+      ...c,
+      user: selectUser(c.UserId),
+    }))
+    : [];
 
-  if (!user || !whisky || !distillery) {
+  if (!dram || !user || !whisky || !distillery) {
     // @todo: Placeholders
     return null;
   }
 
-  if (user instanceof Error || whisky instanceof Error || distillery instanceof Error) {
+  if (
+    dram instanceof Error
+    || user instanceof Error
+    || whisky instanceof Error
+    || distillery instanceof Error
+  ) {
     let message = '';
 
+    if (dram instanceof Error) message = dram.message;
     if (user instanceof Error) message = user.message;
     if (whisky instanceof Error) message = whisky.message;
     if (distillery instanceof Error) message = distillery.message;
@@ -111,9 +114,7 @@ const Dram = ({
       <Card>
         <CardItem>
           <Body>
-            <Message error>
-              {`Something went wrong:\n${message}`}
-            </Message>
+            <Message error>{`Something went wrong:\n${message}`}</Message>
           </Body>
         </CardItem>
       </Card>
@@ -154,7 +155,7 @@ const Dram = ({
           </Body>
         </CardItem>
       ) : null}
-      <CardItem>
+      <CardItem bordered={dramSlaintes.length === 0}>
         <Body>
           <Rating rating={dram.rating} />
           <WhiskyNameLink
@@ -189,7 +190,7 @@ const Dram = ({
           }}
           full
           transparent
-          onPress={() => navigation.navigate('DramDetails')}
+          onPress={onSlainte}
         >
           <IconSlainte active={slainte} />
           <Text style={{ color: slainte ? colors.deepOrange : colors.grey1 }}>Slàinte</Text>

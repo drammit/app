@@ -78,6 +78,7 @@ declare interface FetchUserTimelineSuccessAction {
 declare interface DramSlainteAction {
   type: 'DRAM_SLAINTE';
   DramId: number;
+  UserId: number;
 }
 
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
