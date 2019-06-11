@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Card, CardItem, Body, Text, Left, Button, Right } from 'native-base';
+import { Card, CardItem, Body, Text, Left, Button } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
 
 import { getCurrentUser } from '../../store/selectors/user';
@@ -46,34 +46,39 @@ const styles = StyleSheet.create({
   },
 });
 
-interface DramBaseProps {
+interface DramProps extends NavigationInjectedProps {
   id: number;
 }
 
 type CommentWithUser = DramCommentShape & { user: StoreUser };
 type SlainteWithUser = DramSlainteShape & { user: StoreUser };
 
-interface DramProps extends DramBaseProps, NavigationInjectedProps {
-  comments: CommentWithUser[];
-  currentUser: StoreCurrentUser;
-  dram: StoreDram;
-  slaintes: SlainteWithUser[];
-  user: StoreUser;
-  whisky: StoreWhisky;
-  distillery: StoreDistillery;
-}
-
 const Dram = ({
   id,
-  dram,
-  user,
-  whisky,
-  distillery,
-  slaintes,
-  comments,
-  currentUser,
   navigation,
 }: DramProps) => {
+  const currentUser = useSelector(getCurrentUser);
+  const dram = useSelector((state: StoreShape) => getDram(id)(state, dispatch));
+  const whisky = dram && !(dram instanceof Error)
+    ? useSelector((state: StoreShape) => getWhisky(dram.WhiskyId)(state, dispatch)) : undefined;
+  const user = dram && !(dram instanceof Error)
+    ? useSelector((state: StoreShape) => getUser(dram.UserId)(state, dispatch)) : undefined;
+  const distillery = whisky && !(whisky instanceof Error)
+    ? useSelector((state: StoreShape) => getDistillery(whisky.DistilleryId)(state, dispatch))
+    : undefined;
+  const slaintes: SlainteWithUser[] = dram && !(dram instanceof Error)
+    ? dram.slaintes.map((s: DramSlainteShape) => ({
+      ...s,
+      user: useSelector((state: StoreShape) => getUser(s.UserId)(state, dispatch)),
+    }))
+    : [];
+  const comments: CommentWithUser[] = dram && !(dram instanceof Error)
+    ? dram.comments.map((c: DramCommentShape) => ({
+      ...c,
+      user: useSelector((state: StoreShape) => getUser(c.UserId)(state, dispatch)),
+    }))
+    : [];
+
   if (!dram || !user || !whisky || !distillery) {
     // @todo: Placeholders
     return null;
@@ -184,32 +189,4 @@ const Dram = ({
   );
 };
 
-const mapStateToProps = (state: StoreShape, ownProps: DramBaseProps) => {
-  const dram = getDram(ownProps.id)(state, dispatch);
-  const whisky = dram && !(dram instanceof Error)
-    ? getWhisky(dram.WhiskyId)(state, dispatch) : undefined;
-  const user = dram && !(dram instanceof Error)
-    ? getUser(dram.UserId)(state, dispatch) : undefined;
-  const distillery = whisky && !(whisky instanceof Error)
-    ? getDistillery(whisky.DistilleryId)(state, dispatch) : undefined;
-  const slaintes = dram && !(dram instanceof Error) ? dram.slaintes.map(s => ({
-    ...s,
-    user: getUser(s.UserId)(state, dispatch),
-  })) : [];
-  const comments = dram && !(dram instanceof Error) ? dram.comments.map(c => ({
-    ...c,
-    user: getUser(c.UserId)(state, dispatch),
-  })) : [];
-
-  return {
-    comments,
-    currentUser: getCurrentUser(state),
-    distillery,
-    dram,
-    slaintes,
-    user,
-    whisky,
-  };
-};
-
-export default connect(mapStateToProps)(withNavigation(Dram));
+export default withNavigation(Dram);
