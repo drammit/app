@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, CardItem, Body, Text, Left, Button } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
 
 import { getCurrentUser } from '../../store/selectors/user';
@@ -10,7 +10,6 @@ import { getDram } from '../../store/entities/drams';
 import { getWhisky } from '../../store/entities/whiskies';
 import { getUser } from '../../store/entities/users';
 import { getDistillery } from '../../store/entities/distilleries';
-import { dispatch } from '../../store/store';
 
 import Rating from './Rating';
 import Image from './Image';
@@ -57,44 +56,64 @@ const Dram = ({
   id,
   navigation,
 }: DramProps) => {
-  const currentUser = useSelector(getCurrentUser);
-  const dram = useSelector((state: StoreShape) => getDram(id)(state, dispatch));
-  const whisky = dram && !(dram instanceof Error)
-    ? useSelector((state: StoreShape) => getWhisky(dram.WhiskyId)(state, dispatch)) : undefined;
-  const user = dram && !(dram instanceof Error)
-    ? useSelector((state: StoreShape) => getUser(dram.UserId)(state, dispatch)) : undefined;
-  const distillery = whisky && !(whisky instanceof Error)
-    ? useSelector((state: StoreShape) => getDistillery(whisky.DistilleryId)(state, dispatch))
-    : undefined;
-  const slaintes: SlainteWithUser[] = dram && !(dram instanceof Error)
-    ? dram.slaintes.map((s: DramSlainteShape) => ({
-      ...s,
-      user: useSelector((state: StoreShape) => getUser(s.UserId)(state, dispatch)),
-    }))
-    : [];
-  const comments: CommentWithUser[] = dram && !(dram instanceof Error)
-    ? dram.comments.map((c: DramCommentShape) => ({
-      ...c,
-      user: useSelector((state: StoreShape) => getUser(c.UserId)(state, dispatch)),
-    }))
-    : [];
+  const dispatch = useDispatch();
+  const currentUser: StoreCurrentUser = useSelector(getCurrentUser);
+  const dram: StoreDram = useSelector((state: StoreShape) => getDram(id)(state, dispatch));
 
-  if (!dram || !user || !whisky || !distillery) {
+  if (!dram) {
     // @todo: Placeholders
     return null;
   }
 
-  if (
-    dram instanceof Error
-    || user instanceof Error
-    || whisky instanceof Error
-    || distillery instanceof Error
-  ) {
+  if (dram instanceof Error) {
     return (
       <Card>
         <CardItem>
           <Body>
             <Message error>{`Something went wrong:\n${dram.message}`}</Message>
+          </Body>
+        </CardItem>
+      </Card>
+    );
+  }
+
+  const whisky: StoreWhisky = useSelector(
+    (state: StoreShape) => getWhisky(dram.WhiskyId)(state, dispatch),
+  );
+  const user: StoreUser = useSelector(
+    (state: StoreShape) => getUser(dram.UserId)(state, dispatch),
+  );
+  const distillery: StoreDistillery = whisky && !(whisky instanceof Error)
+    ? useSelector((state: StoreShape) => getDistillery(whisky.DistilleryId)(state, dispatch))
+    : undefined;
+  const slaintes: SlainteWithUser[] = dram.slaintes.map((s: DramSlainteShape) => ({
+    ...s,
+    user: useSelector((state: StoreShape) => getUser(s.UserId)(state, dispatch)),
+  }));
+  const comments: CommentWithUser[] = dram.comments.map((c: DramCommentShape) => ({
+    ...c,
+    user: useSelector((state: StoreShape) => getUser(c.UserId)(state, dispatch)),
+  }));
+
+  if (!user || !whisky || !distillery) {
+    // @todo: Placeholders
+    return null;
+  }
+
+  if (user instanceof Error || whisky instanceof Error || distillery instanceof Error) {
+    let message = '';
+
+    if (user instanceof Error) message = user.message;
+    if (whisky instanceof Error) message = whisky.message;
+    if (distillery instanceof Error) message = distillery.message;
+
+    return (
+      <Card>
+        <CardItem>
+          <Body>
+            <Message error>
+              {`Something went wrong:\n${message}`}
+            </Message>
           </Body>
         </CardItem>
       </Card>
