@@ -15,12 +15,13 @@ const styles = StyleSheet.create({
 
 interface UsernameLinkProps extends NavigationInjectedProps {
   user: UserShape;
+  disableLink?: boolean;
 }
 
-const UsernameLink = ({ user, navigation }: UsernameLinkProps) => (
+const UsernameLink = ({ user, navigation, disableLink = false }: UsernameLinkProps) => (
   <Text
     style={styles.username}
-    onPress={() => navigation.navigate('UserProfile', { id: user.id })}
+    onPress={disableLink ? undefined : () => navigation.navigate('UserProfile', { id: user.id })}
   >
     {user.username}
   </Text>

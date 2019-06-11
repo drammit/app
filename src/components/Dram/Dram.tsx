@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 
 interface DramProps extends NavigationInjectedProps {
   id: number;
+  compact?: boolean;
 }
 
 type CommentWithUser = DramCommentShape & { user: StoreUser };
@@ -55,6 +56,7 @@ type SlainteWithUser = DramSlainteShape & { user: StoreUser };
 
 const Dram = ({
   id,
+  compact,
   navigation,
 }: DramProps) => {
   const dispatch = useDispatch();
@@ -63,6 +65,7 @@ const Dram = ({
   const onSlainte = useCallback(() => dispatch(slainteDram(id, currentUser.id)), [id, currentUser]);
   const users = useSelector((state: StoreShape) => getUsers(state));
   const selectUser = useCallback((UserId: number) => users[UserId], [users]);
+  const isCompact = Boolean(compact);
 
   const whisky: StoreWhisky = useSelector(
     (state: StoreShape) => dram && !(dram instanceof Error)
@@ -121,19 +124,26 @@ const Dram = ({
     );
   }
 
+  const goToDetails = () => navigation.navigate('DramDetails', { id: dram.id });
   const dramSlaintes = slaintes.filter(s => s.user && !(s.user instanceof Error));
   const slainte = dramSlaintes.some(s => s.UserId === currentUser.id);
 
+  const goToDetailsProps = {
+    activeOpacity: 1,
+    button: isCompact,
+    onPress: isCompact ? goToDetails : undefined,
+  };
+
   const headerContent = (
     <Body>
-      <UsernameLink user={user} />
+      <UsernameLink disableLink={isCompact} user={user} />
       <Text style={styles.date}>{distanceInWordsToNow(dram.createdAt)} ago</Text>
     </Body>
   );
 
   return (
     <Card>
-      <CardItem>
+      <CardItem {...goToDetailsProps}>
         {user.avatar ? (
           <Left>
             {user.avatar ? <Avatar size={40} uri={user.avatar} /> : null}
@@ -142,12 +152,12 @@ const Dram = ({
         ) : headerContent}
       </CardItem>
       {dram.image ? (
-        <CardItem cardBody>
+        <CardItem cardBody {...goToDetailsProps}>
           <Image aspectRatio={16 / 9} uri={dram.image} />
         </CardItem>
       ) : null}
       {dram.message ? (
-        <CardItem>
+        <CardItem {...goToDetailsProps}>
           <Body>
             <Text style={{ marginTop: dram.image ? 8 : 0 }}>
               {dram.message}
@@ -155,10 +165,11 @@ const Dram = ({
           </Body>
         </CardItem>
       ) : null}
-      <CardItem bordered={dramSlaintes.length === 0}>
+      <CardItem bordered={dramSlaintes.length === 0} {...goToDetailsProps}>
         <Body>
           <Rating rating={dram.rating} />
           <WhiskyNameLink
+            disableLink={isCompact}
             size={18}
             style={{
               fontWeight: '500',
@@ -167,15 +178,21 @@ const Dram = ({
             }}
             whisky={whisky}
           />
-          <DistilleryNameLink distillery={distillery} />
+          <DistilleryNameLink disableLink={isCompact} distillery={distillery} />
         </Body>
       </CardItem>
       {dramSlaintes.length > 0 && (
-        <CardItem bordered>
+        <CardItem bordered {...goToDetailsProps}>
           <Body>
             <View style={styles.slainteList}>
               <IconSlainte style={{ marginRight: 6 }} height={16} />
-              {dramSlaintes.map(s => <UsernameLink key={s.UserId} user={(s.user as UserShape)} />)}
+              {dramSlaintes.map(s => (
+                <UsernameLink
+                  key={s.UserId}
+                  user={(s.user as UserShape)}
+                  disableLink={isCompact}
+                />
+              ))}
             </View>
           </Body>
         </CardItem>

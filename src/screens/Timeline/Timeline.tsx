@@ -35,7 +35,7 @@ class Timeline extends React.Component<TimelineProps> {
     headerTitle: (
       <Logo width={120} color={colors.light} />
     ),
-    title: 'Timeline',
+    title: 'Drams',
   };
 
   public static fetchTimeline(from?: number) {
@@ -86,7 +86,7 @@ class Timeline extends React.Component<TimelineProps> {
             />
           }
         >
-          {timeline.map(id => <Dram key={id} id={id} />)}
+          {timeline.map(id => <Dram compact key={id} id={id} />)}
           {isLoading && <Spinner color={colors.grey3} />}
         </Content>
       </SafeWithHeader>

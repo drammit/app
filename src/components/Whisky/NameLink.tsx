@@ -9,9 +9,16 @@ interface NameLinkProps extends NavigationInjectedProps {
   whisky: WhiskyShape;
   size?: number;
   style?: any;
+  disableLink?: boolean;
 }
 
-const NameLink = ({ style = {}, size = 16, whisky, navigation }: NameLinkProps) => {
+const NameLink = ({
+  style = {},
+  size = 16,
+  whisky,
+  navigation,
+  disableLink = false,
+}: NameLinkProps) => {
   const dispatch = useDispatch();
   const distillery: StoreDistillery = useSelector(
     (state: StoreShape) => getDistillery(whisky.DistilleryId)(state, dispatch),
@@ -26,7 +33,7 @@ const NameLink = ({ style = {}, size = 16, whisky, navigation }: NameLinkProps) 
         fontSize: size,
         ...style,
       }}
-      onPress={() => navigation.navigate('Whisky', { id: whisky.id })}
+      onPress={disableLink ? undefined : () => navigation.navigate('Whisky', { id: whisky.id })}
     >
       {name}
     </Text>

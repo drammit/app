@@ -1,12 +1,23 @@
 import React from 'react';
-import { View, Text } from 'native-base';
+import { NavigationInjectedProps } from 'react-navigation';
+import { Content } from 'native-base';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
+import Dram from '../../components/Dram/Dram';
 
-const DramDetails = () => (
-  <SafeWithHeader>
-    <Text>Dram details</Text>
-  </SafeWithHeader>
-);
+type DramDetailsProps = NavigationInjectedProps;
+
+const DramDetails = ({ navigation }: DramDetailsProps) => {
+  const DramId = navigation.getParam('id');
+  const focusComments = Boolean(navigation.getParam('comment'));
+
+  return (
+    <SafeWithHeader style={{ flex: 1 }}>
+      <Content padder>
+        <Dram compact={false} id={DramId} />
+      </Content>
+    </SafeWithHeader>
+  );
+};
 
 export default DramDetails;

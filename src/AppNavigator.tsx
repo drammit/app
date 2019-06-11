@@ -15,6 +15,7 @@ import SignUpContinued from './screens/Login/SignUpContinued';
 
 import Timeline from './screens/Timeline/Timeline';
 import DramDetails from './screens/Timeline/DramDetails';
+import PlaceholderDetails from './screens/Timeline/PlaceholderDetails';
 
 import Search from './screens/Search/Search';
 import Notifications from './screens/Notifications/Notifications';
@@ -23,7 +24,6 @@ import Profile from './screens/Profile/Profile';
 import ProfileSettings from './screens/Profile/Settings';
 
 import colors from './config/colors';
-import Dram from './components/Dram/Dram';
 
 const defaultStackNavigationOptions = {
   headerStyle: {
@@ -60,7 +60,7 @@ const TimelineStack = createStackNavigator(
   {
     Distillery: {
       path: 'distillery',
-      screen: DramDetails,
+      screen: PlaceholderDetails,
     },
     DramDetails: {
       path: 'dram',
@@ -76,7 +76,7 @@ const TimelineStack = createStackNavigator(
     },
     Whisky: {
       path: 'whisky',
-      screen: DramDetails,
+      screen: PlaceholderDetails,
     },
   },
   {
@@ -118,7 +118,7 @@ function iconByRoutename(routeName: string) {
 
 const MainStack = createBottomTabNavigator(
   {
-    Timeline: {
+    Drams: {
       path: 'timeline',
       screen: TimelineStack,
     },
@@ -127,6 +127,7 @@ const MainStack = createBottomTabNavigator(
       path: 'search',
       screen: Search,
     },
+    // tslint:disable-next-line:object-literal-sort-keys
     Notifications: {
       path: 'notifications',
       screen: Notifications,
@@ -155,7 +156,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Timeline',
+    initialRouteName: 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,
