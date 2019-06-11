@@ -1,22 +1,21 @@
 import React from 'react';
 import { Text } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 
 import { getDistillery } from '../../store/entities/distilleries';
-import { dispatch } from '../../store/store';
 
-interface NameLinkBaseProps {
+interface NameLinkProps extends NavigationInjectedProps {
   whisky: WhiskyShape;
   size?: number;
   style?: any;
 }
 
-interface NameLinkProps extends NameLinkBaseProps, NavigationInjectedProps {
-  distillery: StoreDistillery;
-}
-
-const NameLink = ({ style = {}, size = 16, whisky, distillery, navigation }: NameLinkProps) => {
+const NameLink = ({ style = {}, size = 16, whisky, navigation }: NameLinkProps) => {
+  const dispatch = useDispatch();
+  const distillery: StoreDistillery = useSelector(
+    (state: StoreShape) => getDistillery(whisky.DistilleryId)(state, dispatch),
+  );
   const name = !distillery
     ? ''
     : [distillery.name, whisky.name, whisky.bottlingSerie].join(' ');
@@ -34,12 +33,4 @@ const NameLink = ({ style = {}, size = 16, whisky, distillery, navigation }: Nam
   );
 };
 
-const mapStateToProps = (state: StoreShape, ownProps: NameLinkBaseProps) => {
-  const { whisky } = ownProps;
-
-  return {
-    distillery: getDistillery(whisky.DistilleryId)(state, dispatch),
-  };
-};
-
-export default connect(mapStateToProps)(withNavigation(NameLink));
+export default withNavigation(NameLink);
