@@ -16,6 +16,9 @@ import { getCurrentUser } from '../../store/selectors/user';
 interface CommentInput {
   id: number;
   autoFocus?: boolean;
+  onFocus?: () => any;
+  onSubmit?: () => any;
+  onKeyboardOpen?: () => any;
 }
 
 const CommentSchema = Yup.object().shape({
@@ -23,7 +26,13 @@ const CommentSchema = Yup.object().shape({
     .required('Comment cannot be empty'),
 });
 
-const CommentInput = ({ id, autoFocus = false }: CommentInput) => {
+const CommentInput = ({
+  id,
+  autoFocus = false,
+  onFocus,
+  onSubmit,
+  onKeyboardOpen,
+}: CommentInput) => {
   const dispatch = useDispatch();
   const currentUser: StoreCurrentUser = useSelector(getCurrentUser);
   const [keyboardOffset, setKeyboardOffset] = useState<number>(0);
@@ -33,6 +42,7 @@ const CommentInput = ({ id, autoFocus = false }: CommentInput) => {
       'keyboardDidShow',
       (e) => {
         setKeyboardOffset(e.endCoordinates.height - 34);
+        if (onKeyboardOpen) onKeyboardOpen();
       },
     );
 
@@ -53,11 +63,13 @@ const CommentInput = ({ id, autoFocus = false }: CommentInput) => {
     };
   });
 
-  const onSubmit = useCallback(
+  const onSubmitForm = useCallback(
     (values: { comment: string }, { resetForm }: FormikActions<any>) => {
       resetForm();
 
       dispatch(addComment(id, currentUser.id, values.comment));
+
+      if (onSubmit) onSubmit();
     },
     [],
   );
@@ -65,7 +77,7 @@ const CommentInput = ({ id, autoFocus = false }: CommentInput) => {
   return (
     <Formik
       initialValues={{ comment: '' }}
-      onSubmit={onSubmit}
+      onSubmit={onSubmitForm}
       validationSchema={CommentSchema}
     >
       {props => (
@@ -96,6 +108,7 @@ const CommentInput = ({ id, autoFocus = false }: CommentInput) => {
               onSubmitEditing={props.handleSubmit}
               onChangeText={props.handleChange('comment')}
               blurOnSubmit={false}
+              onFocus={onFocus}
             />
           </Item>
         </Form>
