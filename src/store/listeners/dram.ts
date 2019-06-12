@@ -1,4 +1,4 @@
-import { slainteDram } from '../../components/Dram/api';
+import { slainteDram, commentDram } from '../../components/Dram/api';
 
 const listeners: DispatchListener[] = [
   {
@@ -6,6 +6,12 @@ const listeners: DispatchListener[] = [
       slainteDram((action as DramSlainteAction).DramId);
     },
     type: ['DRAM_SLAINTE'],
+  },
+  {
+    listener: (dispatch, action: any) => {
+      commentDram(action.DramId, action.comment);
+    },
+    type: ['DRAM_COMMENT'],
   },
 ];
 
