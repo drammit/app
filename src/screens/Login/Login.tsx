@@ -93,8 +93,8 @@ class Login extends React.Component<LoginProps> {
                 placeholder="Password"
                 formikProps={props}
                 secureTextEntry
-                returnKeyType="send"
                 textContentType="password"
+                returnKeyType="send"
                 onSubmitEditing={props.isSubmitting ? () => undefined : props.handleSubmit}
               />
               <Button

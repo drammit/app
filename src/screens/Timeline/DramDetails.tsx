@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
-import { Content, View, Text } from 'native-base';
+import { Content } from 'native-base';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Dram from '../../components/Dram/Dram';
