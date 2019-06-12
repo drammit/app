@@ -56,7 +56,7 @@ const AuthStack = createStackNavigator(
   },
 );
 
-const TimelineStack = createStackNavigator(
+const DramsStack = createStackNavigator(
   {
     Distillery: {
       path: 'distillery',
@@ -87,6 +87,15 @@ const TimelineStack = createStackNavigator(
     },
   },
 );
+
+DramsStack.navigationOptions = ({ navigation }: any) => {
+  const currentRoutes = navigation.state.routes;
+  const hideTabOn = ['DramDetails'];
+
+  return {
+    tabBarVisible: hideTabOn.indexOf(currentRoutes[currentRoutes.length - 1].routeName) === -1,
+  };
+};
 
 const ProfileStack = createStackNavigator(
   {
@@ -123,7 +132,7 @@ const MainStack = createBottomTabNavigator(
   {
     Drams: {
       path: 'timeline',
-      screen: TimelineStack,
+      screen: DramsStack,
     },
     // tslint:disable-next-line:object-literal-sort-keys
     Search: {

@@ -13,19 +13,17 @@ const DramDetails = ({ navigation }: DramDetailsProps) => {
   const focusComments = navigation.getParam('comment', false);
 
   return (
-    <>
-      <SafeWithHeader style={{ flex: 1 }}>
-        <Content padder>
-          <Dram compact={false} id={DramId} />
-        </Content>
-      </SafeWithHeader>
+    <SafeWithHeader style={{ flex: 1 }}>
+      <Content padder>
+        <Dram compact={false} id={DramId} />
+      </Content>
       <CommentInput autoFocus={focusComments} />
-    </>
+    </SafeWithHeader>
   );
 };
 
 DramDetails.navigationOptions = {
-  title: 'Dram Details',
+  title: 'Dram',
 };
 
 export default DramDetails;
