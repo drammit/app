@@ -4,9 +4,9 @@ import { get } from '../../core/fetch';
 export const [drams, getDrams, getDram] = createLoader<StoreDrams, StoreDram>({
   defaultValue: {},
   fetchTypes: ['FETCH_TIMELINE_SUCCESS'],
-  reducer: (state, action) => {
+  reducer: (state = {}, action) => {
     if (action.type === 'DRAM_SLAINTE') {
-      const slaintes = state[action.DramId].slaintes;
+      const slaintes = state[action.DramId] ? state[action.DramId].slaintes : [];
       const slainteIndex = slaintes.findIndex((s: DramSlainteShape) => s.UserId === action.UserId);
 
       if (slainteIndex === -1) {

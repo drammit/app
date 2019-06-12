@@ -83,18 +83,6 @@ const Dram = ({
       ? getDistillery(whisky.DistilleryId)(state, dispatch)
       : undefined,
   );
-  const slaintes: SlainteWithUser[] = dram && !(dram instanceof Error)
-    ? dram.slaintes.map((s: DramSlainteShape) => ({
-      ...s,
-      user: selectUser(s.UserId),
-    }))
-    : [];
-  const comments: CommentWithUser[] = dram && !(dram instanceof Error)
-    ? dram.comments.map((c: DramCommentShape) => ({
-      ...c,
-      user: selectUser(c.UserId),
-    }))
-    : [];
 
   if (!dram || !user || !whisky || !distillery) {
     // @todo: Placeholders
@@ -124,6 +112,15 @@ const Dram = ({
       </Card>
     );
   }
+
+  const slaintes: SlainteWithUser[] = dram.slaintes.map((s: DramSlainteShape) => ({
+    ...s,
+    user: selectUser(s.UserId),
+  }));
+  const comments: CommentWithUser[] = dram.comments.map((c: DramCommentShape) => ({
+    ...c,
+    user: selectUser(c.UserId),
+  }));
 
   const goToDetails = () => navigation.navigate('DramDetails', { id: dram.id });
   const dramSlaintes = slaintes.filter(s => s.user && !(s.user instanceof Error));
@@ -226,7 +223,7 @@ const Dram = ({
         </Button>
       </CardItem>
       {dramComments.length > 0 ? (
-        <CardItem {...goToDetailsProps}>
+        <CardItem {...goToDetailsProps} bordered={!isCompact}>
           <Body>
             {dramComments
               .filter((c, index) => (isCompact && index < 2) || !isCompact)

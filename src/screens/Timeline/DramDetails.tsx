@@ -9,7 +9,7 @@ type DramDetailsProps = NavigationInjectedProps;
 
 const DramDetails = ({ navigation }: DramDetailsProps) => {
   const DramId = navigation.getParam('id');
-  const focusComments = Boolean(navigation.getParam('comment'));
+  const focusComments = navigation.getParam('comment', false);
 
   return (
     <SafeWithHeader style={{ flex: 1 }}>

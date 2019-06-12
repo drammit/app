@@ -81,7 +81,10 @@ const TimelineStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Timeline',
+    initialRouteName: 'DramDetails', // 'Timeline',
+    initialRouteParams: {
+      id: 9382,
+    },
   },
 );
 

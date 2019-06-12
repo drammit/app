@@ -16,13 +16,14 @@ function createLoader<T, E>({
   reducer,
 }: {
   table: string;
-  pk?: string;
   defaultValue: T;
+  pk?: string;
   fetchTypes?: string[];
   resolver: (id: string | number) => Promise<any>;
   reducer?: Reducer;
+  many?: boolean;
 }): [
-  (state: T | undefined, action: DrammitAction) => T,
+  (state: T, action: DrammitAction) => T,
   (state: StoreShape) => T,
   (key: number | string) => (state: StoreShape, dispatch: Dispatch) => E
 ] {
@@ -31,19 +32,29 @@ function createLoader<T, E>({
 
   // create reducer
   const combinedReducer = (state: T = defaultValue, action: DrammitAction): T => {
-    // Check for types to handle payload merging
+    // Handle failed fetches
+    if (action.type === 'LOADER_FETCH_FAILED') {
+      return action.table === table ? {
+        ...state,
+        [action.key]: action.error,
+      } : state;
+    }
+
+    // Merge API results with state
     const handleAction = (action as any);
 
     if (
-      fetchTypes.indexOf(handleAction.type) > -1
+      [...fetchTypes, 'LOADER_FETCH_SUCCESS'].indexOf(handleAction.type) > -1
       && handleAction.payload
       && handleAction.payload[table]
+      && handleAction.payload[table].length > 0
     ) {
       return {
         ...state,
         ...handleAction.payload[table].reduce(
-          (acc: {}, item: any) => ({
+          (acc: T, item: E) => ({
             ...acc,
+            // @ts-ignore
             [item[pk]]: item,
           }),
           {},
@@ -51,20 +62,8 @@ function createLoader<T, E>({
       };
     }
 
-    switch (action.type) {
-      case 'LOADER_FETCH_FAILED':
-        return action.table === table ? {
-          ...state,
-          [action.key]: action.error,
-        } : state;
-      case 'LOADER_FETCH_SUCCESS':
-        return action.table === table ? {
-          ...state,
-          [action.key]: action.payload,
-        } : state;
-      default:
-        return reducer ? reducer(state, action) : state;
-    }
+    // apply reducer if any, or return current state;
+    return reducer ? reducer(state, action) : state;
   };
 
   // create selector
