@@ -3,13 +3,18 @@ import { Item, Input, Form, View } from 'native-base';
 import { Keyboard } from 'react-native';
 import { Formik, FormikActions } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
 
 import IconComment from './IconComment';
 
 import colors from '../../config/colors';
 import ErrorMessage from '../Form/ErrorMessage';
 
+import { addComment } from '../../store/actions/dram';
+import { getCurrentUser } from '../../store/selectors/user';
+
 interface CommentInput {
+  id: number;
   autoFocus?: boolean;
 }
 
@@ -18,7 +23,9 @@ const CommentSchema = Yup.object().shape({
     .required('Comment cannot be empty'),
 });
 
-const CommentInput = ({ autoFocus = false }: CommentInput) => {
+const CommentInput = ({ id, autoFocus = false }: CommentInput) => {
+  const dispatch = useDispatch();
+  const currentUser: StoreCurrentUser = useSelector(getCurrentUser);
   const [keyboardOffset, setKeyboardOffset] = useState<number>(0);
 
   useEffect(() => {
@@ -49,6 +56,8 @@ const CommentInput = ({ autoFocus = false }: CommentInput) => {
   const onSubmit = useCallback(
     (values: { comment: string }, { resetForm }: FormikActions<any>) => {
       resetForm();
+
+      dispatch(addComment(id, currentUser.id, values.comment));
     },
     [],
   );

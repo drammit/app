@@ -81,8 +81,15 @@ declare interface DramSlainteAction {
   UserId: number;
 }
 
+declare interface DramCommentAction {
+  type: 'DRAM_COMMENT';
+  DramId: number;
+  UserId: number;
+  comment: string;
+}
+
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
   | FetchUserTimelineSuccessAction | FetchTimelineAction | FetchTimelineRefreshAction
-  | DramSlainteAction;
+  | DramSlainteAction | DramCommentAction;

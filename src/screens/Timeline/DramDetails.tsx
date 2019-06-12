@@ -17,7 +17,10 @@ const DramDetails = ({ navigation }: DramDetailsProps) => {
       <Content padder>
         <Dram compact={false} id={DramId} />
       </Content>
-      <CommentInput autoFocus={focusComments} />
+      <CommentInput
+        id={DramId}
+        autoFocus={focusComments}
+      />
     </SafeWithHeader>
   );
 };
