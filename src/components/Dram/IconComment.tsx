@@ -21,6 +21,6 @@ const IconComment = ({ active = false, height = 22 }: CommentProps) => {
       />
     </Svg.Svg>
   );
-}
+};
 
 export default IconComment;
