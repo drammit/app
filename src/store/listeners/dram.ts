@@ -1,4 +1,4 @@
-import { slainteDram, commentDram } from '../../components/Dram/api';
+import { slainteDram, commentDram } from '../api/drams';
 import { replaceComment } from '../actions/dram';
 
 const listeners: DispatchListener[] = [

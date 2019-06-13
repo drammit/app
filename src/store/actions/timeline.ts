@@ -19,3 +19,7 @@ export const receiveRefreshedTimeline = (
   payload,
   type: 'FETCH_TIMELINE_REFRESH_SUCCESS',
 });
+
+export const refetchTimeline = (): FetchTimelineRedoAction => ({
+  type: 'FETCH_TIMELINE_REDO',
+});

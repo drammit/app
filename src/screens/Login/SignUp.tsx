@@ -9,7 +9,7 @@ import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import TextInput from '../../components/Form/TextInput';
 import ErrorMessage from '../../components/Form/ErrorMessage';
 
-import { emailExists } from './api';
+import { emailExists } from '../../store/api/login';
 
 const styles = StyleSheet.create({
   intro: {

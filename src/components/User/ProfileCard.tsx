@@ -7,6 +7,7 @@ import { getCurrentUser } from '../../store/selectors/user';
 import { followProfile, unfollowProfile } from '../../store/actions/profile';
 
 import Avatar from './Avatar';
+import UsernameLink from './UsernameLink';
 
 interface ProfileCardProps {
   id: number;
@@ -50,7 +51,7 @@ const ProfileCard = ({ id, style = {} }: ProfileCardProps) => {
         <Left>
           <Avatar size={80} uri={profile.avatar} />
           <Body style={{ marginLeft: 16 }}>
-            <Text>{profile.name}</Text>
+            <UsernameLink fullName user={profile} />
             <Text note>{profile.username}</Text>
             <Button
               style={{ marginTop: 6 }}

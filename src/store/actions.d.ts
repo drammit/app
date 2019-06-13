@@ -59,6 +59,10 @@ declare interface FetchTimelineAction {
   from?: number;
 }
 
+declare interface FetchTimelineRedoAction {
+  type: 'FETCH_TIMELINE_REDO';
+}
+
 declare interface FetchTimelineRefreshAction {
   type: 'FETCH_TIMELINE_REFRESH';
   until?: number;
@@ -116,4 +120,5 @@ declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserIn
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
   | FetchUserTimelineSuccessAction | FetchTimelineAction | FetchTimelineRefreshAction
   | DramSlainteAction | DramCommentAction | DramCommentReplaceAction
-  | FetchTimelineRefreshSuccessAction | ProfileFollowAction | ProfileUnfollowAction;
+  | FetchTimelineRefreshSuccessAction | ProfileFollowAction | ProfileUnfollowAction
+  | FetchTimelineRedoAction;

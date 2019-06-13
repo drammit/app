@@ -5,6 +5,7 @@ const items = (
   action: DrammitAction,
 ): StoreTimeline['items'] => {
   switch (action.type) {
+    case 'FETCH_TIMELINE_REDO':
     case 'LOGOUT':
       return [];
     case 'FETCH_USER_TIMELINE_SUCCESS':
@@ -21,7 +22,7 @@ const items = (
   }
 };
 
-const loading = (state: boolean = false, action: DrammitAction): boolean => {
+const loading = (state: boolean = true, action: DrammitAction): boolean => {
   switch (action.type) {
     case 'FETCH_TIMELINE':
       return true;

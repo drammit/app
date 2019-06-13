@@ -2,7 +2,7 @@ import { setJWT } from '../../core/jwt';
 import { navigate } from '../../core/navigation';
 import { info } from '../../core/log';
 
-import { refreshToken } from '../../screens/Login/api';
+import { refreshToken } from '../api/login';
 
 import { logout } from '../actions/auth';
 

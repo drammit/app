@@ -16,6 +16,7 @@ import SignUpContinued from './screens/Login/SignUpContinued';
 import Timeline from './screens/Timeline/Timeline';
 import DramDetails from './screens/Timeline/DramDetails';
 import PlaceholderDetails from './screens/Timeline/PlaceholderDetails';
+import WelcomeTour from './screens/Timeline/Welcome';
 
 import Search from './screens/Search/Search';
 import Notifications from './screens/Notifications/Notifications';
@@ -73,6 +74,10 @@ const DramsStack = createStackNavigator(
     UserProfile: {
       path: 'user-profile',
       screen: Profile,
+    },
+    WelcomeTour: {
+      path: 'welcome-tour',
+      screen: WelcomeTour,
     },
     Whisky: {
       path: 'whisky',

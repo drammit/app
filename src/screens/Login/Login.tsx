@@ -12,7 +12,7 @@ import ErrorMessage from '../../components/Form/ErrorMessage';
 import { dispatch } from '../../store/store';
 import { login } from '../../store/actions/auth';
 
-import { authenticate } from './api';
+import { authenticate } from '../../store/api/login';
 
 const styles = StyleSheet.create({
   forgotButton: {

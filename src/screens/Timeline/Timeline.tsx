@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, RefreshControl, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-import { Content, Spinner } from 'native-base';
+import { Button, Content, Spinner, Text } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -15,7 +15,6 @@ import {
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Dram from '../../components/Dram/Dram';
 import Logo from '../../components/Logo/Logo';
-import Welcome from '../../components/Welcome/Welcome';
 
 import colors from '../../config/colors';
 
@@ -71,12 +70,29 @@ class Timeline extends React.Component<TimelineProps> {
   }
 
   public render() {
-    const { isRefreshing, isLoading, timeline } = this.props;
+    const { isRefreshing, isLoading, timeline, navigation } = this.props;
 
-    if (timeline.length === 0) {
+    if (!isLoading && timeline.length === 0) {
+      navigation.navigate('WelcomeTour');
+
       return (
         <SafeWithHeader style={{ flex: 1 }}>
-          <Welcome />
+          <Content key="intro" scrollEnabled={false} padder style={{ padding: 24 }}>
+            <Text>
+              You have not added a dram review yet, or are not following anyone who has.{'\n'}
+              {'\n'}
+              Add your first review or start following people with reviews.
+            </Text>
+            <Button
+              style={{ marginTop: 24 }}
+              block
+              onPress={() => navigation.navigate('WelcomeTour')}
+            >
+              <Text>
+                Read introduction
+              </Text>
+            </Button>
+          </Content>
         </SafeWithHeader>
       );
     }
@@ -84,6 +100,8 @@ class Timeline extends React.Component<TimelineProps> {
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <Content
+          key="drams"
+          scrollEnabled
           onScroll={this.onScroll}
           contentContainerStyle={styles.mainContainer}
           padder

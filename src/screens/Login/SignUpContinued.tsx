@@ -10,7 +10,7 @@ import ErrorMessage from '../../components/Form/ErrorMessage';
 import ImagePicker from '../../components/Form/ImagePicker';
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 
-import { userExists, registerUser } from './api';
+import { userExists, registerUser } from '../../store/api/login';
 
 import { fileFromURI } from '../../core/files';
 
