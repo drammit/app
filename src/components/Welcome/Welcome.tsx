@@ -4,8 +4,8 @@ import { View, Body, Text, H1, Content } from 'native-base';
 import ProfileCard from '../User/ProfileCard';
 
 const Welcome = () => (
-  <Content padder scrollEnabled={false}>
-    <View style={{ marginTop: 12, marginBottom: 24 }}>
+  <Content padder scrollEnabled={false} style={{ padding: 12 }}>
+    <View style={{ marginTop: 24, marginBottom: 34 }}>
       <H1 style={{ marginBottom: 6 }}>
         Hey there!
       </H1>
@@ -21,7 +21,7 @@ const Welcome = () => (
       </Text>
     </Body>
     <ProfileCard
-      style={{ marginTop: 24 }}
+      style={{ marginTop: 34 }}
       id={19}
     />
   </Content>
