@@ -81,10 +81,7 @@ const DramsStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'DramDetails', // 'Timeline',
-    initialRouteParams: {
-      id: 9382,
-    },
+    initialRouteName: 'Timeline',
   },
 );
 

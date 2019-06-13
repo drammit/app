@@ -123,6 +123,10 @@ const Dram = ({
   }));
 
   const goToDetails = () => navigation.navigate('DramDetails', { id: dram.id });
+  const goToDetailsComment = () => navigation.navigate(
+    'DramDetails',
+    { id: dram.id, comment: true },
+  );
   const dramSlaintes = slaintes.filter(s => s.user && !(s.user instanceof Error));
   const dramComments = comments
     .filter(c => c.user && !(c.user instanceof Error));
@@ -223,7 +227,7 @@ const Dram = ({
         </Button>
       </CardItem>
       {dramComments.length > 0 ? (
-        <CardItem {...goToDetailsProps} bordered={!isCompact}>
+        <CardItem {...goToDetailsProps} bordered={!isCompact} onPress={goToDetailsComment}>
           <Body>
             {dramComments
               .filter((c, index) => (isCompact && index < 2) || !isCompact)

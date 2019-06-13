@@ -51,6 +51,6 @@ const Avatar = ({ uri, size = 90, style }: AvatarProps) => {
       }}
     />
   );
-}
+};
 
 export default Avatar;
