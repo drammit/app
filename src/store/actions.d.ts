@@ -101,9 +101,19 @@ declare interface DramCommentReplaceAction {
   comment: DramCommentShape;
 }
 
+declare interface ProfileFollowAction {
+  type: 'PROFILE_FOLLOW';
+  UserId: number;
+}
+
+declare interface ProfileUnfollowAction {
+  type: 'PROFILE_UNFOLLOW';
+  UserId: number;
+}
+
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
   | FetchUserTimelineSuccessAction | FetchTimelineAction | FetchTimelineRefreshAction
   | DramSlainteAction | DramCommentAction | DramCommentReplaceAction
-  | FetchTimelineRefreshSuccessAction;
+  | FetchTimelineRefreshSuccessAction | ProfileFollowAction | ProfileUnfollowAction;

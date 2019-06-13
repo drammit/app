@@ -3,6 +3,8 @@ import { Image, PixelRatio } from 'react-native';
 
 import { envVar } from '../../core/env';
 
+import colors from '../../config/colors';
+
 const STATIC_ROOT = envVar('STATIC_ROOT');
 
 function createExtension(size: number): string {
@@ -45,6 +47,7 @@ const Avatar = ({ uri, size = 90, style }: AvatarProps) => {
       resizeMode="cover"
       style={{
         ...style,
+        backgroundColor: colors.grey5,
         borderRadius: size / 2,
         height: size,
         width: size,

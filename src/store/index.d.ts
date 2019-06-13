@@ -98,6 +98,7 @@ declare interface ProfileShape extends UserShape {
   createdAt: Date;
   followers: number;
   following: number;
+  isFollowing: boolean;
   drams: number;
 }
 

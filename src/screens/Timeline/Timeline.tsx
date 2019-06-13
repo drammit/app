@@ -15,6 +15,7 @@ import {
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Dram from '../../components/Dram/Dram';
 import Logo from '../../components/Logo/Logo';
+import Welcome from '../../components/Welcome/Welcome';
 
 import colors from '../../config/colors';
 
@@ -71,6 +72,14 @@ class Timeline extends React.Component<TimelineProps> {
 
   public render() {
     const { isRefreshing, isLoading, timeline } = this.props;
+
+    if (timeline.length === 0) {
+      return (
+        <SafeWithHeader style={{ flex: 1 }}>
+          <Welcome />
+        </SafeWithHeader>
+      );
+    }
 
     return (
       <SafeWithHeader style={{ flex: 1 }}>
