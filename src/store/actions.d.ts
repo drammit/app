@@ -86,10 +86,18 @@ declare interface DramCommentAction {
   DramId: number;
   UserId: number;
   comment: string;
+  id: number;
+}
+
+declare interface DramCommentReplaceAction {
+  type: 'DRAM_COMMENT_REPLACE';
+  DramId: number;
+  id: number;
+  comment: DramCommentShape;
 }
 
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
   | FetchUserTimelineSuccessAction | FetchTimelineAction | FetchTimelineRefreshAction
-  | DramSlainteAction | DramCommentAction;
+  | DramSlainteAction | DramCommentAction | DramCommentReplaceAction;

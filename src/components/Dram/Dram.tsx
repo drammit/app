@@ -230,7 +230,7 @@ const Dram = ({
               .map(c => (
                 <Comment
                   disableLink={isCompact}
-                  key={c.createdAt.toString()}
+                  key={c.id}
                   comment={c.comment}
                   user={c.user}
                   createdAt={c.createdAt}

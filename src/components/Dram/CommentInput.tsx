@@ -34,7 +34,7 @@ const CommentInput = ({
   onKeyboardOpen,
 }: CommentInput) => {
   const dispatch = useDispatch();
-  const currentUser: StoreCurrentUser = useSelector(getCurrentUser);
+  const currentUser = useSelector(getCurrentUser);
   const [keyboardOffset, setKeyboardOffset] = useState<number>(0);
 
   useEffect(() => {

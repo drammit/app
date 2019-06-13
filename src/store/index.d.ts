@@ -19,6 +19,7 @@ declare interface DramSlainteShape {
 }
 
 declare interface DramCommentShape {
+  id: number;
   UserId: number;
   comment: string;
   createdAt: Date;

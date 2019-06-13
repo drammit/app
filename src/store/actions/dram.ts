@@ -8,5 +8,17 @@ export const addComment = (DramId: number, UserId: number, comment: string): Dra
   DramId,
   UserId,
   comment,
+  id: +new Date(),
   type: 'DRAM_COMMENT',
+});
+
+export const replaceComment = (
+  DramId: number,
+  id: number,
+  comment: DramCommentShape,
+): DramCommentReplaceAction => ({
+  DramId,
+  comment,
+  id,
+  type: 'DRAM_COMMENT_REPLACE',
 });

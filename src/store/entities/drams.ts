@@ -29,7 +29,7 @@ export const [drams, getDrams, getDram] = createLoader<StoreDrams, StoreDram>({
           },
         };
       }
-      case 'DRAM_COMMENT': {
+      case 'DRAM_COMMENT':
         return {
           ...state,
           [action.DramId]: {
@@ -40,11 +40,23 @@ export const [drams, getDrams, getDram] = createLoader<StoreDrams, StoreDram>({
                 UserId: action.UserId,
                 comment: action.comment,
                 createdAt: new Date(),
+                id: action.id,
               },
             ],
           },
         };
-      }
+      case 'DRAM_COMMENT_REPLACE':
+        return {
+          ...state,
+          [action.DramId]: {
+            ...state[action.DramId],
+            comments: [
+              ...state[action.DramId]
+                .comments
+                .map((c: DramCommentShape) => c.id === action.id ? action.comment : c),
+            ],
+          },
+        };
       default:
         return state;
     }
