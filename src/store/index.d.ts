@@ -112,12 +112,14 @@ declare interface StoreLoading {
   [table: string]: (string|number)[];
 }
 
-declare interface StoreTimeline {
+declare interface TimelineShape {
   loading: boolean;
   refreshing: boolean;
   end: boolean;
   items: DramShape['id'][];
 }
+
+declare type StoreTimeline = TimelineShape | undefined | Error;
 
 declare interface StoreTimelines {
   [key: number]: StoreTimeline;
@@ -131,6 +133,6 @@ declare interface StoreShape {
   whiskies: StoreWhiskies;
   user: StoreCurrentUser;
   loading: StoreLoading;
-  timeline: StoreTimeline;
+  timeline: TimelineShape;
   timelines: StoreTimelines;
 }

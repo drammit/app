@@ -1,14 +1,13 @@
 import { combineReducers } from 'redux';
 
 const items = (
-  state: StoreTimeline['items'] = [],
+  state: TimelineShape['items'] = [],
   action: DrammitAction,
-): StoreTimeline['items'] => {
+): TimelineShape['items'] => {
   switch (action.type) {
     case 'FETCH_TIMELINE_REDO':
     case 'LOGOUT':
       return [];
-    case 'FETCH_USER_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_REFRESH_SUCCESS':
       return [
@@ -26,7 +25,6 @@ const loading = (state: boolean = true, action: DrammitAction): boolean => {
   switch (action.type) {
     case 'FETCH_TIMELINE':
       return true;
-    case 'FETCH_USER_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_REFRESH_SUCCESS':
     case 'LOGOUT':
@@ -49,7 +47,6 @@ const refreshing = (state: boolean = false, action: DrammitAction): boolean => {
   switch (action.type) {
     case 'FETCH_TIMELINE_REFRESH':
       return true;
-    case 'FETCH_USER_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_REFRESH_SUCCESS':
     case 'LOGOUT':
