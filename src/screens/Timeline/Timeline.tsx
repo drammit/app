@@ -73,7 +73,8 @@ class Timeline extends React.Component<TimelineProps> {
     const { isRefreshing, isLoading, timeline, navigation } = this.props;
 
     if (!isLoading && timeline.length === 0) {
-      navigation.navigate('WelcomeTour');
+      // redirect to WelcomeTour is focused
+      if (navigation.isFocused()) navigation.navigate('WelcomeTour');
 
       return (
         <SafeWithHeader style={{ flex: 1 }}>

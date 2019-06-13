@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react';
-import { Body, Text, Card, CardItem, Left, Button, Icon } from 'native-base';
+import React from 'react';
+import { Body, Text, Card, CardItem, Left } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getProfile } from '../../store/entities/profiles';
 import { getCurrentUser } from '../../store/selectors/user';
-import { followProfile, unfollowProfile } from '../../store/actions/profile';
 
 import Avatar from './Avatar';
 import UsernameLink from './UsernameLink';
+import FollowButton from './FollowButton';
 
 interface ProfileCardProps {
   id: number;
@@ -18,20 +18,6 @@ const ProfileCard = ({ id, style = {} }: ProfileCardProps) => {
   const dispatch = useDispatch();
   const profile = useSelector((state: StoreShape) => getProfile(id)(state, dispatch));
   const currentUser = useSelector(getCurrentUser);
-  const onFollow = useCallback(
-    () => {
-      if (!profile || profile instanceof Error) return;
-      dispatch(followProfile(profile.id));
-    },
-    [profile, dispatch],
-  );
-  const onUnfollow = useCallback(
-    () => {
-      if (!profile || profile instanceof Error) return;
-      dispatch(unfollowProfile(profile.id));
-    },
-    [profile, dispatch],
-  );
 
   if (!profile || profile instanceof Error || currentUser.id === 19) {
     return (
@@ -53,16 +39,7 @@ const ProfileCard = ({ id, style = {} }: ProfileCardProps) => {
           <Body style={{ marginLeft: 16 }}>
             <UsernameLink fullName user={profile} />
             <Text note>{profile.username}</Text>
-            <Button
-              style={{ marginTop: 6 }}
-              small
-              bordered={!profile.isFollowing}
-              iconRight={profile.isFollowing}
-              onPress={profile.isFollowing ? onUnfollow : onFollow}
-            >
-              <Text>{profile.isFollowing ? 'Following' : 'Follow'}</Text>
-              {profile.isFollowing ? <Icon name="checkmark" /> : null}
-            </Button>
+            <FollowButton style={{ marginTop: 6 }} profile={profile} />
           </Body>
         </Left>
       </CardItem>

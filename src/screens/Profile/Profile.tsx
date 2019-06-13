@@ -8,6 +8,7 @@ import { distanceInWordsToNow } from 'date-fns';
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Message from '../../components/Message/Message';
 import Avatar from '../../components/User/Avatar';
+import FollowButton from '../../components/User/FollowButton';
 
 import { getCurrentUser } from '../../store/selectors/user';
 import { getProfile } from '../../store/entities/profiles';
@@ -113,7 +114,7 @@ class Profile extends React.Component<ProfileProps> {
       )
       : (
         <View style={styles.actions}>
-          <Text>No me!</Text>
+          <FollowButton profile={profile} />
         </View>
       );
 
