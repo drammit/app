@@ -12,3 +12,10 @@ export const receiveTimeline = (payload: TimelinePayload): FetchTimelineSuccessA
   payload,
   type: 'FETCH_TIMELINE_SUCCESS',
 });
+
+export const receiveRefreshedTimeline = (
+  payload: TimelinePayload,
+): FetchTimelineRefreshSuccessAction => ({
+  payload,
+  type: 'FETCH_TIMELINE_REFRESH_SUCCESS',
+});

@@ -23,7 +23,7 @@ function createLoader<T, E>({
   reducer?: Reducer;
   many?: boolean;
 }): [
-  (state: T, action: DrammitAction) => T,
+  (state: T | undefined, action: DrammitAction) => T,
   (state: StoreShape) => T,
   (key: number | string) => (state: StoreShape, dispatch: Dispatch) => E
 ] {
@@ -31,7 +31,7 @@ function createLoader<T, E>({
   registerResolver(table, resolver);
 
   // create reducer
-  const combinedReducer = (state: T = defaultValue, action: DrammitAction): T => {
+  const combinedReducer = (state: T | undefined = defaultValue, action: DrammitAction): T => {
     // Handle failed fetches
     if (action.type === 'LOADER_FETCH_FAILED') {
       return action.table === table ? {

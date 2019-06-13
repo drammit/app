@@ -114,6 +114,7 @@ declare interface StoreLoading {
 declare interface StoreTimeline {
   loading: boolean;
   refreshing: boolean;
+  end: boolean;
   items: DramShape['id'][];
 }
 

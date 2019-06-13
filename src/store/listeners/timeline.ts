@@ -1,6 +1,6 @@
 import { getDrams } from '../../components/Dram/api';
 
-import { receiveTimeline } from '../actions/timeline';
+import { receiveTimeline, receiveRefreshedTimeline } from '../actions/timeline';
 
 const listeners: DispatchListener[] = [
   {
@@ -13,7 +13,7 @@ const listeners: DispatchListener[] = [
   {
     listener: (dispatch, action: FetchTimelineRefreshAction) => {
       getDrams({ until: action.until })
-        .then((result: TimelinePayload) => dispatch(receiveTimeline(result)));
+        .then((result: TimelinePayload) => dispatch(receiveRefreshedTimeline(result)));
     },
     type: ['FETCH_TIMELINE_REFRESH'],
   },

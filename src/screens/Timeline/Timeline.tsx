@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { dispatch } from '../../store/store';
 import { fetchTimeline, refreshTimeline } from '../../store/actions/timeline';
 import {
-  getTimelineItems,
+  getTimelineItems, isTimelineEnd,
   isTimelineLoading,
   isTimelineRefreshing,
 } from '../../store/selectors/timeline';
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 });
 
 interface TimelineProps extends NavigationInjectedProps {
+  isEnd: boolean;
   isLoading: boolean;
   isRefreshing: boolean;
   timeline: StoreTimeline['items'];
@@ -55,9 +56,9 @@ class Timeline extends React.Component<TimelineProps> {
   }
 
   public onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { isLoading, timeline } = this.props;
+    const { isLoading, isEnd, timeline } = this.props;
 
-    if (!isLoading) {
+    if (!isLoading && timeline.length > 0 && !isEnd) {
       const { layoutMeasurement, contentSize, contentOffset } = e.nativeEvent;
 
       const bottom = layoutMeasurement.height + contentOffset.y;
@@ -87,7 +88,7 @@ class Timeline extends React.Component<TimelineProps> {
           }
         >
           {timeline.map(id => <Dram compact key={id} id={id} />)}
-          {isLoading && <Spinner color={colors.grey3} />}
+          {!isRefreshing && isLoading ? <Spinner color={colors.grey3} /> : null}
         </Content>
       </SafeWithHeader>
     );
@@ -95,6 +96,7 @@ class Timeline extends React.Component<TimelineProps> {
 }
 
 const mapStateToProps = (state: StoreShape) => ({
+  isEnd: isTimelineEnd(state),
   isLoading: isTimelineLoading(state),
   isRefreshing: isTimelineRefreshing(state),
   timeline: getTimelineItems(state),

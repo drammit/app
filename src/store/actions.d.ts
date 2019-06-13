@@ -69,6 +69,11 @@ declare interface FetchTimelineSuccessAction {
   payload: TimelinePayload;
 }
 
+declare interface FetchTimelineRefreshSuccessAction {
+  type: 'FETCH_TIMELINE_REFRESH_SUCCESS';
+  payload: TimelinePayload;
+}
+
 declare interface FetchUserTimelineSuccessAction {
   type: 'FETCH_USER_TIMELINE_SUCCESS';
   UserId: number;
@@ -100,4 +105,5 @@ declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserIn
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
   | FetchUserTimelineSuccessAction | FetchTimelineAction | FetchTimelineRefreshAction
-  | DramSlainteAction | DramCommentAction | DramCommentReplaceAction;
+  | DramSlainteAction | DramCommentAction | DramCommentReplaceAction
+  | FetchTimelineRefreshSuccessAction;

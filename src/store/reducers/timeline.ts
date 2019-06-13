@@ -9,6 +9,7 @@ const items = (
       return [];
     case 'FETCH_USER_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_SUCCESS':
+    case 'FETCH_TIMELINE_REFRESH_SUCCESS':
       return [
         ...state,
         ...action.payload.drams
@@ -26,8 +27,18 @@ const loading = (state: boolean = false, action: DrammitAction): boolean => {
       return true;
     case 'FETCH_USER_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_SUCCESS':
+    case 'FETCH_TIMELINE_REFRESH_SUCCESS':
     case 'LOGOUT':
       return false;
+    default:
+      return state;
+  }
+};
+
+const end = (state: boolean = false, action: DrammitAction): boolean => {
+  switch (action.type) {
+    case 'FETCH_TIMELINE_SUCCESS':
+      return action.payload.drams.length === 0;
     default:
       return state;
   }
@@ -39,6 +50,7 @@ const refreshing = (state: boolean = false, action: DrammitAction): boolean => {
       return true;
     case 'FETCH_USER_TIMELINE_SUCCESS':
     case 'FETCH_TIMELINE_SUCCESS':
+    case 'FETCH_TIMELINE_REFRESH_SUCCESS':
     case 'LOGOUT':
       return false;
     default:
@@ -47,6 +59,7 @@ const refreshing = (state: boolean = false, action: DrammitAction): boolean => {
 };
 
 export default combineReducers({
+  end,
   items,
   loading,
   refreshing,
