@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Button, Content, H3, Icon } from 'native-base';
+import { Text, Button, Content, H3 } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
@@ -16,8 +16,8 @@ import { getProfile } from '../../store/entities/profiles';
 import { logout } from '../../store/actions/auth';
 
 import colors from '../../config/colors';
-import { dispatch } from '../../store/store';
 import { fetchTimeline, refreshTimeline } from '../../store/actions/timeline';
+import { getUserTimeline } from '../../store/selectors/timeline';
 
 const styles = StyleSheet.create({
   actions: {
@@ -61,20 +61,21 @@ const Profile = ({ navigation }: ProfileProps) => {
 
   const profile = useSelector((state: StoreShape) => getProfile(UserId)(state, dispatch));
 
-  const timeline: TimelineShape = {
-    end: false,
-    items: [],
-    loading: true,
-    refreshing: false,
-  };
+  const timeline: TimelineShape = useSelector((state: StoreShape) => getUserTimeline(UserId)(state))
+    || {
+      end: false,
+      items: [],
+      loading: true,
+      refreshing: false,
+    };
 
   const onRefresh = (until: number) => {
     dispatch(refreshTimeline({ until, UserId }));
-  }
+  };
 
   const onFetch = (from?: number) => {
     dispatch(fetchTimeline({ from, UserId }));
-  }
+  };
 
   if (!profile) {
     // @todo: Placeholders
@@ -126,45 +127,46 @@ const Profile = ({ navigation }: ProfileProps) => {
 
   return (
     <SafeWithHeader style={{ flex: 1 }}>
-      <Content padder>
-        <View style={styles.topbar}>
-          <Avatar uri={profile.avatar} />
+      <Timeline
+        timeline={timeline}
+        header={(
+          <>
+            <View style={styles.topbar}>
+              <Avatar uri={profile.avatar} />
 
-          <View style={styles.figureItems}>
-            <View style={styles.figureItem}>
-              <Text style={styles.figureItemNumber}>{profile.drams}</Text>
-              <Text style={styles.figureItemName}>Drams</Text>
+              <View style={styles.figureItems}>
+                <View style={styles.figureItem}>
+                  <Text style={styles.figureItemNumber}>{profile.drams}</Text>
+                  <Text style={styles.figureItemName}>Drams</Text>
+                </View>
+
+                <View style={styles.figureItem}>
+                  <Text style={styles.figureItemNumber}>{profile.followers}</Text>
+                  <Text style={styles.figureItemName}>Followers</Text>
+                </View>
+
+                <View style={styles.figureItem}>
+                  <Text style={styles.figureItemNumber}>{profile.following}</Text>
+                  <Text style={styles.figureItemName}>Following</Text>
+                </View>
+              </View>
             </View>
-
-            <View style={styles.figureItem}>
-              <Text style={styles.figureItemNumber}>{profile.followers}</Text>
-              <Text style={styles.figureItemName}>Followers</Text>
-            </View>
-
-            <View style={styles.figureItem}>
-              <Text style={styles.figureItemNumber}>{profile.following}</Text>
-              <Text style={styles.figureItemName}>Following</Text>
-            </View>
-          </View>
-        </View>
-        <View>
-          <H3>{profile.name || profile.username}</H3>
-          <Text>Joined {distanceInWordsToNow(profile.createdAt)} ago</Text>
-        </View>
-
-        {actions}
-
-        <Timeline
-          timeline={timeline}
-          onFetch={onFetch}
-          onRefresh={onRefresh}
-          fallback={(
             <View>
-              <Text>No drams available.</Text>
+              <H3>{profile.name || profile.username}</H3>
+              <Text>Joined {distanceInWordsToNow(profile.createdAt)} ago</Text>
             </View>
-          )}
-        />
-      </Content>
+
+            {actions}
+          </>
+        )}
+        onFetch={onFetch}
+        onRefresh={onRefresh}
+        fallback={(
+          <View style={{ padding: 40 }}>
+            <Text style={{ textAlign: 'center' }}>No drams reviewed yet.</Text>
+          </View>
+        )}
+      />
     </SafeWithHeader>
   );
 };
@@ -177,6 +179,6 @@ Profile.navigationOptions = ({ navigation }: NavigationInjectedProps) => {
     headerBackTitle,
     title,
   };
-}
+};
 
 export default Profile;

@@ -20,12 +20,13 @@ const styles = StyleSheet.create({
 
 interface TimelineProps {
   timeline: TimelineShape;
+  header?: React.ReactElement;
   fallback: React.ReactElement;
   onRefresh: (from: number) => void;
   onFetch: (from?: number) => void;
 }
 
-const Timeline = ({ timeline, fallback, onRefresh, onFetch }: TimelineProps) => {
+const Timeline = ({ timeline, fallback, header, onRefresh, onFetch }: TimelineProps) => {
   const items = getTimelineItems(timeline);
   const isRefreshing = isTimelineRefreshing(timeline);
   const isLoading = isTimelineLoading(timeline);
@@ -57,7 +58,12 @@ const Timeline = ({ timeline, fallback, onRefresh, onFetch }: TimelineProps) => 
   useEffect(() => onFetch(), []);
 
   if (!isLoading && items.length === 0) {
-    return fallback;
+    return (
+      <Content padder>
+        {header ? header : null}
+        {fallback}
+      </Content>
+    );
   }
 
   return (
@@ -76,6 +82,7 @@ const Timeline = ({ timeline, fallback, onRefresh, onFetch }: TimelineProps) => 
         />
       }
     >
+      {header ? header : null}
       {items.map((id: number) => <Dram compact key={id} id={id} />)}
       {!isRefreshing && isLoading ? <Spinner color={colors.grey3} /> : null}
     </Content>
