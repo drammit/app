@@ -22,14 +22,20 @@ export const refreshTimeline = ({
   until,
 });
 
-export const receiveTimeline = (payload: TimelinePayload): FetchTimelineSuccessAction => ({
+export const receiveTimeline = (
+  payload: TimelinePayload,
+  UserId?: number,
+): FetchTimelineSuccessAction => ({
+  UserId,
   payload,
   type: 'FETCH_TIMELINE_SUCCESS',
 });
 
 export const receiveRefreshedTimeline = (
   payload: TimelinePayload,
+  UserId?: number,
 ): FetchTimelineRefreshSuccessAction => ({
+  UserId,
   payload,
   type: 'FETCH_TIMELINE_REFRESH_SUCCESS',
 });

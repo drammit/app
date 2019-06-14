@@ -119,10 +119,8 @@ declare interface TimelineShape {
   items: DramShape['id'][];
 }
 
-declare type StoreTimeline = TimelineShape | undefined | Error;
-
 declare interface StoreTimelines {
-  [key: number]: StoreTimeline;
+  [key: number]: TimelineShape;
 }
 
 declare interface StoreShape {

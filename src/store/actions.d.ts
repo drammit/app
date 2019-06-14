@@ -72,11 +72,13 @@ declare interface FetchTimelineRefreshAction {
 
 declare interface FetchTimelineSuccessAction {
   type: 'FETCH_TIMELINE_SUCCESS';
+  UserId?: number;
   payload: TimelinePayload;
 }
 
 declare interface FetchTimelineRefreshSuccessAction {
   type: 'FETCH_TIMELINE_REFRESH_SUCCESS';
+  UserId?: number;
   payload: TimelinePayload;
 }
 

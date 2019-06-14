@@ -56,9 +56,19 @@ const refreshing = (state: boolean = false, action: DrammitAction): boolean => {
   }
 };
 
-export default combineReducers({
+const timeline = combineReducers({
   end,
   items,
   loading,
   refreshing,
 });
+
+export const singleReducer = (state: TimelineShape | undefined, action: DrammitAction) => {
+  if (typeof (action as any).UserId !== 'undefined') {
+    return state;
+  }
+
+  return timeline(state, action);
+};
+
+export default timeline;

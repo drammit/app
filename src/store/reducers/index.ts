@@ -8,7 +8,7 @@ import { whiskies } from '../entities/whiskies';
 
 import loading from '../loader/reducer';
 import user from './user';
-import timeline from './timeline';
+import { singleReducer } from './timeline';
 import timelines from './timelines';
 
 export default (extraReducers?: { [key: string]: Reducer }) => combineReducers({
@@ -17,7 +17,7 @@ export default (extraReducers?: { [key: string]: Reducer }) => combineReducers({
   drams,
   loading,
   profiles,
-  timeline,
+  timeline: singleReducer,
   timelines,
   user,
   users,

@@ -61,6 +61,7 @@ const Timeline = ({ timeline, fallback, onRefresh, onFetch }: TimelineProps) => 
   }
 
   return (
+    // @ts-ignore
     <Content
       scrollEnabled
       onScroll={onScroll}
