@@ -140,7 +140,7 @@ const Dram = ({
 
   const headerContent = (
     <Body>
-      <UsernameLink disableLink={isCompact} user={user} />
+      <UsernameLink user={user} />
       <Text style={styles.date}>{distanceInWordsToNow(dram.createdAt)} ago</Text>
     </Body>
   );
@@ -194,7 +194,6 @@ const Dram = ({
                 <UsernameLink
                   key={s.UserId}
                   user={(s.user as UserShape)}
-                  disableLink={isCompact}
                 />
               ))}
             </View>
