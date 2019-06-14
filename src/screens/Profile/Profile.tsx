@@ -163,7 +163,7 @@ const Profile = ({ navigation }: ProfileProps) => {
         onRefresh={onRefresh}
         fallback={(
           <View style={{ padding: 40 }}>
-            <Text style={{ textAlign: 'center' }}>No drams reviewed yet.</Text>
+            <Text note style={{ textAlign: 'center' }}>No drams reviewed yet.</Text>
           </View>
         )}
       />
