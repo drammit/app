@@ -147,7 +147,7 @@ const MainStack = createBottomTabNavigator(
       screen: Notifications,
     },
     Profile: {
-      path: 'profile/:id',
+      path: 'profile',
       screen: ProfileStack,
     },
   },
@@ -170,7 +170,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Drams',
+    initialRouteName: 'Profile', // 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,

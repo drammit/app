@@ -1,5 +1,4 @@
 import React from 'react';
-import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { Button, Content,  Text } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -35,12 +34,12 @@ class TimelinePage extends React.Component<TimelineProps> {
     title: 'Drams',
   };
 
-  public onRefresh = (from: number) => {
-    dispatch(refreshTimeline(from));
+  public onRefresh = (until: number) => {
+    dispatch(refreshTimeline({ until }));
   }
 
   public onFetch = (from?: number) => {
-    dispatch(fetchTimeline(from));
+    dispatch(fetchTimeline({ from }));
   }
 
   public render() {

@@ -35,7 +35,7 @@ const Timeline = ({ timeline, fallback, onRefresh, onFetch }: TimelineProps) => 
     () => {
       if (!isRefreshing) onRefresh(Math.max(...items));
     },
-    [isRefreshing, items, onRefresh],
+    [isRefreshing, items],
   );
 
   const onScroll = useCallback(
@@ -50,11 +50,11 @@ const Timeline = ({ timeline, fallback, onRefresh, onFetch }: TimelineProps) => 
         }
       }
     },
-    [isLoading, items, isEnd, onFetch],
+    [isLoading, items, isEnd],
   );
 
   // fetch timeline on first mount
-  useEffect(() => onFetch(), [onFetch]);
+  useEffect(() => onFetch(), []);
 
   if (!isLoading && items.length === 0) {
     return fallback;

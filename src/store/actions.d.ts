@@ -55,8 +55,9 @@ declare interface TimelinePayload {
 }
 
 declare interface FetchTimelineAction {
-  type: 'FETCH_TIMELINE';
+  UserId?: number;
   from?: number;
+  type: 'FETCH_TIMELINE';
 }
 
 declare interface FetchTimelineRedoAction {
@@ -64,8 +65,9 @@ declare interface FetchTimelineRedoAction {
 }
 
 declare interface FetchTimelineRefreshAction {
+  UserId?: number;
   type: 'FETCH_TIMELINE_REFRESH';
-  until?: number;
+  until: number;
 }
 
 declare interface FetchTimelineSuccessAction {
