@@ -14,7 +14,7 @@ const Comment = ({ comment, user, disableLink }: CommentProps) => {
   if (!user || user instanceof Error) return null;
 
   return (
-    <View style={{ marginBottom: 5 }}>
+    <View style={{ marginBottom: 5, marginTop: 5 }}>
       <Text>
         <UsernameLink disableLink={disableLink} user={user} />
         <Text>{' '}</Text>

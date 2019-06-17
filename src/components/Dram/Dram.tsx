@@ -242,7 +242,7 @@ const Dram = ({
                 />
               ))}
             {isCompact && dramComments.length > 2 ? (
-              <Text style={{ color: colors.grey2 }}>Read more comments...</Text>
+              <Text style={{ color: colors.grey2, marginTop: 5 }}>Read more comments...</Text>
             ) : null}
           </Body>
         </CardItem>

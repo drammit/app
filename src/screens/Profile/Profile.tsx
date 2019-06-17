@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Button, Content, H3 } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -77,6 +77,26 @@ const Profile = ({ navigation }: ProfileProps) => {
     dispatch(fetchTimeline({ from, UserId }));
   };
 
+  const onLogout = () => {
+    Alert.alert(
+      'Log out',
+      'Are you sure you want to log out?',
+      [
+        {
+          style: 'cancel',
+          text: 'Cancel',
+        },
+        {
+          onPress: () => dispatch(logout()),
+          text: 'Log out',
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
+  };
+
   if (!profile) {
     // @todo: Placeholders
     return null;
@@ -114,7 +134,7 @@ const Profile = ({ navigation }: ProfileProps) => {
           <Text>Edit profile</Text>
         </Button>
 
-        <Button small dark bordered onPress={() => dispatch(logout())}>
+        <Button small dark bordered onPress={onLogout}>
           <Text>Log out</Text>
         </Button>
       </View>
