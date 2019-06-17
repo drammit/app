@@ -190,11 +190,13 @@ const Dram = ({
           <Body>
             <View style={styles.slainteList}>
               <IconSlainte style={{ marginRight: 6 }} height={16} />
-              {dramSlaintes.map(s => (
-                <UsernameLink
-                  key={s.UserId}
-                  user={(s.user as UserShape)}
-                />
+              {dramSlaintes.map((s, index) => (
+                <React.Fragment key={s.UserId}>
+                  <UsernameLink
+                    user={(s.user as UserShape)}
+                  />
+                  {index + 1 < dramSlaintes.length ? <Text>, </Text> : null}
+                </React.Fragment>
               ))}
             </View>
           </Body>
