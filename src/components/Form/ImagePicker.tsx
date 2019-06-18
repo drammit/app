@@ -111,7 +111,7 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps> {
             break;
           case 2: {
             if (image) {
-              extraProps.handleChange(null);
+              extraProps.handleChange('');
             }
           }
         }

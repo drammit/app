@@ -117,7 +117,7 @@ const ProfileStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'SettingsAvatar', // 'Profile',
+    initialRouteName: 'Profile',
   },
 );
 

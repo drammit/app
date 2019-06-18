@@ -21,15 +21,19 @@ interface FormProps {
 const SettingsAvatar = () => {
   const dispatch = useDispatch();
   const user = useSelector(getCurrentUser);
-  const avatarUri = createAvatarUrl(user.avatar, 90);
   const [width, setWidth] = useState<number>(200);
+  const avatarUri = createAvatarUrl(user.avatar, width);
 
-  const onSubmit = (values: FormProps, { setSubmitting }: FormikActions<FormProps>) => {
+  const onSubmit = (
+    values: FormProps,
+    { setSubmitting, setFieldValue }: FormikActions<FormProps>,
+  ) => {
     setSubmitting(true);
 
     changeAvatar(values.avatar !== '' ? fileFromURI(values.avatar) : undefined)
       .then((avatar) => {
         setSubmitting(false);
+        setFieldValue('avatar', createAvatarUrl(avatar, width));
         dispatch(updateAvatar(avatar));
         Alert.alert('Avatar updated successfully');
       });

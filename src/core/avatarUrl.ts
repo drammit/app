@@ -25,6 +25,8 @@ function createExtension(size: number): string {
 }
 
 export default function createAvatarUrl(uri?: string, size: number = 90) {
+  if (!uri) return '';
+
   return [
     STATIC_ROOT,
     '/avatars/',
