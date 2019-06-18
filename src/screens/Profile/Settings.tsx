@@ -3,6 +3,7 @@ import { Text, Icon, List, ListItem, Content, Left, Right } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
+import { Linking } from 'react-native';
 
 type SettingsProps = NavigationInjectedProps;
 
@@ -35,6 +36,17 @@ const Settings = ({ navigation }: SettingsProps) => (
         <ListItem>
           <Left>
             <Text>Change password</Text>
+          </Left>
+          <Right>
+            <Icon name="arrow-forward" />
+          </Right>
+        </ListItem>
+        <ListItem itemDivider>
+          <Text>Help</Text>
+        </ListItem>
+        <ListItem onPress={() => { Linking.openURL('mailto:support@dramm.it'); }}>
+          <Left>
+            <Text>I have a question</Text>
           </Left>
           <Right>
             <Icon name="arrow-forward" />
