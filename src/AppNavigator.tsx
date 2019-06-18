@@ -24,6 +24,7 @@ import Notifications from './screens/Notifications/Notifications';
 import Profile from './screens/Profile/Profile';
 import ProfileSettings from './screens/Profile/Settings';
 import SettingsAvatar from './screens/Profile/SettingsAvatar';
+import SettingsDisplayName from './screens/Profile/SettingsDisplayName';
 
 import colors from './config/colors';
 
@@ -113,6 +114,10 @@ const ProfileStack = createStackNavigator(
     SettingsAvatar: {
       path: 'settings-avatar',
       screen: SettingsAvatar,
+    },
+    SettingsDisplayName: {
+      path: 'settings-display-name',
+      screen: SettingsDisplayName,
     },
   },
   {

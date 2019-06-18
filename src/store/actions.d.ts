@@ -113,9 +113,14 @@ declare interface ProfileUnfollowAction {
   UserId: number;
 }
 
-declare interface UpdateAvatarAction {
+declare interface ProfileUpdateAvatarAction {
   avatar: string;
-  type: 'UPDATE_AVATAR';
+  type: 'PROFILE_UPDATE_AVATAR';
+}
+
+declare interface ProfileUpdateNameAction {
+  name: string;
+  type: 'PROFILE_UPDATE_NAME';
 }
 
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
@@ -123,4 +128,5 @@ declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserIn
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
   | FetchTimelineAction | FetchTimelineRefreshAction | DramSlainteAction | DramCommentAction
   | DramCommentReplaceAction | FetchTimelineRefreshSuccessAction | ProfileFollowAction
-  | ProfileUnfollowAction | FetchTimelineRedoAction | UpdateAvatarAction;
+  | ProfileUnfollowAction | FetchTimelineRedoAction | ProfileUpdateAvatarAction
+  | ProfileUpdateNameAction;

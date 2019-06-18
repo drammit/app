@@ -30,6 +30,7 @@ const name = (state: string = '', action: DrammitAction): string => {
   switch (action.type) {
     case 'LOGIN':
     case 'SET_USER_INFO':
+    case 'PROFILE_UPDATE_NAME':
       return action.name || '';
     case 'LOGOUT':
     case 'CLEAR_USER_INFO':
@@ -43,7 +44,7 @@ const avatar = (state: string = '', action: DrammitAction): string => {
   switch (action.type) {
     case 'LOGIN':
     case 'SET_USER_INFO':
-    case 'UPDATE_AVATAR':
+    case 'PROFILE_UPDATE_AVATAR':
       return action.avatar || '';
     case 'LOGOUT':
     case 'CLEAR_USER_INFO':

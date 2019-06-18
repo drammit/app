@@ -21,7 +21,7 @@ const Settings = ({ navigation }: SettingsProps) => (
             <Icon name="arrow-forward" />
           </Right>
         </ListItem>
-        <ListItem>
+        <ListItem onPress={() => navigation.navigate('SettingsDisplayName')}>
           <Left>
             <Text>Change display name</Text>
           </Left>

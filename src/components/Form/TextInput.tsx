@@ -31,6 +31,7 @@ const TextInput = ({ setRef, formikProps, ...props }: TextInputProps) => {
           ref={setRef}
           onChangeText={extraProps.handleChange}
           onBlur={extraProps.handleBlur}
+          value={extraProps.value}
         />
         {props.icon && <Icon active name={props.icon} />}
       </Item>
