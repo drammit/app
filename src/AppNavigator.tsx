@@ -23,6 +23,7 @@ import Notifications from './screens/Notifications/Notifications';
 
 import Profile from './screens/Profile/Profile';
 import ProfileSettings from './screens/Profile/Settings';
+import SettingsAvatar from './screens/Profile/SettingsAvatar';
 
 import colors from './config/colors';
 
@@ -109,10 +110,14 @@ const ProfileStack = createStackNavigator(
       path: 'profile-settings',
       screen: ProfileSettings,
     },
+    SettingsAvatar: {
+      path: 'settings-avatar',
+      screen: SettingsAvatar,
+    },
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Profile',
+    initialRouteName: 'SettingsAvatar', // 'Profile',
   },
 );
 
@@ -170,7 +175,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Drams',
+    initialRouteName: 'Profile', // 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,

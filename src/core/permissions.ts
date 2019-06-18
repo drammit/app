@@ -1,4 +1,4 @@
-import { Permissions } from 'expo';
+import * as Permissions from 'expo-permissions';
 
 export async function checkAndAskPersmissionsFor(...permissionType: Permissions.PermissionType[]) {
   const permission = await Permissions.getAsync(...permissionType);

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, Alert } from 'react-native';
 import { Button, View, Text, ActionSheet } from 'native-base';
-import { ImagePicker, Permissions } from 'expo';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 import { checkAndAskPersmissionsFor } from '../../core/permissions';
 
@@ -37,6 +38,7 @@ interface ImagePickerProps {
   name: string;
   placeholder: string;
   formikProps: FormikProps<any>;
+  size?: number;
 }
 
 class ImagePickerWrapper extends React.Component<ImagePickerProps> {
@@ -118,15 +120,22 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps> {
   }
 
   public render() {
-    const { placeholder } = this.props;
+    const { placeholder, size = 80 } = this.props;
 
     const image = this.extraProps().value;
 
     return (
       <View>
-        <Button style={styles.button} onPress={this.imagePicker}>
+        <Button
+          style={{
+            ...styles.button,
+            height: size,
+            width: size,
+          }}
+          onPress={this.imagePicker}
+        >
           {image
-            ? <Image source={{ uri: image }} style={{ width: 80, height: 80 }} />
+            ? <Image source={{ uri: image }} style={{ width: size, height: size }} />
             : <Text style={styles.buttonText}>{placeholder}</Text>}
         </Button>
       </View>

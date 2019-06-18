@@ -21,4 +21,4 @@ export const registerUser = (
     password,
     username,
   });
-}
+};

@@ -7,3 +7,8 @@ export const unfollowProfile = (UserId: number): ProfileUnfollowAction => ({
   UserId,
   type: 'PROFILE_UNFOLLOW',
 });
+
+export const updateAvatar = (avatar: string): UpdateAvatarAction => ({
+  avatar,
+  type: 'UPDATE_AVATAR',
+});

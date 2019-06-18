@@ -43,6 +43,7 @@ const avatar = (state: string = '', action: DrammitAction): string => {
   switch (action.type) {
     case 'LOGIN':
     case 'SET_USER_INFO':
+    case 'UPDATE_AVATAR':
       return action.avatar || '';
     case 'LOGOUT':
     case 'CLEAR_USER_INFO':
