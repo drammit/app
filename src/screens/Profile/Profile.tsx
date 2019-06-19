@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { Text, Button, Content, H3 } from 'native-base';
+import { Text, Button, Content, H3, Spinner } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
@@ -98,8 +98,7 @@ const Profile = ({ navigation }: ProfileProps) => {
   };
 
   if (!profile) {
-    // @todo: Placeholders
-    return null;
+    return <Spinner color={colors.grey3} />;
   }
 
   if (profile instanceof Error) {
