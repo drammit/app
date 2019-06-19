@@ -131,6 +131,19 @@ const ProfileStack = createStackNavigator(
   },
 );
 
+const SearchStack = createStackNavigator(
+  {
+    Search: {
+      path: 'search',
+      screen: Search,
+    },
+  },
+  {
+    defaultNavigationOptions: defaultStackNavigationOptions,
+    initialRouteName: 'Search',
+  },
+);
+
 function iconByRoutename(routeName: string) {
   switch (routeName) {
     case 'Profile':
@@ -154,7 +167,7 @@ const MainStack = createBottomTabNavigator(
     // tslint:disable-next-line:object-literal-sort-keys
     Search: {
       path: 'search',
-      screen: Search,
+      screen: SearchStack,
     },
     // tslint:disable-next-line:object-literal-sort-keys
     Notifications: {
@@ -185,7 +198,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Profile', // 'Drams',
+    initialRouteName: 'Search', // 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,
