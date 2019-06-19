@@ -33,7 +33,7 @@ const Settings = ({ navigation }: SettingsProps) => (
         <ListItem itemDivider>
           <Text>Account</Text>
         </ListItem>
-        <ListItem>
+        <ListItem onPress={() => navigation.navigate('SettingsPassword')}>
           <Left>
             <Text>Change password</Text>
           </Left>

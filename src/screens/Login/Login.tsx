@@ -87,8 +87,8 @@ class Login extends React.Component<LoginProps> {
                 }}
               />
               <TextInput
-                name="password"
                 icon="unlock"
+                name="password"
                 setRef={this.passwordRef}
                 placeholder="Password"
                 formikProps={props}
