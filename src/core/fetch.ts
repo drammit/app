@@ -1,6 +1,7 @@
 import { envVar } from './env';
 import { setJWT, getJWT } from './jwt';
 import { info } from './log';
+import { stringify } from 'query-string';
 
 const API_ROOT = envVar('API_ROOT');
 
@@ -100,8 +101,9 @@ export function request(method: RequestMethod = 'GET', url: string, data?: Reque
     });
 }
 
-export function get(url: string) {
-  return request('GET', url);
+export function get(url: string, params?: { [key: string]: any }) {
+  const extra = params ? ['?', stringify(params)].join('') : '';
+  return request('GET', [url, extra].join(''));
 }
 
 export function post(url: string, data?: RequestBody) {
