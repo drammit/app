@@ -123,10 +123,21 @@ declare interface ProfileUpdateNameAction {
   type: 'PROFILE_UPDATE_NAME';
 }
 
+declare interface SearchResult {
+  id: number;
+  type: 'whisky' | 'user' | 'distillery';
+}
+
+declare interface SearchReceive {
+  payload: any;
+  results: SearchResult[];
+  type: 'SEARCH_RECEIVE';
+}
+
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
   | FetchTimelineAction | FetchTimelineRefreshAction | DramSlainteAction | DramCommentAction
   | DramCommentReplaceAction | FetchTimelineRefreshSuccessAction | ProfileFollowAction
   | ProfileUnfollowAction | FetchTimelineRedoAction | ProfileUpdateAvatarAction
-  | ProfileUpdateNameAction;
+  | ProfileUpdateNameAction | SearchReceive;

@@ -6,7 +6,7 @@ export const [distilleries, getDistilleries, getDistillery] = createLoader<
   StoreDistillery
 >({
   defaultValue: {},
-  fetchTypes: ['FETCH_TIMELINE_SUCCESS'],
+  fetchTypes: ['FETCH_TIMELINE_SUCCESS', 'SEARCH_RECEIVE'],
   resolver: id => get(`/distillery/${id}`),
   table: 'distilleries',
 });

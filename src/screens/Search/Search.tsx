@@ -7,9 +7,29 @@ import SafeWithSlimHeader from '../../components/Pages/SafeWithSlimHeader';
 
 import colors from '../../config/colors';
 
+import { receiveSearchResults } from '../../store/actions/search';
+import { searchQuery } from '../../store/api/search';
+import { useDispatch } from 'react-redux';
+
+function tabToFilter(tab: number) {
+  switch (tab) {
+    case 3:
+      return 'distillery';
+    case 2:
+      return 'user';
+    case 1:
+      return 'whisky';
+    case 0:
+    default:
+      return 'all';
+  }
+}
+
 type TimelineProps = NavigationInjectedProps;
 
 const Search = () => {
+  const dispatch = useDispatch();
+
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(0);
 
@@ -18,9 +38,7 @@ const Search = () => {
   useEffect(
     () => {
       if (debouncedSearch.length > 3) {
-        const result = new Promise((resolve) => {
-          setTimeout(() => resolve(debouncedSearch), 2000);
-        });
+        const result = searchQuery(debouncedSearch, tabToFilter(page));
 
         let cancelCall: any = () => undefined;
         const cancel = new Promise(resolve => cancelCall = resolve);
@@ -30,21 +48,16 @@ const Search = () => {
             // if canceled
             if (!results) return;
 
-            console.log('Result', results);
+            dispatch(receiveSearchResults(results));
           });
 
         return cancelCall;
       }
     },
-    [debouncedSearch],
+    [debouncedSearch, page, dispatch],
   );
 
-  const onChangeTab = useCallback(
-    (tab) => {
-      setPage(tab.i);
-    },
-    [],
-  );
+  const onChangeTab = useCallback(tab => setPage(tab.i), []);
 
   return (
     <SafeWithSlimHeader style={{ flex: 1 }}>
@@ -71,6 +84,7 @@ const Search = () => {
             placeholder="Search..."
             clearButtonMode="always"
             value={search}
+            autoCorrect={false}
             onChangeText={text => setSearch(text)}
           />
         </Item>
