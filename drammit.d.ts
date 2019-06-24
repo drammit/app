@@ -5,3 +5,5 @@ interface FileUpload {
   name: string;
   type: string;
 }
+
+declare type SearchFilter = 'all' | 'whisky' | 'distillery' | 'user';

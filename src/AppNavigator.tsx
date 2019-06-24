@@ -89,10 +89,7 @@ const DramsStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'DramDetails', // 'Timeline',
-    initialRouteParams: {
-      id: 9382,
-    },
+    initialRouteName: 'Timeline',
   },
 );
 
@@ -201,7 +198,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Drams',
+    initialRouteName: 'Search', // 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,
