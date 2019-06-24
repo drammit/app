@@ -68,15 +68,13 @@ const Dram = ({
   const selectUser = useCallback((UserId: number) => users[UserId], [users]);
   const isCompact = Boolean(compact);
 
-  const whisky: StoreWhisky = dram && !(dram instanceof Error)
-    ? getWhisky(dram.WhiskyId)
-    : undefined;
-  const user: StoreUser = dram && !(dram instanceof Error)
-    ? getUser(dram.UserId)
-    : undefined;
-  const distillery: StoreDistillery = whisky && !(whisky instanceof Error)
-    ? getDistillery(whisky.DistilleryId)
-    : undefined;
+  const whisky: StoreWhisky = getWhisky(
+    dram && !(dram instanceof Error) ? dram.WhiskyId : undefined,
+  );
+  const user: StoreUser = getUser(dram && !(dram instanceof Error) ? dram.UserId : undefined);
+  const distillery: StoreDistillery = getDistillery(
+    whisky && !(whisky instanceof Error) ? whisky.DistilleryId : undefined,
+  );
 
   if (!dram || !user || !whisky || !distillery) {
     // @todo: Placeholders

@@ -27,7 +27,7 @@ function createLoader<T, E>({
 }): [
   (state: T | undefined, action: DrammitAction) => T,
   (state: StoreShape) => T,
-  (key: number | string) => E
+  (key?: number | string) => E
 ] {
   // add resolver to listeners
   registerResolver(table, resolver);
@@ -73,19 +73,17 @@ function createLoader<T, E>({
   const getAll = (state: StoreShape): T => state[table];
 
   const getEntry = (key?: number | string) => {
-    if (!key) return undefined;
-
     const dispatch = useDispatch();
 
     // @ts-ignore
     const entry = useSelector(getAll)[key];
-    const loading = useSelector(isLoading(table, key));
+    const loading = useSelector(isLoading(table, key || ''));
 
     useEffect(
       () => {
-        if (typeof entry === 'undefined' && !loading) dispatch(fetch(table, key));
+        if (key && typeof entry === 'undefined' && !loading) dispatch(fetch(table, key));
       },
-      [entry, loading],
+      [entry, loading, key],
     );
 
     return entry;
