@@ -62,27 +62,21 @@ const Dram = ({
 }: DramProps) => {
   const dispatch = useDispatch();
   const currentUser: StoreCurrentUser = useSelector(getCurrentUser);
-  const dram: StoreDram = useSelector((state: StoreShape) => getDram(id)(state, dispatch));
+  const dram: StoreDram = getDram(id);
   const onSlainte = useCallback(() => dispatch(slainteDram(id, currentUser.id)), [id, currentUser]);
   const users = useSelector((state: StoreShape) => getUsers(state));
   const selectUser = useCallback((UserId: number) => users[UserId], [users]);
   const isCompact = Boolean(compact);
 
-  const whisky: StoreWhisky = useSelector(
-    (state: StoreShape) => dram && !(dram instanceof Error)
-      ? getWhisky(dram.WhiskyId)(state, dispatch)
-      : undefined,
-  );
-  const user: StoreUser = useSelector(
-    (state: StoreShape) => dram && !(dram instanceof Error)
-      ? getUser(dram.UserId)(state, dispatch)
-      : undefined,
-  );
-  const distillery: StoreDistillery = useSelector(
-    (state: StoreShape) => whisky && !(whisky instanceof Error)
-      ? getDistillery(whisky.DistilleryId)(state, dispatch)
-      : undefined,
-  );
+  const whisky: StoreWhisky = dram && !(dram instanceof Error)
+    ? getWhisky(dram.WhiskyId)
+    : undefined;
+  const user: StoreUser = dram && !(dram instanceof Error)
+    ? getUser(dram.UserId)
+    : undefined;
+  const distillery: StoreDistillery = whisky && !(whisky instanceof Error)
+    ? getDistillery(whisky.DistilleryId)
+    : undefined;
 
   if (!dram || !user || !whisky || !distillery) {
     // @todo: Placeholders

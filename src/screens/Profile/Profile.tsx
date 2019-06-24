@@ -59,7 +59,7 @@ const Profile = ({ navigation }: ProfileProps) => {
   const idParam: null | number = navigation.getParam('id', null);
   const UserId = idParam || loginUser.id;
 
-  const profile = useSelector((state: StoreShape) => getProfile(UserId)(state, dispatch));
+  const profile = getProfile(UserId);
 
   const timeline: TimelineShape = useSelector((state: StoreShape) => getUserTimeline(UserId)(state))
     || {

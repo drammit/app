@@ -2,6 +2,8 @@ import { isLoading } from './selector';
 import { fetch } from './actions';
 import { registerResolver } from './listeners';
 import { Dispatch, Reducer } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 /**
  * T: Type of table shape
@@ -25,7 +27,7 @@ function createLoader<T, E>({
 }): [
   (state: T | undefined, action: DrammitAction) => T,
   (state: StoreShape) => T,
-  (key: number | string) => (state: StoreShape, dispatch: Dispatch) => E
+  (key: number | string) => E
 ] {
   // add resolver to listeners
   registerResolver(table, resolver);
@@ -70,15 +72,21 @@ function createLoader<T, E>({
   // @ts-ignore
   const getAll = (state: StoreShape): T => state[table];
 
-  const getEntry = (key?: number | string) => (state: StoreShape, dispatch: Dispatch) => {
+  const getEntry = (key?: number | string) => {
     if (!key) return undefined;
 
-    // @ts-ignore
-    const entry = getAll(state)[key];
+    const dispatch = useDispatch();
 
-    if (typeof entry === 'undefined' && !isLoading(table, key)(state)) {
-      return dispatch(fetch(table, key));
-    }
+    // @ts-ignore
+    const entry = useSelector(getAll)[key];
+    const loading = useSelector(isLoading(table, key));
+
+    useEffect(
+      () => {
+        if (typeof entry === 'undefined' && !loading) dispatch(fetch(table, key));
+      },
+      [entry, loading],
+    );
 
     return entry;
   };

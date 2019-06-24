@@ -19,10 +19,7 @@ const NameLink = ({
   navigation,
   disableLink = false,
 }: NameLinkProps) => {
-  const dispatch = useDispatch();
-  const distillery: StoreDistillery = useSelector(
-    (state: StoreShape) => getDistillery(whisky.DistilleryId)(state, dispatch),
-  );
+  const distillery: StoreDistillery = getDistillery(whisky.DistilleryId);
   const name = !distillery
     ? ''
     : [distillery.name, whisky.name, whisky.bottlingSerie].join(' ');

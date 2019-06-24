@@ -15,8 +15,7 @@ interface ProfileCardProps {
 }
 
 const ProfileCard = ({ id, style = {} }: ProfileCardProps) => {
-  const dispatch = useDispatch();
-  const profile = useSelector((state: StoreShape) => getProfile(id)(state, dispatch));
+  const profile = getProfile(id);
   const currentUser = useSelector(getCurrentUser);
 
   if (!profile || profile instanceof Error || currentUser.id === 19) {
