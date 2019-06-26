@@ -7,9 +7,7 @@ import { fetchTimeline, refreshTimeline } from '../../store/actions/timeline';
 import {
   getTimeline,
   getTimelineItems,
-  isTimelineEnd,
   isTimelineLoading,
-  isTimelineRefreshing,
 } from '../../store/selectors/timeline';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';

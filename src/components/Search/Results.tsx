@@ -1,5 +1,5 @@
 import React from 'react';
-import { Left, List, ListItem, Right, Text, Body, Icon } from 'native-base';
+import { Left, List, ListItem, Right, Text, Body, Icon, View } from 'native-base';
 
 import WhiskyResult from './WhiskyResult';
 import DistilleryResult from './DistilleryResult';
@@ -31,6 +31,14 @@ interface ResultsProps {
 }
 
 const Results = ({ results, filter, goToTab }: ResultsProps) => {
+  if (results.length === 0) {
+    return (
+      <View style={{ padding: 24, alignItems: 'center' }}>
+        <Text note>Start typing in the search bar</Text>
+      </View>
+    );
+  }
+
   if (filter === 'all') {
     const users = results.filter(r => r.type === 'user');
     const distilleries = results.filter(d => d.type === 'distillery');

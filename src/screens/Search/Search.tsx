@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useReducer } from 'react';
-import { View, Item, Icon, Input, Content, Text, Tabs, Tab } from 'native-base';
+import { View, Item, Icon, Input, Content, Tabs, Tab, Spinner, Text } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { useDebounce } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -146,13 +146,24 @@ const Search = () => {
     [goToTab],
   );
 
-  const searchResults = (
-    <Content style={{ flex: 1 }}>
-      <SearchResults
-        results={localState.results}
-        filter={localState.filter}
-        goToTab={goToTab}
-      />
+  const searchResults = localState.isLoading ? (
+    <Content padder scrollEnabled={false}>
+      <Spinner color={colors.grey3} />
+    </Content>
+  ) : (
+    <Content style={{ flex: 1 }} scrollEnabled={localState.results.length > 0}>
+      {localState.results.length === 0 && debouncedSearch.length > 3
+        ? (
+          <View style={{ padding: 24, alignItems: 'center' }}>
+            <Text note>No results for "{debouncedSearch}"</Text>
+          </View>
+        ) : (
+          <SearchResults
+            results={localState.results}
+            filter={localState.filter}
+            goToTab={goToTab}
+          />
+        )}
     </Content>
   );
 
