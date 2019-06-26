@@ -1,15 +1,16 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
 import { View, Item, Icon, Input, Content, Text, Tabs, Tab } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { useDebounce } from 'use-debounce';
+import { useDispatch } from 'react-redux';
 
 import SafeWithSlimHeader from '../../components/Pages/SafeWithSlimHeader';
+import SearchResults from '../../components/Search/Results';
 
 import colors from '../../config/colors';
 
 import { receiveSearchResults } from '../../store/actions/search';
 import { searchQuery } from '../../store/api/search';
-import { useDispatch } from 'react-redux';
 
 function tabToFilter(tab: number): SearchFilter {
   switch (tab) {
@@ -123,6 +124,13 @@ const Search = () => {
     [debouncedSearch, localState.filter, dispatch],
   );
 
+  useEffect(
+    () => {
+      localDispatch({ type: 'SET_SEARCH', search: 'ardbeg' });
+    },
+    [],
+  );
+
   const onChangeTab = useCallback(
     (tab: { i: number }) => {
       localDispatch({
@@ -134,9 +142,8 @@ const Search = () => {
   );
 
   const searchResults = (
-    <Content style={{ flex: 1, borderWidth: 1 }}>
-      <Text>{localState.search}</Text>
-      <Text>{localState.results.length}</Text>
+    <Content style={{ flex: 1 }}>
+      <SearchResults results={localState.results} />
     </Content>
   );
 

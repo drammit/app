@@ -133,9 +133,21 @@ const ProfileStack = createStackNavigator(
 
 const SearchStack = createStackNavigator(
   {
+    Distillery: {
+      path: 'distillery',
+      screen: PlaceholderDetails,
+    },
     Search: {
       path: 'search',
       screen: Search,
+    },
+    UserProfile: {
+      path: 'user-profile',
+      screen: Profile,
+    },
+    Whisky: {
+      path: 'whisky',
+      screen: PlaceholderDetails,
     },
   },
   {

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
-import { useSelector, useDispatch} from 'react-redux';
 
 import { getDistillery } from '../../store/entities/distilleries';
+
+import whiskyName from '../../core/whiskyName';
 
 interface NameLinkProps extends NavigationInjectedProps {
   whisky: WhiskyShape;
@@ -20,9 +21,7 @@ const NameLink = ({
   disableLink = false,
 }: NameLinkProps) => {
   const distillery: StoreDistillery = getDistillery(whisky.DistilleryId);
-  const name = !distillery
-    ? ''
-    : [distillery.name, whisky.name, whisky.bottlingSerie].join(' ');
+  const name = whiskyName(whisky, distillery);
 
   return (
     <Text
