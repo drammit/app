@@ -93,6 +93,28 @@ declare interface StoreDistilleries {
   [key: number]: StoreDistillery;
 }
 
+declare interface RegionShape {
+  id: number;
+  name: string;
+}
+
+declare type StoreRegion = RegionShape | undefined | Error;
+
+declare interface StoreRegions {
+  [key: number]: StoreRegion;
+}
+
+declare interface CountryShape {
+  id: number;
+  name: string;
+}
+
+declare type StoreCountry = CountryShape | undefined | Error;
+
+declare interface StoreCountries {
+  [key: number]: StoreCountry;
+}
+
 declare interface ProfileShape extends UserShape {
   id: number;
   createdAt: Date;
@@ -124,10 +146,12 @@ declare interface StoreTimelines {
 }
 
 declare interface StoreShape {
+  countries: StoreCountries;
   distilleries: StoreDistilleries;
   drams: StoreDrams;
   profiles: StoreProfiles;
   users: StoreUsers;
+  regions: StoreRegions;
   whiskies: StoreWhiskies;
   user: StoreCurrentUser;
   loading: StoreLoading;
