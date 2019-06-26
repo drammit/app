@@ -93,6 +93,16 @@ const Search = () => {
     },
   );
 
+  const goToTab = useCallback(
+    (filter: SearchFilter) => {
+      localDispatch({
+        filter,
+        type: 'SET_FILTER',
+      });
+    },
+    [localDispatch],
+  );
+
   const [debouncedSearch] = useDebounce(localState.search, 300);
 
   useEffect(
@@ -132,18 +142,17 @@ const Search = () => {
   );
 
   const onChangeTab = useCallback(
-    (tab: { i: number }) => {
-      localDispatch({
-        filter: tabToFilter(tab.i),
-        type: 'SET_FILTER',
-      });
-    },
-    [],
+    (tab: { i: number }) => goToTab(tabToFilter(tab.i)),
+    [goToTab],
   );
 
   const searchResults = (
     <Content style={{ flex: 1 }}>
-      <SearchResults results={localState.results} />
+      <SearchResults
+        results={localState.results}
+        filter={localState.filter}
+        goToTab={goToTab}
+      />
     </Content>
   );
 

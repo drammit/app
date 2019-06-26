@@ -3,6 +3,8 @@ import { Body, Icon, Left, ListItem, Right, Text, Thumbnail } from 'native-base'
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 
 import { getDistillery } from '../../store/entities/distilleries';
+import { getCountry } from '../../store/entities/countries';
+import { getRegion } from '../../store/entities/regions';
 
 interface DistilleryResultProps extends NavigationInjectedProps {
   id: number;
@@ -10,6 +12,12 @@ interface DistilleryResultProps extends NavigationInjectedProps {
 
 const DistilleryResult = ({ id, navigation }: DistilleryResultProps) => {
   const distillery: StoreDistillery = getDistillery(id);
+  const country: StoreCountry = getCountry(
+    distillery && !(distillery instanceof Error) ? distillery.CountryId : undefined,
+  );
+  const region: StoreRegion = getRegion(
+    distillery && !(distillery instanceof Error) ? distillery.RegionId : undefined,
+  );
 
   if (!distillery) {
     return (
@@ -31,6 +39,9 @@ const DistilleryResult = ({ id, navigation }: DistilleryResultProps) => {
 
   const distilleryName = distillery.name;
   const image = distillery.image;
+  const location = [region && region.name, country && country.name]
+    .filter(i => !!i)
+    .join(', ');
 
   return (
     <ListItem
@@ -44,6 +55,7 @@ const DistilleryResult = ({ id, navigation }: DistilleryResultProps) => {
       )}
       <Body>
         <Text>{distilleryName}</Text>
+        <Text note>from {location}</Text>
       </Body>
       <Right>
         <Icon name="arrow-forward" />
