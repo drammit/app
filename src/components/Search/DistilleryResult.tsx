@@ -6,18 +6,16 @@ import { getDistillery } from '../../store/entities/distilleries';
 import { getCountry } from '../../store/entities/countries';
 import { getRegion } from '../../store/entities/regions';
 
+import { paramFromInstance } from '../../core/storeInstances';
+
 interface DistilleryResultProps extends NavigationInjectedProps {
   id: number;
 }
 
 const DistilleryResult = ({ id, navigation }: DistilleryResultProps) => {
   const distillery: StoreDistillery = getDistillery(id);
-  const country: StoreCountry = getCountry(
-    distillery && !(distillery instanceof Error) ? distillery.CountryId : undefined,
-  );
-  const region: StoreRegion = getRegion(
-    distillery && !(distillery instanceof Error) ? distillery.RegionId : undefined,
-  );
+  const country: StoreCountry = getCountry(paramFromInstance(distillery, 'CountryId'));
+  const region: StoreRegion = getRegion(paramFromInstance(distillery, 'RegionId'));
 
   if (!distillery) {
     return (

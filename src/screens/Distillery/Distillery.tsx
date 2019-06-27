@@ -1,15 +1,14 @@
 import React from 'react';
-import { Body, Card, CardItem, Content, Text } from 'native-base';
+import { Card, CardItem, Content, Text } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
-import Message from '../../components/Message/Message';
 
 import { getDistillery } from '../../store/entities/distilleries';
 import { getCountry } from '../../store/entities/countries';
 import { getRegion } from '../../store/entities/regions';
 
-import { paramFromInstance } from '../../core/storeInstances';
+import { errorComponent, paramFromInstance } from '../../core/storeInstances';
 
 type DistilleryProps = NavigationInjectedProps;
 
@@ -26,21 +25,17 @@ const Distillery = ({ navigation }: DistilleryProps) => {
     return null;
   }
 
+  const error = errorComponent([distillery, country, region]);
+
   if (
     distillery instanceof Error
     || country instanceof Error
     || region instanceof Error
   ) {
-    let message = '';
-
-    if (distillery instanceof Error) message = distillery.message;
-    if (country instanceof Error) message = country.message;
-    if (region instanceof Error) message = region.message;
-
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <Content padder>
-          <Message error>{`Something went wrong:\n${message}`}</Message>
+          {error}
         </Content>
       </SafeWithHeader>
     );

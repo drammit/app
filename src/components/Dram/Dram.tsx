@@ -17,13 +17,14 @@ import Rating from './Rating';
 import Image from './Image';
 import IconSlainte from './IconSlainte';
 import IconComment from './IconComment';
-import Message from '../Message/Message';
 import Avatar from '../User/Avatar';
 import UsernameLink from '../User/UsernameLink';
 import DistilleryNameLink from '../Distillery/NameLink';
 import WhiskyNameLink from '../Whisky/NameLink';
 
 import colors from '../../config/colors';
+
+import { paramFromInstance, errorComponent } from '../../core/storeInstances';
 
 const styles = StyleSheet.create({
   button: {
@@ -68,18 +69,17 @@ const Dram = ({
   const selectUser = useCallback((UserId: number) => users[UserId], [users]);
   const isCompact = Boolean(compact);
 
-  const whisky: StoreWhisky = getWhisky(
-    dram && !(dram instanceof Error) ? dram.WhiskyId : undefined,
-  );
-  const user: StoreUser = getUser(dram && !(dram instanceof Error) ? dram.UserId : undefined);
-  const distillery: StoreDistillery = getDistillery(
-    whisky && !(whisky instanceof Error) ? whisky.DistilleryId : undefined,
-  );
+  const whisky: StoreWhisky = getWhisky(paramFromInstance(dram, 'WhiskyId'));
+  const user: StoreUser = getUser(paramFromInstance(dram, 'UserId'));
+  const distillery: StoreDistillery = getDistillery(paramFromInstance(dram, 'DistilleryId'));
 
   if (!dram || !user || !whisky || !distillery) {
     // @todo: Placeholders
     return null;
   }
+
+  const error = errorComponent([dram, user, whisky, distillery]);
+  if (error) return <Card><CardItem><Body>{error}</Body></CardItem></Card>;
 
   if (
     dram instanceof Error
@@ -87,22 +87,7 @@ const Dram = ({
     || whisky instanceof Error
     || distillery instanceof Error
   ) {
-    let message = '';
-
-    if (dram instanceof Error) message = dram.message;
-    if (user instanceof Error) message = user.message;
-    if (whisky instanceof Error) message = whisky.message;
-    if (distillery instanceof Error) message = distillery.message;
-
-    return (
-      <Card>
-        <CardItem>
-          <Body>
-            <Message error>{`Something went wrong:\n${message}`}</Message>
-          </Body>
-        </CardItem>
-      </Card>
-    );
+    return null;
   }
 
   const slaintes: SlainteWithUser[] = dram.slaintes.map((s: DramSlainteShape) => ({

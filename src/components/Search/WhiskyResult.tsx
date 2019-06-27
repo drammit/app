@@ -6,6 +6,7 @@ import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
 
 import whiskyName from '../../core/whiskyName';
+import { paramFromInstance } from '../../core/storeInstances';
 
 interface WhiskyResultProps extends NavigationInjectedProps {
   id: number;
@@ -13,8 +14,7 @@ interface WhiskyResultProps extends NavigationInjectedProps {
 
 const WhiskyResult = ({ id, navigation }: WhiskyResultProps) => {
   const whisky: StoreWhisky = getWhisky(id);
-  const distillery: StoreDistillery = whisky && !(whisky instanceof Error)
-    ? getDistillery(whisky.DistilleryId) : undefined;
+  const distillery: StoreDistillery = getDistillery(paramFromInstance(whisky, 'WhiskyId'));
 
   if (!whisky || !distillery) {
     return (

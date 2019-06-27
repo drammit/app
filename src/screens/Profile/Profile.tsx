@@ -14,10 +14,12 @@ import Timeline from '../../components/Dram/Timeline';
 import { getCurrentUser } from '../../store/selectors/user';
 import { getProfile } from '../../store/entities/profiles';
 import { logout } from '../../store/actions/auth';
-
-import colors from '../../config/colors';
 import { fetchTimeline, refreshTimeline } from '../../store/actions/timeline';
 import { getUserTimeline } from '../../store/selectors/timeline';
+
+import colors from '../../config/colors';
+
+import { paramFromInstance } from '../../core/storeInstances';
 
 const styles = StyleSheet.create({
   actions: {
@@ -77,7 +79,7 @@ const Profile = ({ navigation }: ProfileProps) => {
     dispatch(fetchTimeline({ from, UserId }));
   };
 
-  const isSelf = loginUser.id === (profile && !(profile instanceof Error) && profile.id);
+  const isSelf = loginUser.id === paramFromInstance(profile, 'id');
 
   useEffect(
     () => {
