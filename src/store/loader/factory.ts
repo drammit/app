@@ -49,7 +49,7 @@ function createLoader<T, E>({
     const handleAction = (action as any);
 
     if (
-      [...fetchTypes, 'LOADER_FETCH_SUCCESS'].indexOf(handleAction.type) > -1
+      [...fetchTypes, 'LOADER_FETCH_SUCCESS', 'EXTRA_INFORMATION'].indexOf(handleAction.type) > -1
       && handleAction.payload
       && handleAction.payload[table]
       && handleAction.payload[table].length > 0

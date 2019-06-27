@@ -50,6 +50,11 @@ declare interface FetchInformationFailedAction {
   error: Error;
 }
 
+declare interface ExtraInformationAction {
+  type: 'EXTRA_INFORMATION';
+  payload: any;
+}
+
 declare interface TimelinePayload {
   drams: DramShape[];
 }
@@ -140,4 +145,4 @@ declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserIn
   | FetchTimelineAction | FetchTimelineRefreshAction | DramSlainteAction | DramCommentAction
   | DramCommentReplaceAction | FetchTimelineRefreshSuccessAction | ProfileFollowAction
   | ProfileUnfollowAction | FetchTimelineRedoAction | ProfileUpdateAvatarAction
-  | ProfileUpdateNameAction | SearchReceive;
+  | ProfileUpdateNameAction | SearchReceive | ExtraInformationAction;

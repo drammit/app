@@ -147,13 +147,6 @@ const Search = () => {
     [debouncedSearch, localState.filter, dispatch],
   );
 
-  useEffect(
-    () => {
-      localDispatch({ type: 'SET_SEARCH', search: 'Gaya' });
-    },
-    [],
-  );
-
   const onChangeTab = useCallback(
     (tab: { i: number }) => goToTab(tabToFilter(tab.i)),
     [goToTab],

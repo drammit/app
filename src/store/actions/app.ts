@@ -18,3 +18,8 @@ export const setUserInfo = (
 export const clearUserInfo = (): ClearUserInfoAction => ({
   type: 'CLEAR_USER_INFO',
 });
+
+export const extraInformation = (payload: any): ExtraInformationAction => ({
+  payload,
+  type: 'EXTRA_INFORMATION',
+});

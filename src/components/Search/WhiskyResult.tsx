@@ -10,11 +10,12 @@ import { paramFromInstance } from '../../core/storeInstances';
 
 interface WhiskyResultProps extends NavigationInjectedProps {
   id: number;
+  hideDistillery?: boolean;
 }
 
-const WhiskyResult = ({ id, navigation }: WhiskyResultProps) => {
+const WhiskyResult = ({ id, hideDistillery = false, navigation }: WhiskyResultProps) => {
   const whisky: StoreWhisky = getWhisky(id);
-  const distillery: StoreDistillery = getDistillery(paramFromInstance(whisky, 'WhiskyId'));
+  const distillery: StoreDistillery = getDistillery(paramFromInstance(whisky, 'DistilleryId'));
 
   if (!whisky || !distillery) {
     return (
@@ -50,7 +51,9 @@ const WhiskyResult = ({ id, navigation }: WhiskyResultProps) => {
       )}
       <Body>
         <Text>{name}</Text>
-        <Text note>by {distilleryName}, {whisky.abv}% Vol.</Text>
+        {hideDistillery
+          ? <Text note>{whisky.abv}% Vol.</Text>
+          : <Text note>by {distilleryName}, {whisky.abv}% Vol.</Text>}
       </Body>
       <Right>
         <Icon name="arrow-forward" />
