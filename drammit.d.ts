@@ -7,3 +7,9 @@ interface FileUpload {
 }
 
 declare type SearchFilter = 'all' | 'whisky' | 'distillery' | 'user';
+
+declare interface LoadError {
+  type: 'LoadError';
+  name: string;
+  message: string;
+}

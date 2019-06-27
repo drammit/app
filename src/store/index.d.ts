@@ -38,7 +38,7 @@ declare interface DramShape {
   createdAt: Date;
 }
 
-declare type StoreDram = DramShape | undefined | Error;
+declare type StoreDram = DramShape | undefined | LoadError;
 
 declare interface StoreDrams {
   [key: number]: StoreDram;
@@ -144,6 +144,9 @@ declare interface TimelineShape {
 declare interface StoreTimelines {
   [key: number]: TimelineShape;
 }
+
+declare type StoreEntity = StoreCountry | StoreDistillery | StoreDram | StoreProfile | StoreRegion
+  | StoreUser | StoreWhisky;
 
 declare interface StoreShape {
   countries: StoreCountries;

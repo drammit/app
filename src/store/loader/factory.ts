@@ -38,7 +38,10 @@ function createLoader<T, E>({
     if (action.type === 'LOADER_FETCH_FAILED') {
       return action.table === table ? {
         ...state,
-        [action.key]: action.error,
+        [action.key]: {
+          ...action.error,
+          type: 'LoadError',
+        },
       } : state;
     }
 
@@ -85,6 +88,8 @@ function createLoader<T, E>({
       },
       [entry, loading, key],
     );
+
+    if (entry && entry.type === 'LoadError') return new Error(entry.message);
 
     return entry;
   };
