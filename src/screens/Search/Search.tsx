@@ -49,7 +49,11 @@ interface FetchSearch {
   type: 'FETCH_SEARCH';
 }
 
-type SearchActions = SetSearch | SetFilter | SetResults | FetchSearch;
+interface ClearSearch {
+  type: 'CLEAR_RESULTS';
+}
+
+type SearchActions = SetSearch | SetFilter | SetResults | FetchSearch | ClearSearch;
 
 type TimelineProps = NavigationInjectedProps;
 
@@ -81,6 +85,12 @@ const Search = () => {
             ...state,
             isLoading: true,
           };
+        case 'CLEAR_RESULTS':
+          return {
+            ...state,
+            isLoading: false,
+            results: [],
+          };
         default:
           return state;
       }
@@ -107,7 +117,7 @@ const Search = () => {
 
   useEffect(
     () => {
-      if (debouncedSearch.length > 3) {
+      if (debouncedSearch.length > 2) {
         localDispatch({ type: 'FETCH_SEARCH' });
 
         const result = searchQuery(debouncedSearch, localState.filter);
@@ -130,6 +140,9 @@ const Search = () => {
 
         return cancelCall;
       }
+
+      // if no search, clear results
+      localDispatch({ type: 'CLEAR_RESULTS' });
     },
     [debouncedSearch, localState.filter, dispatch],
   );
