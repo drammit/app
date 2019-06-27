@@ -13,7 +13,9 @@ import user from './user';
 import { singleReducer } from './timeline';
 import timelines from './timelines';
 
-export default (extraReducers?: { [key: string]: Reducer }) => combineReducers({
+export default (
+  extraReducers?: { [key: string]: Reducer<StoreShape, DrammitAction>,
+}) => combineReducers({
   ...extraReducers,
   countries,
   distilleries,

@@ -3,16 +3,15 @@ import { Left, List, ListItem, Right, Text, Body, Icon, View } from 'native-base
 
 import WhiskyResult from './WhiskyResult';
 import DistilleryResult from './DistilleryResult';
+import UserResult from './UserResult';
 
 function resultByType(id: number, type: 'whisky' | 'distillery' | 'user') {
   if (type === 'whisky') return <WhiskyResult key={`${type}_${id}`} id={id} />;
   if (type === 'distillery') return <DistilleryResult key={`${type}_${id}`} id={id} />;
+  if (type === 'user') return <UserResult key={`${type}_${id}`} id={id} />;
 
   return (
     <ListItem key={`${type}_${id}`} avatar>
-      <Left>
-        <Text>Plaatje</Text>
-      </Left>
       <Body>
         <Text>{id}</Text>
         <Text note>{type}</Text>

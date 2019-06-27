@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Button, Content, H3, Spinner } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
@@ -118,13 +118,18 @@ const Profile = ({ navigation }: ProfileProps) => {
 
   const isSelf = loginUser.id === profile.id;
 
-  // update the page header if doesn't match
-  if (navigation.getParam('title', '') !== profile.username) {
-    navigation.setParams({
-      headerBackTitle: isSelf ? 'Profile' : profile.username,
-      title: profile.username,
-    });
-  }
+  useEffect(
+    () => {
+      // update the page header if doesn't match
+      if (navigation.getParam('title', '') !== profile.username) {
+        navigation.setParams({
+          headerBackTitle: isSelf ? 'Profile' : profile.username,
+          title: profile.username,
+        });
+      }
+    },
+    [profile.username],
+  );
 
   const actions = isSelf
     ? (

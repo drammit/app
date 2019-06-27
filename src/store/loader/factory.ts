@@ -1,7 +1,7 @@
 import { isLoading } from './selector';
 import { fetch } from './actions';
 import { registerResolver } from './listeners';
-import { Dispatch, Reducer } from 'redux';
+import { Reducer } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 

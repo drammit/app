@@ -136,7 +136,7 @@ const Search = () => {
 
   useEffect(
     () => {
-      localDispatch({ type: 'SET_SEARCH', search: 'ardbeg' });
+      localDispatch({ type: 'SET_SEARCH', search: 'Gaya' });
     },
     [],
   );
