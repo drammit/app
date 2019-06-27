@@ -18,6 +18,8 @@ import DramDetails from './screens/Timeline/DramDetails';
 import PlaceholderDetails from './screens/Timeline/PlaceholderDetails';
 import WelcomeTour from './screens/Timeline/Welcome';
 
+import Distillery from './screens/Distillery/Distillery';
+
 import Search from './screens/Search/Search';
 import Notifications from './screens/Notifications/Notifications';
 
@@ -64,7 +66,7 @@ const DramsStack = createStackNavigator(
   {
     Distillery: {
       path: 'distillery',
-      screen: PlaceholderDetails,
+      screen: Distillery,
     },
     DramDetails: {
       path: 'dram',
@@ -89,7 +91,11 @@ const DramsStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Timeline',
+    initialRouteName: 'Distillery', // 'Timeline',
+    initialRouteParams: {
+      id: 2241,
+      title: 'Laphroaig',
+    },
   },
 );
 
@@ -104,6 +110,14 @@ DramsStack.navigationOptions = ({ navigation }: any) => {
 
 const ProfileStack = createStackNavigator(
   {
+    Distillery: {
+      path: 'distillery',
+      screen: Distillery,
+    },
+    DramDetails: {
+      path: 'dram',
+      screen: DramDetails,
+    },
     Profile: {
       path: 'profile',
       screen: Profile,
@@ -124,6 +138,10 @@ const ProfileStack = createStackNavigator(
       path: 'settings-password',
       screen: SettingsPassword,
     },
+    Whisky: {
+      path: 'whisky',
+      screen: PlaceholderDetails,
+    },
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
@@ -135,7 +153,7 @@ const SearchStack = createStackNavigator(
   {
     Distillery: {
       path: 'distillery',
-      screen: PlaceholderDetails,
+      screen: Distillery,
     },
     Search: {
       path: 'search',
@@ -210,7 +228,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Search', // 'Drams',
+    initialRouteName: 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,
