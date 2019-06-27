@@ -77,6 +77,25 @@ const Profile = ({ navigation }: ProfileProps) => {
     dispatch(fetchTimeline({ from, UserId }));
   };
 
+  const isSelf = loginUser.id === (profile && !(profile instanceof Error) && profile.id);
+
+  useEffect(
+    () => {
+      // update the page header if doesn't match
+      if (
+        profile
+        && !(profile instanceof Error)
+        && navigation.getParam('title', '') !== profile.username
+      ) {
+        navigation.setParams({
+          headerBackTitle: isSelf ? 'Profile' : profile.username,
+          title: profile.username,
+        });
+      }
+    },
+    [profile, isSelf],
+  );
+
   const onLogout = () => {
     Alert.alert(
       'Log out',
@@ -115,21 +134,6 @@ const Profile = ({ navigation }: ProfileProps) => {
       </SafeWithHeader>
     );
   }
-
-  const isSelf = loginUser.id === profile.id;
-
-  useEffect(
-    () => {
-      // update the page header if doesn't match
-      if (navigation.getParam('title', '') !== profile.username) {
-        navigation.setParams({
-          headerBackTitle: isSelf ? 'Profile' : profile.username,
-          title: profile.username,
-        });
-      }
-    },
-    [profile.username],
-  );
 
   const actions = isSelf
     ? (
