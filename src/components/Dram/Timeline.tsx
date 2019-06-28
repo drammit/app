@@ -15,7 +15,6 @@ import {
 const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: colors.white,
-    flex: 1,
   },
 });
 
