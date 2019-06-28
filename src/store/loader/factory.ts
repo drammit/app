@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 /**
  * E: Type of table entry shape
  */
-function createLoader<E>({
+function createLoader<T, E>({
   table,
   defaultValue,
   fallbackValue,
@@ -17,29 +17,23 @@ function createLoader<E>({
   reducer,
 }: {
   table: string;
-  defaultValue: { [key: string]: StoreResolvable<E> };
+  defaultValue: T;
   fallbackValue: E;
   pk?: string;
   fetchTypes?: string[];
   resolver: (id: string | number) => Promise<any>;
-  reducer?: Reducer<{ [key: string]: StoreResolvable<E> }, DrammitAction>;
+  reducer?: Reducer<T, DrammitAction>;
   many?: boolean;
 }): [
-  (
-    state: { [key: string]: StoreResolvable<E> } | undefined,
-    action: DrammitAction,
-  ) => { [key: string]: StoreResolvable<E> },
-  (state: StoreShape) => { [key: string]: StoreResolvable<E> },
+  (state: T | undefined, action: DrammitAction) => T,
+  (state: StoreShape) => T,
   (key?: number | string) => StoreResolvable<E>
 ] {
   // add resolver to listeners
   registerResolver(table, resolver);
 
   // create reducer
-  const combinedReducer = (
-    state: { [key: string]: StoreResolvable<E> } | undefined = defaultValue,
-    action: DrammitAction): { [key: string]: StoreResolvable<E>,
-  } => {
+  const combinedReducer = (state: T | undefined = defaultValue, action: DrammitAction): T => {
     // Handle failed fetches
     if (action.type === 'LOADER_FETCH_FAILED') {
       return action.table === table ? {
@@ -79,10 +73,7 @@ function createLoader<E>({
       return {
         ...state,
         ...handleAction.payload[table].reduce(
-          (
-            acc: { [key: string]: StoreResolvable<E> },
-            item: E,
-          ): { [key: string]: StoreResolvable<E> } => ({
+          (acc: T, item: E): T => ({
             ...acc,
             // @ts-ignore
             [item[pk] || '']: {

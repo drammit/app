@@ -1,7 +1,7 @@
 import createLoader from '../loader/factory';
 import { get } from '../../core/fetch';
 
-export const [countries, getCountries, getCountry] = createLoader<CountryShape>({
+export const [countries, getCountries, getCountry] = createLoader<StoreCountries, CountryShape>({
   defaultValue: {},
   fallbackValue: {
     id: 0,

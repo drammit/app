@@ -51,8 +51,10 @@ declare interface DramShape {
   createdAt: Date;
 }
 
+type StoreDram = StoreResolvable<DramShape>;
+
 declare interface StoreDrams {
-  [key: number]: StoreResolvable<DramShape>;
+  [key: number]: StoreDram;
 }
 
 declare interface UserShape {
@@ -165,7 +167,6 @@ declare interface StoreShape {
   regions: StoreRegions;
   whiskies: StoreWhiskies;
   user: StoreCurrentUser;
-  // loading: StoreLoading;
   timeline: TimelineShape | undefined;
   timelines: StoreTimelines;
 }

@@ -1,7 +1,10 @@
 import createLoader from '../loader/factory';
 import { get } from '../../core/fetch';
 
-export const [distilleries, getDistilleries, getDistillery] = createLoader<DistilleryShape>({
+export const [distilleries, getDistilleries, getDistillery] = createLoader<
+  StoreDistilleries,
+  DistilleryShape
+>({
   defaultValue: {},
   fallbackValue: {
     CountryId: 0,

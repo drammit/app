@@ -1,7 +1,7 @@
 import createLoader from '../loader/factory';
 import { get } from '../../core/fetch';
 
-export const [profiles, getProfiles, getProfile] = createLoader<ProfileShape>({
+export const [profiles, getProfiles, getProfile] = createLoader<StoreProfiles, ProfileShape>({
   defaultValue: {},
   fallbackValue: {
     createdAt: new Date(),

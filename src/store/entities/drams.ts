@@ -1,7 +1,7 @@
 import createLoader from '../loader/factory';
 import { get } from '../../core/fetch';
 
-export const [drams, getDrams, getDram] = createLoader<DramShape>({
+export const [drams, getDrams, getDram] = createLoader<StoreDrams, DramShape>({
   defaultValue: {},
   fallbackValue: {
     UserId: 0,

@@ -8,7 +8,6 @@ import { regions } from '../entities/regions';
 import { users } from '../entities/users';
 import { whiskies } from '../entities/whiskies';
 
-import loading from '../loader/reducer';
 import user from './user';
 import { singleReducer } from './timeline';
 import timelines from './timelines';
@@ -20,7 +19,6 @@ export default (
   countries,
   distilleries,
   drams,
-  // loading,
   profiles,
   regions,
   timeline: singleReducer,

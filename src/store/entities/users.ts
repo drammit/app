@@ -1,7 +1,7 @@
 import createLoader from '../loader/factory';
 import { get } from '../../core/fetch';
 
-export const [users, getUsers, getUser] = createLoader<UserShape>({
+export const [users, getUsers, getUser] = createLoader<StoreUsers, UserShape>({
   defaultValue: {},
   fallbackValue: {
     id: 0,
