@@ -51,10 +51,8 @@ declare interface DramShape {
   createdAt: Date;
 }
 
-declare type StoreDram = StoreResolvable<DramShape>;
-
 declare interface StoreDrams {
-  [key: number]: StoreDram;
+  [key: number]: StoreResolvable<DramShape>;
 }
 
 declare interface UserShape {
@@ -65,7 +63,7 @@ declare interface UserShape {
   avatar?: string;
 }
 
-declare type StoreUser = UserShape | undefined | Error;
+declare type StoreUser = StoreResolvable<UserShape>;
 
 declare interface StoreUsers {
   [key: number]: StoreUser;
@@ -86,7 +84,7 @@ declare interface WhiskyShape {
   image?: string;
 }
 
-declare type StoreWhisky = WhiskyShape | undefined | Error;
+declare type StoreWhisky = StoreResolvable<WhiskyShape>;
 
 declare interface StoreWhiskies {
   [key: number]: StoreWhisky;
@@ -100,7 +98,7 @@ declare interface DistilleryShape {
   image?: string;
 }
 
-declare type StoreDistillery = DistilleryShape | undefined | Error;
+declare type StoreDistillery = StoreResolvable<DistilleryShape>;
 
 declare interface StoreDistilleries {
   [key: number]: StoreDistillery;
@@ -111,7 +109,7 @@ declare interface RegionShape {
   name: string;
 }
 
-declare type StoreRegion = RegionShape | undefined | Error;
+declare type StoreRegion = StoreResolvable<RegionShape>;
 
 declare interface StoreRegions {
   [key: number]: StoreRegion;
@@ -122,7 +120,7 @@ declare interface CountryShape {
   name: string;
 }
 
-declare type StoreCountry = CountryShape | undefined | Error;
+declare type StoreCountry = StoreResolvable<CountryShape>;
 
 declare interface StoreCountries {
   [key: number]: StoreCountry;
@@ -137,7 +135,7 @@ declare interface ProfileShape extends UserShape {
   drams: number;
 }
 
-declare type StoreProfile = ProfileShape | undefined | Error;
+declare type StoreProfile = StoreResolvable<ProfileShape>;
 
 declare interface StoreProfiles {
   [key: number]: StoreProfile;
@@ -167,7 +165,7 @@ declare interface StoreShape {
   regions: StoreRegions;
   whiskies: StoreWhiskies;
   user: StoreCurrentUser;
-  loading: StoreLoading;
+  // loading: StoreLoading;
   timeline: TimelineShape | undefined;
   timelines: StoreTimelines;
 }

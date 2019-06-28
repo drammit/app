@@ -20,7 +20,7 @@ export default (
   countries,
   distilleries,
   drams,
-  loading,
+  // loading,
   profiles,
   regions,
   timeline: singleReducer,

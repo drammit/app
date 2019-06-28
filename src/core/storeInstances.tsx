@@ -2,17 +2,30 @@ import React from 'react';
 
 import Message from '../components/Message/Message';
 
-export const paramFromInstance = (instance: any, param: string, defaultValue?: any) => {
-  return (instance && !(instance instanceof Error) && (instance as any)[param])
-    ? instance[param]
-    : defaultValue;
-};
+export function paramFromInstance<T>(
+  instance: StoreResolvable<T>,
+  param: string,
+  defaultValue?: any,
+) {
+  if (
+    instance
+    && instance.value
+    && instance.isResolved
+    && !instance.error
+    && typeof (instance.value as any)[param] !== 'undefined'
+  ) {
+    return (instance.value as any)[param];
+  }
 
-export const errorComponent = (possible: any[]) => {
-  if (possible.some(p => p instanceof Error)) {
-    const message = possible.find(p => p instanceof Error).message;
+  return defaultValue;
+}
 
-    return <Message error>{`Something went wrong:\n${message}`}</Message>;
+export const errorComponent = (possible: StoreResolvable<any>[]) => {
+  if (possible.some(p => p.error)) {
+    const item = possible.find(p => p.error);
+    if (!item) return null;
+    // @ts-ignore
+    return <Message error>{`Something went wrong:\n${item.error.message}`}</Message>;
   }
 
   return null;

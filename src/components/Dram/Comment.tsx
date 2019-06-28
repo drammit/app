@@ -6,12 +6,12 @@ import UsernameLink from '../User/UsernameLink';
 interface CommentProps {
   comment: string;
   createdAt: Date;
-  user: StoreUser;
+  user: UserShape;
   disableLink?: boolean;
 }
 
 const Comment = ({ comment, user, disableLink }: CommentProps) => {
-  if (!user || user instanceof Error) return null;
+  if (!user) return null;
 
   return (
     <View style={{ marginBottom: 5, marginTop: 5 }}>

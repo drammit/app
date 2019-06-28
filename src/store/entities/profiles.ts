@@ -1,8 +1,18 @@
 import createLoader from '../loader/factory';
 import { get } from '../../core/fetch';
 
-export const [profiles, getProfiles, getProfile] = createLoader<StoreProfiles, StoreProfile>({
+export const [profiles, getProfiles, getProfile] = createLoader<ProfileShape>({
   defaultValue: {},
+  fallbackValue: {
+    createdAt: new Date(),
+    drams: 0,
+    followers: 0,
+    following: 0,
+    id: 0,
+    isFollowing: false,
+    subscription: false,
+    username: '',
+  },
   reducer: (state = {}, action) => {
     switch (action.type) {
       case 'PROFILE_FOLLOW':
@@ -11,7 +21,10 @@ export const [profiles, getProfiles, getProfile] = createLoader<StoreProfiles, S
           ...state,
           [action.UserId]: {
             ...state[action.UserId],
-            isFollowing: action.type === 'PROFILE_FOLLOW',
+            value: {
+              ...state[action.UserId].value,
+              isFollowing: action.type === 'PROFILE_FOLLOW',
+            },
           },
         };
       default:

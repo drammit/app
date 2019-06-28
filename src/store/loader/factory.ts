@@ -1,4 +1,3 @@
-import { isLoading } from './selector';
 import { fetch } from './actions';
 import { registerResolver } from './listeners';
 import { Reducer } from 'redux';
@@ -6,41 +5,64 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 /**
- * T: Type of table shape
  * E: Type of table entry shape
  */
-function createLoader<T, E>({
+function createLoader<E>({
   table,
   defaultValue,
+  fallbackValue,
   pk = 'id',
   fetchTypes = [],
   resolver,
   reducer,
 }: {
   table: string;
-  defaultValue: T;
+  defaultValue: { [key: string]: StoreResolvable<E> };
+  fallbackValue: E;
   pk?: string;
   fetchTypes?: string[];
   resolver: (id: string | number) => Promise<any>;
-  reducer?: Reducer;
+  reducer?: Reducer<{ [key: string]: StoreResolvable<E> }, DrammitAction>;
   many?: boolean;
 }): [
-  (state: T | undefined, action: DrammitAction) => T,
-  (state: StoreShape) => T,
-  (key?: number | string) => E
+  (
+    state: { [key: string]: StoreResolvable<E> } | undefined,
+    action: DrammitAction,
+  ) => { [key: string]: StoreResolvable<E> },
+  (state: StoreShape) => { [key: string]: StoreResolvable<E> },
+  (key?: number | string) => StoreResolvable<E>
 ] {
   // add resolver to listeners
   registerResolver(table, resolver);
 
   // create reducer
-  const combinedReducer = (state: T | undefined = defaultValue, action: DrammitAction): T => {
+  const combinedReducer = (
+    state: { [key: string]: StoreResolvable<E> } | undefined = defaultValue,
+    action: DrammitAction): { [key: string]: StoreResolvable<E>,
+  } => {
     // Handle failed fetches
     if (action.type === 'LOADER_FETCH_FAILED') {
       return action.table === table ? {
         ...state,
         [action.key]: {
-          ...action.error,
-          type: 'LoadError',
+          error: {
+            ...action.error,
+            type: 'LoadError',
+          },
+          isPending: false,
+          isResolved: true,
+          value: fallbackValue,
+        },
+      } : state;
+    }
+
+    if (action.type === 'LOADER_FETCH') {
+      return action.table === table ? {
+        ...state,
+        [action.key]: {
+          isPending: true,
+          isResolved: false,
+          value: fallbackValue,
         },
       } : state;
     }
@@ -57,10 +79,17 @@ function createLoader<T, E>({
       return {
         ...state,
         ...handleAction.payload[table].reduce(
-          (acc: T, item: E) => ({
+          (
+            acc: { [key: string]: StoreResolvable<E> },
+            item: E,
+          ): { [key: string]: StoreResolvable<E> } => ({
             ...acc,
             // @ts-ignore
-            [item[pk]]: item,
+            [item[pk] || '']: {
+              isPending: false,
+              isResolved: true,
+              value: item,
+            },
           }),
           {},
         ),
@@ -73,25 +102,29 @@ function createLoader<T, E>({
 
   // create selector
   // @ts-ignore
-  const getAll = (state: StoreShape): T => state[table];
+  const getAll = (state: StoreShape) => state[table];
 
-  const getEntry = (key?: number | string) => {
+  const getEntry = (key?: number | string): StoreResolvable<E> => {
     const dispatch = useDispatch();
 
     // @ts-ignore
     const entry = useSelector(getAll)[key];
-    const loading = useSelector(isLoading(table, key || ''));
 
     useEffect(
       () => {
-        if (key && typeof entry === 'undefined' && !loading) dispatch(fetch(table, key));
+        if (key && (typeof entry === 'undefined' || (!entry.isResolved && !entry.isPending))) {
+          dispatch(fetch(table, key));
+        }
       },
-      [entry, loading, key],
+      [entry, key],
     );
 
-    if (entry && entry.type === 'LoadError') return new Error(entry.message);
+    const value = entry ? entry.value : fallbackValue;
+    const isPending = entry ? entry.isPending : false;
+    const isResolved = entry ? entry.isResolved : false;
+    const error = entry ? entry.error : undefined;
 
-    return entry;
+    return { value, isPending, isResolved, error };
   };
 
   return [combinedReducer, getAll, getEntry];

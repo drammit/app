@@ -63,32 +63,33 @@ const Dram = ({
 }: DramProps) => {
   const dispatch = useDispatch();
   const currentUser: StoreCurrentUser = useSelector(getCurrentUser);
-  const dram: StoreDram = getDram(id);
+  const dramInstance = getDram(id);
   const onSlainte = useCallback(() => dispatch(slainteDram(id, currentUser.id)), [id, currentUser]);
   const users = useSelector((state: StoreShape) => getUsers(state));
   const selectUser = useCallback((UserId: number) => users[UserId], [users]);
   const isCompact = Boolean(compact);
 
-  const whisky: StoreWhisky = getWhisky(paramFromInstance(dram, 'WhiskyId'));
-  const user: StoreUser = getUser(paramFromInstance(dram, 'UserId'));
-  const distillery: StoreDistillery = getDistillery(paramFromInstance(whisky, 'DistilleryId'));
+  const whiskyInstance = getWhisky(paramFromInstance(dramInstance, 'WhiskyId'));
+  const userInstance = getUser(paramFromInstance(dramInstance, 'UserId'));
+  const distilleryInstance = getDistillery(paramFromInstance(whiskyInstance, 'DistilleryId'));
 
-  if (!dram || !user || !whisky || !distillery) {
+  if (
+    dramInstance.isPending
+    || userInstance.isPending
+    || whiskyInstance.isPending
+    || distilleryInstance.isPending
+  ) {
     // @todo: Placeholders
     return null;
   }
 
-  const error = errorComponent([dram, user, whisky, distillery]);
+  const error = errorComponent([dramInstance, userInstance, whiskyInstance, distilleryInstance]);
   if (error) return <Card><CardItem><Body>{error}</Body></CardItem></Card>;
 
-  if (
-    dram instanceof Error
-    || user instanceof Error
-    || whisky instanceof Error
-    || distillery instanceof Error
-  ) {
-    return null;
-  }
+  const dram = dramInstance.value;
+  const user = userInstance.value;
+  const whisky = whiskyInstance.value;
+  const distillery = distilleryInstance.value;
 
   const slaintes: SlainteWithUser[] = dram.slaintes.map((s: DramSlainteShape) => ({
     ...s,
@@ -104,7 +105,7 @@ const Dram = ({
     'DramDetails',
     { id: dram.id, comment: true },
   );
-  const dramSlaintes = slaintes.filter(s => s.user && !(s.user instanceof Error));
+  const dramSlaintes = slaintes;
   const dramComments = comments
     .filter(c => c.user && !(c.user instanceof Error));
   const slainte = dramSlaintes.some(s => s.UserId === currentUser.id);
@@ -169,9 +170,7 @@ const Dram = ({
               <IconSlainte style={{ marginRight: 6 }} height={16} />
               {dramSlaintes.map((s, index) => (
                 <React.Fragment key={s.UserId}>
-                  <UsernameLink
-                    user={(s.user as UserShape)}
-                  />
+                  <UsernameLink user={s.user.value} />
                   {index + 1 < dramSlaintes.length ? <Text>, </Text> : null}
                 </React.Fragment>
               ))}
@@ -214,7 +213,7 @@ const Dram = ({
                   disableLink={isCompact}
                   key={c.id}
                   comment={c.comment}
-                  user={c.user}
+                  user={c.user.value}
                   createdAt={c.createdAt}
                 />
               ))}
