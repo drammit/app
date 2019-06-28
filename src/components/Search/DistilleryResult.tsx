@@ -13,11 +13,11 @@ interface DistilleryResultProps extends NavigationInjectedProps {
 }
 
 const DistilleryResult = ({ id, navigation }: DistilleryResultProps) => {
-  const distillery: StoreDistillery = getDistillery(id);
-  const country: StoreCountry = getCountry(paramFromInstance(distillery, 'CountryId'));
-  const region: StoreRegion = getRegion(paramFromInstance(distillery, 'RegionId'));
+  const distilleryInstance: StoreDistillery = getDistillery(id);
+  const country: StoreCountry = getCountry(paramFromInstance(distilleryInstance, 'CountryId'));
+  const region: StoreRegion = getRegion(paramFromInstance(distilleryInstance, 'RegionId'));
 
-  if (!distillery) {
+  if (distilleryInstance.isPending) {
     return (
       <ListItem avatar>
         <Body>
@@ -31,13 +31,16 @@ const DistilleryResult = ({ id, navigation }: DistilleryResultProps) => {
     );
   }
 
-  if (distillery instanceof Error) {
-    return null;
-  }
+  if (distilleryInstance.error) return null;
+
+  const distillery = distilleryInstance.value;
 
   const distilleryName = distillery.name;
   const image = distillery.image;
-  const location = [region && region.name, country && country.name]
+  const location = [
+    region.isResolved && region.value.name,
+    country.isResolved && country.value.name,
+  ]
     .filter(i => !!i)
     .join(', ');
 

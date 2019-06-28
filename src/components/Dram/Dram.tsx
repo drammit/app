@@ -158,7 +158,7 @@ const Dram = ({
               marginBottom: 6,
               marginTop: 6,
             }}
-            whisky={whisky}
+            whisky={whiskyInstance}
           />
           <DistilleryNameLink disableLink={isCompact} distillery={distillery} />
         </Body>

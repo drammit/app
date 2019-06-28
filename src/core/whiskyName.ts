@@ -1,6 +1,6 @@
 export default function whiskyName(whisky: StoreWhisky, distillery: StoreDistillery): string {
-  if (!whisky || whisky instanceof Error) return '';
-  if (!distillery || distillery instanceof Error) return '';
+  if (!whisky.isResolved || whisky.error) return '';
+  if (!distillery.isResolved || distillery.error) return '';
 
-  return [distillery.name, whisky.name, whisky.bottlingSerie].join(' ');
+  return [distillery.value.name, whisky.value.name, whisky.value.bottlingSerie].join(' ');
 }

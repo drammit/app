@@ -5,9 +5,10 @@ import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { getDistillery } from '../../store/entities/distilleries';
 
 import whiskyName from '../../core/whiskyName';
+import { paramFromInstance } from '../../core/storeInstances';
 
 interface NameLinkProps extends NavigationInjectedProps {
-  whisky: WhiskyShape;
+  whisky: StoreWhisky;
   size?: number;
   style?: any;
   disableLink?: boolean;
@@ -20,7 +21,7 @@ const NameLink = ({
   navigation,
   disableLink = false,
 }: NameLinkProps) => {
-  const distillery: StoreDistillery = getDistillery(whisky.DistilleryId);
+  const distillery: StoreDistillery = getDistillery(paramFromInstance(whisky, 'DistilleryId'));
   const name = whiskyName(whisky, distillery);
 
   return (
@@ -29,7 +30,9 @@ const NameLink = ({
         fontSize: size,
         ...style,
       }}
-      onPress={disableLink ? undefined : () => navigation.navigate('Whisky', { id: whisky.id })}
+      onPress={disableLink
+        ? undefined
+        : () => navigation.navigate('Whisky', { id: whisky.value.id })}
     >
       {name}
     </Text>
