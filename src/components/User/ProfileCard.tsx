@@ -18,7 +18,7 @@ const ProfileCard = ({ id, style = {} }: ProfileCardProps) => {
   const profile = getProfile(id);
   const currentUser = useSelector(getCurrentUser);
 
-  if (!profile || profile instanceof Error || currentUser.id === 19) {
+  if (!profile.isResolved || profile.error || currentUser.id === 19) {
     return (
       <Card style={{ ...style }}>
         <CardItem>
@@ -34,11 +34,11 @@ const ProfileCard = ({ id, style = {} }: ProfileCardProps) => {
     <Card style={{ ...style }}>
       <CardItem>
         <Left>
-          <Avatar size={80} uri={profile.avatar} />
+          <Avatar size={80} uri={profile.value.avatar} />
           <Body style={{ marginLeft: 16 }}>
-            <UsernameLink fullName user={profile} />
-            <Text note>{profile.username}</Text>
-            <FollowButton style={{ marginTop: 6 }} profile={profile} />
+            <UsernameLink fullName user={profile.value} />
+            <Text note>{profile.value.username}</Text>
+            <FollowButton style={{ marginTop: 6 }} profile={profile.value} />
           </Body>
         </Left>
       </CardItem>

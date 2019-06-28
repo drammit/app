@@ -105,9 +105,10 @@ const Dram = ({
     'DramDetails',
     { id: dram.id, comment: true },
   );
-  const dramSlaintes = slaintes;
+  const dramSlaintes = slaintes
+    .filter(c => c.user && c.user.isResolved && !c.user.error);
   const dramComments = comments
-    .filter(c => c.user && !(c.user instanceof Error));
+    .filter(c => c.user && c.user.isResolved && !c.user.error);
   const slainte = dramSlaintes.some(s => s.UserId === currentUser.id);
 
   const goToDetailsProps = {

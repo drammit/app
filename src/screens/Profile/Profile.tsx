@@ -42,12 +42,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexGrow: 1,
     justifyContent: 'space-around',
-    marginLeft: 16,
   },
   topbar: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     marginBottom: 12,
   },
 });
@@ -61,7 +60,8 @@ const Profile = ({ navigation }: ProfileProps) => {
   const idParam: null | number = navigation.getParam('id', null);
   const UserId = idParam || loginUser.id;
 
-  const profile = getProfile(UserId);
+  const profileInstance = getProfile(UserId);
+  const profile = profileInstance.value;
 
   const timeline: TimelineShape = useSelector((state: StoreShape) => getUserTimeline(UserId)(state))
     || {
@@ -79,14 +79,14 @@ const Profile = ({ navigation }: ProfileProps) => {
     dispatch(fetchTimeline({ from, UserId }));
   };
 
-  const isSelf = loginUser.id === paramFromInstance(profile, 'id');
+  const isSelf = loginUser.id === paramFromInstance(profileInstance, 'id');
 
   useEffect(
     () => {
       // update the page header if doesn't match
       if (
-        profile
-        && !(profile instanceof Error)
+        profileInstance.isResolved
+        && !profileInstance.error
         && navigation.getParam('title', '') !== profile.username
       ) {
         navigation.setParams({
@@ -95,7 +95,7 @@ const Profile = ({ navigation }: ProfileProps) => {
         });
       }
     },
-    [profile, isSelf],
+    [profile, profileInstance, isSelf],
   );
 
   const onLogout = () => {
@@ -118,11 +118,11 @@ const Profile = ({ navigation }: ProfileProps) => {
     );
   };
 
-  if (!profile) {
+  if (profileInstance.isPending || !profileInstance.isResolved) {
     return <Spinner color={colors.grey3} />;
   }
 
-  if (profile instanceof Error) {
+  if (profileInstance.error) {
     const errorMessage = 'Couldn\'t load';
     if (navigation.getParam('title', '') !== errorMessage) {
       navigation.setParams({ title: errorMessage });
@@ -131,7 +131,7 @@ const Profile = ({ navigation }: ProfileProps) => {
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <Content padder>
-          <Message error>{`Something went wrong:\n${profile.message}`}</Message>
+          <Message error>{`Something went wrong:\n${profileInstance.error.message}`}</Message>
         </Content>
       </SafeWithHeader>
     );
@@ -162,28 +162,28 @@ const Profile = ({ navigation }: ProfileProps) => {
         header={(
           <>
             <View style={styles.topbar}>
-              <Avatar uri={profile.avatar} />
+              <Avatar uri={profile.avatar} style={{ marginRight: 16 }} />
 
-              <View style={styles.figureItems}>
-                <View style={styles.figureItem}>
-                  <Text style={styles.figureItemNumber}>{profile.drams}</Text>
-                  <Text style={styles.figureItemName}>Drams</Text>
-                </View>
-
-                <View style={styles.figureItem}>
-                  <Text style={styles.figureItemNumber}>{profile.followers}</Text>
-                  <Text style={styles.figureItemName}>Followers</Text>
-                </View>
-
-                <View style={styles.figureItem}>
-                  <Text style={styles.figureItemNumber}>{profile.following}</Text>
-                  <Text style={styles.figureItemName}>Following</Text>
-                </View>
+              <View>
+                <H3>{profile.name || profile.username}</H3>
+                <Text>Joined {distanceInWordsToNow(profile.createdAt)} ago</Text>
               </View>
             </View>
-            <View>
-              <H3>{profile.name || profile.username}</H3>
-              <Text>Joined {distanceInWordsToNow(profile.createdAt)} ago</Text>
+            <View style={styles.figureItems}>
+              <View style={styles.figureItem}>
+                <Text style={styles.figureItemNumber}>{profile.drams}</Text>
+                <Text style={styles.figureItemName}>Drams</Text>
+              </View>
+
+              <View style={styles.figureItem}>
+                <Text style={styles.figureItemNumber}>{profile.followers}</Text>
+                <Text style={styles.figureItemName}>Followers</Text>
+              </View>
+
+              <View style={styles.figureItem}>
+                <Text style={styles.figureItemNumber}>{profile.following}</Text>
+                <Text style={styles.figureItemName}>Following</Text>
+              </View>
             </View>
 
             {actions}

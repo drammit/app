@@ -24,6 +24,7 @@ import { getPopularWhiskies } from '../../store/api/distillery';
 import { extraInformation } from '../../store/actions/app';
 
 import { errorComponent, paramFromInstance } from '../../core/storeInstances';
+import distilleryLocation from '../../core/distilleryLocation';
 
 import colors from '../../config/colors';
 
@@ -82,9 +83,11 @@ const Distillery = ({ navigation }: DistilleryProps) => {
 
   const storeDispatch = useDispatch();
 
-  const distillery: StoreDistillery = getDistillery(id);
-  const country: StoreCountry = getCountry(paramFromInstance(distillery, 'CountryId'));
-  const region: StoreRegion = getRegion(paramFromInstance(distillery, 'RegionId'));
+  const distilleryInstance: StoreDistillery = getDistillery(id);
+  const countryInstance: StoreCountry = getCountry(
+    paramFromInstance(distilleryInstance, 'CountryId'),
+  );
+  const regionInstance: StoreRegion = getRegion(paramFromInstance(distilleryInstance, 'RegionId'));
   const [state, dispatch] = useReducer(
     reducer,
     {
@@ -94,9 +97,11 @@ const Distillery = ({ navigation }: DistilleryProps) => {
     },
   );
 
+  const distillery = distilleryInstance.value;
+
   useEffect(
     () => {
-      if (distillery && !state.isLoading && !state.isResolved) {
+      if (distilleryInstance.isResolved && !state.isLoading && !state.isResolved) {
         dispatch({ type: 'FETCH_START' });
 
         getPopularWhiskies(id)
@@ -107,20 +112,16 @@ const Distillery = ({ navigation }: DistilleryProps) => {
           .catch(() => dispatch({ type: 'FETCH_FAILED' }));
       }
     },
-    [distillery, state.isLoading, state.isResolved, id],
+    [distilleryInstance, state.isLoading, state.isResolved, id],
   );
 
-  if (!distillery) {
+  if (!distilleryInstance.isResolved) {
     return null;
   }
 
-  const error = errorComponent([distillery, country, region]);
+  const error = errorComponent([distilleryInstance, countryInstance, regionInstance]);
 
-  if (
-    distillery instanceof Error
-    || country instanceof Error
-    || region instanceof Error
-  ) {
+  if (error) {
     return (
       <SafeWithHeader style={{ flex: 1 }}>
         <Content padder>
@@ -130,9 +131,7 @@ const Distillery = ({ navigation }: DistilleryProps) => {
     );
   }
 
-  const location = [region && region.name, country && country.name]
-    .filter(i => !!i)
-    .join(', ');
+  const location = distilleryLocation(regionInstance, countryInstance);
 
   return (
     <SafeWithHeader style={{ flex: 1 }}>
@@ -143,7 +142,7 @@ const Distillery = ({ navigation }: DistilleryProps) => {
               {distillery.image ? <Thumbnail small source={{ uri: distillery.image }} /> : null}
               <Body>
                 <H2>{distillery.name}</H2>
-                <Text>Located in {location}</Text>
+                {location ? <Text>Located in {location}</Text> : null}
               </Body>
             </Left>
           </CardItem>

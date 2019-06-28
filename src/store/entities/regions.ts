@@ -8,6 +8,6 @@ export const [regions, getRegions, getRegion] = createLoader<StoreRegions, Regio
     name: '',
   },
   fetchTypes: ['FETCH_TIMELINE_SUCCESS', 'SEARCH_RECEIVE'],
-  resolver: id => get(`/region/${id}`),
+  resolver: id => get(`/distillery/region/${id}`),
   table: 'regions',
 });

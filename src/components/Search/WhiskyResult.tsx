@@ -14,10 +14,13 @@ interface WhiskyResultProps extends NavigationInjectedProps {
 }
 
 const WhiskyResult = ({ id, hideDistillery = false, navigation }: WhiskyResultProps) => {
-  const whisky: StoreWhisky = getWhisky(id);
-  const distillery: StoreDistillery = getDistillery(paramFromInstance(whisky, 'DistilleryId'));
+  const whiskyInstance: StoreWhisky = getWhisky(id);
+  const distilleryInstance: StoreDistillery = getDistillery(
+    paramFromInstance(whiskyInstance, 'DistilleryId'),
+  );
+  const whisky = whiskyInstance.value;
 
-  if (!whisky || !distillery) {
+  if (!whiskyInstance.isResolved || !distilleryInstance.isResolved) {
     return (
       <ListItem avatar>
         <Body>
@@ -31,12 +34,12 @@ const WhiskyResult = ({ id, hideDistillery = false, navigation }: WhiskyResultPr
     );
   }
 
-  if (whisky instanceof Error || distillery instanceof Error) {
+  if (whiskyInstance.error || distilleryInstance.error) {
     return null;
   }
 
-  const name = whiskyName(whisky, distillery);
-  const distilleryName = distillery.name;
+  const name = whiskyName(whiskyInstance, distilleryInstance);
+  const distilleryName = distilleryInstance.value.name;
   const image = whisky.image;
 
   return (

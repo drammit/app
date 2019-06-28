@@ -11,9 +11,10 @@ interface UserResultProps extends NavigationInjectedProps {
 }
 
 const UserResult = ({ id, navigation }: UserResultProps) => {
-  const user: StoreUser = getUser(id);
+  const userInstance: StoreUser = getUser(id);
+  const user = userInstance.value;
 
-  if (!user) {
+  if (!userInstance.isResolved) {
     return (
       <ListItem avatar>
         <Body>
@@ -27,7 +28,7 @@ const UserResult = ({ id, navigation }: UserResultProps) => {
     );
   }
 
-  if (user instanceof Error) {
+  if (userInstance.error) {
     return null;
   }
 

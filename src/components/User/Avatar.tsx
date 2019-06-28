@@ -12,6 +12,8 @@ interface AvatarProps {
 }
 
 const Avatar = ({ uri, size = 90, style }: AvatarProps) => {
+  if (!uri) return null;
+
   const completeUri = createAvatarUrl(uri, size);
 
   return (
