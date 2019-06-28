@@ -63,7 +63,7 @@ const timeline = combineReducers({
   refreshing,
 });
 
-export const singleReducer = (state: TimelineShape, action: DrammitAction) => {
+export const singleReducer = (state: TimelineShape | undefined, action: DrammitAction) => {
   if (typeof (action as any).UserId !== 'undefined') {
     return state;
   }

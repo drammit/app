@@ -168,6 +168,6 @@ declare interface StoreShape {
   whiskies: StoreWhiskies;
   user: StoreCurrentUser;
   loading: StoreLoading;
-  timeline: TimelineShape;
+  timeline: TimelineShape | undefined;
   timelines: StoreTimelines;
 }
