@@ -71,7 +71,7 @@ const Dram = ({
 
   const whisky: StoreWhisky = getWhisky(paramFromInstance(dram, 'WhiskyId'));
   const user: StoreUser = getUser(paramFromInstance(dram, 'UserId'));
-  const distillery: StoreDistillery = getDistillery(paramFromInstance(dram, 'DistilleryId'));
+  const distillery: StoreDistillery = getDistillery(paramFromInstance(whisky, 'DistilleryId'));
 
   if (!dram || !user || !whisky || !distillery) {
     // @todo: Placeholders

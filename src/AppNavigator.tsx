@@ -91,11 +91,7 @@ const DramsStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Distillery', // 'Timeline',
-    initialRouteParams: {
-      id: 2241,
-      title: 'Laphroaig',
-    },
+    initialRouteName: 'Timeline',
   },
 );
 
