@@ -6,6 +6,19 @@ declare interface DispatchListener {
 
 /* Shape of the store */
 
+declare interface LoadError {
+  type: 'LoadError';
+  name: string;
+  message: string;
+}
+
+declare interface StoreResolvable<T> {
+  isPending: boolean;
+  isResolved: boolean;
+  error?: LoadError;
+  value: T;
+}
+
 declare interface StoreCurrentUser {
   id: number;
   username: string;
