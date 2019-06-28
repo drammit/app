@@ -51,7 +51,7 @@ declare interface DramShape {
   createdAt: Date;
 }
 
-declare type StoreDram = DramShape | undefined | Error;
+declare type StoreDram = StoreResolvable<DramShape>;
 
 declare interface StoreDrams {
   [key: number]: StoreDram;
