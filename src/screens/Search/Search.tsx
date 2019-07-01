@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useReducer } from 'react';
 import { View, Item, Icon, Input, Content, Tabs, Tab, Spinner, Text } from 'native-base';
-import { NavigationInjectedProps } from 'react-navigation';
 import { useDebounce } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 
@@ -11,6 +10,7 @@ import colors from '../../config/colors';
 
 import { receiveSearchResults } from '../../store/actions/search';
 import { searchQuery } from '../../store/api/search';
+import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
 function tabToFilter(tab: number): SearchFilter {
   switch (tab) {
@@ -53,9 +53,12 @@ interface ClearSearch {
   type: 'CLEAR_RESULTS';
 }
 
-type SearchActions = SetSearch | SetFilter | SetResults | FetchSearch | ClearSearch;
+interface SetPage {
+  type: 'SET_PAGE';
+  page: number;
+}
 
-type TimelineProps = NavigationInjectedProps;
+type SearchActions = SetSearch | SetFilter | SetResults | FetchSearch | ClearSearch | SetPage;
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -67,6 +70,8 @@ const Search = () => {
           return {
             ...state,
             filter: action.filter,
+            isEnd: false,
+            page: 1,
             results: [],
           };
         case 'SET_SEARCH':
@@ -77,18 +82,30 @@ const Search = () => {
         case 'SET_RESULTS':
           return {
             ...state,
+            isEnd: action.results.length === 0,
             isLoading: false,
-            results: action.results,
+            results: [
+              ...state.results,
+              ...action.results,
+            ],
           };
         case 'FETCH_SEARCH':
           return {
             ...state,
             isLoading: true,
           };
+        case 'SET_PAGE':
+          return {
+            ...state,
+            isLoading: true,
+            page: action.page,
+          };
         case 'CLEAR_RESULTS':
           return {
             ...state,
+            isEnd: false,
             isLoading: false,
+            page: 1,
             results: [],
           };
         default:
@@ -97,7 +114,9 @@ const Search = () => {
     },
     {
       filter: 'all',
+      isEnd: false,
       isLoading: false,
+      page: 1,
       results: [],
       search: '',
     },
@@ -120,7 +139,7 @@ const Search = () => {
       if (debouncedSearch.length > 2) {
         localDispatch({ type: 'FETCH_SEARCH' });
 
-        const result = searchQuery(debouncedSearch, localState.filter);
+        const result = searchQuery(debouncedSearch, localState.filter, localState.page);
 
         let cancelCall: any = () => undefined;
         const cancel = new Promise(resolve => cancelCall = resolve);
@@ -144,7 +163,7 @@ const Search = () => {
       // if no search, clear results
       localDispatch({ type: 'CLEAR_RESULTS' });
     },
-    [debouncedSearch, localState.filter, dispatch],
+    [debouncedSearch, localState.filter, localState.page, dispatch],
   );
 
   const onChangeTab = useCallback(
@@ -152,23 +171,47 @@ const Search = () => {
     [goToTab],
   );
 
-  const searchResults = localState.isLoading ? (
+  const onScroll = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      if (localState.isLoading || localState.isEnd) return;
+
+      const { layoutMeasurement, contentSize, contentOffset } = e.nativeEvent;
+
+      const bottom = layoutMeasurement.height + contentOffset.y;
+
+      if (bottom > (contentSize.height - layoutMeasurement.height)) {
+        localDispatch({ type: 'SET_PAGE', page: localState.page + 1 });
+      }
+    },
+    [localState.isLoading, localState.isEnd, localState.page],
+  );
+
+  useEffect(() => localDispatch({ type: 'SET_SEARCH', search: 'Ardbeg' }), []);
+
+  const searchResults = localState.isLoading && localState.page === 1 ? (
     <Content padder scrollEnabled={false}>
       <Spinner color={colors.grey3} />
     </Content>
   ) : (
-    <Content style={{ flex: 1 }} scrollEnabled={localState.results.length > 0}>
+    <Content
+      style={{ flex: 1 }}
+      scrollEnabled={localState.results.length > 0}
+      onScroll={onScroll}
+    >
       {localState.results.length === 0 && debouncedSearch.length > 3
         ? (
           <View style={{ padding: 24, alignItems: 'center' }}>
             <Text note>No results for "{debouncedSearch}"</Text>
           </View>
         ) : (
-          <SearchResults
-            results={localState.results}
-            filter={localState.filter}
-            goToTab={goToTab}
-          />
+          <>
+            <SearchResults
+              results={localState.results}
+              filter={localState.filter}
+              goToTab={goToTab}
+            />
+            {localState.isLoading && <Spinner color={colors.grey3} />}
+          </>
         )}
     </Content>
   );
