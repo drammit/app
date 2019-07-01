@@ -22,7 +22,7 @@ export default (
   ...extraReducers,
   bottlers,
   categories,
-  collections,
+  collection: collections,
   countries,
   distilleries,
   drams,

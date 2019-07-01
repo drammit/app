@@ -25,6 +25,7 @@ import Notifications from './screens/Notifications/Notifications';
 
 import Profile from './screens/Profile/Profile';
 import WishList from './screens/Profile/WishList';
+import Collection from './screens/Profile/Collection';
 import ProfileSettings from './screens/Profile/Settings';
 import SettingsAvatar from './screens/Profile/SettingsAvatar';
 import SettingsDisplayName from './screens/Profile/SettingsDisplayName';
@@ -37,6 +38,39 @@ const defaultStackNavigationOptions = {
     backgroundColor: colors.green,
   },
   headerTintColor: colors.light,
+};
+
+const defaultProfileStack = {
+  Collection: {
+    path: 'collection',
+    screen: Collection,
+  },
+  Profile: {
+    path: 'profile',
+    screen: Profile,
+  },
+  WishList: {
+    path: 'wish-list',
+    screen: WishList,
+  },
+};
+
+const defaultWhiskyStack = {
+  Distillery: {
+    path: 'distillery',
+    screen: Distillery,
+  },
+  Whisky: {
+    path: 'whisky',
+    screen: Whisky,
+  },
+};
+
+const defaultDramStack = {
+  DramDetails: {
+    path: 'dram',
+    screen: DramDetails,
+  },
 };
 
 const AuthStack = createStackNavigator(
@@ -65,29 +99,16 @@ const AuthStack = createStackNavigator(
 
 const DramsStack = createStackNavigator(
   {
-    Distillery: {
-      path: 'distillery',
-      screen: Distillery,
-    },
-    DramDetails: {
-      path: 'dram',
-      screen: DramDetails,
-    },
+    ...defaultProfileStack,
+    ...defaultWhiskyStack,
+    ...defaultDramStack,
     Timeline: {
       path: 'timeline',
       screen: Timeline,
     },
-    UserProfile: {
-      path: 'user-profile',
-      screen: Profile,
-    },
     WelcomeTour: {
       path: 'welcome-tour',
       screen: WelcomeTour,
-    },
-    Whisky: {
-      path: 'whisky',
-      screen: Whisky,
     },
   },
   {
@@ -110,18 +131,9 @@ DramsStack.navigationOptions = ({ navigation }: any) => {
 
 const ProfileStack = createStackNavigator(
   {
-    Distillery: {
-      path: 'distillery',
-      screen: Distillery,
-    },
-    DramDetails: {
-      path: 'dram',
-      screen: DramDetails,
-    },
-    Profile: {
-      path: 'profile',
-      screen: Profile,
-    },
+    ...defaultProfileStack,
+    ...defaultWhiskyStack,
+    ...defaultDramStack,
     ProfileSettings: {
       path: 'profile-settings',
       screen: ProfileSettings,
@@ -138,38 +150,20 @@ const ProfileStack = createStackNavigator(
       path: 'settings-password',
       screen: SettingsPassword,
     },
-    Whisky: {
-      path: 'whisky',
-      screen: Whisky,
-    },
-    WishList: {
-      path: 'wish-list',
-      screen: WishList,
-    },
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'WishList', // 'Profile',
+    initialRouteName: 'Profile',
   },
 );
 
 const SearchStack = createStackNavigator(
   {
-    Distillery: {
-      path: 'distillery',
-      screen: Distillery,
-    },
+    ...defaultProfileStack,
+    ...defaultWhiskyStack,
     Search: {
       path: 'search',
       screen: Search,
-    },
-    UserProfile: {
-      path: 'user-profile',
-      screen: Profile,
-    },
-    Whisky: {
-      path: 'whisky',
-      screen: Whisky,
     },
   },
   {

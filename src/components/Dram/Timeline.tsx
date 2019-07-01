@@ -72,7 +72,6 @@ const Timeline = ({ timeline, fallback, header, onRefresh, onFetch }: TimelinePr
       scrollEnabled
       onScroll={onScroll}
       contentContainerStyle={styles.mainContainer}
-      padder
       refreshing={isRefreshing}
       refreshControl={
         <RefreshControl
@@ -83,8 +82,10 @@ const Timeline = ({ timeline, fallback, header, onRefresh, onFetch }: TimelinePr
       }
     >
       {header ? header : null}
-      {items.map((id: number) => <Dram compact key={id} id={id} />)}
-      {!isRefreshing && isLoading ? <Spinner color={colors.grey3} /> : null}
+      <Content padder>
+        {items.map((id: number) => <Dram compact key={id} id={id} />)}
+        {!isRefreshing && isLoading ? <Spinner color={colors.grey3} /> : null}
+      </Content>
     </Content>
   );
 };

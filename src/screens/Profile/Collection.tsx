@@ -7,26 +7,26 @@ import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import WhiskyResult from '../../components/Search/WhiskyResult';
 
 import { getCurrentUser } from '../../store/selectors/user';
-import { getWishList } from '../../store/entities/wishList';
+import { getCollection } from '../../store/entities/collections';
 
 import colors from '../../config/colors';
 
 import { errorComponent } from '../../core/storeInstances';
 
-const WishList = ({ navigation }: NavigationInjectedProps) => {
+const Collection = ({ navigation }: NavigationInjectedProps) => {
   const loginUser = useSelector(getCurrentUser);
 
   const idParam: null | number = navigation.getParam('id', null);
   const UserId = idParam || loginUser.id;
 
-  const wishlistInstance = getWishList(UserId);
-  const wishList = wishlistInstance.value;
+  const collectionInstance = getCollection(UserId);
+  const collection = collectionInstance.value;
 
-  if (wishlistInstance.isPending || !wishlistInstance.isResolved) {
+  if (collectionInstance.isPending || !collectionInstance.isResolved) {
     return <Spinner color={colors.grey3} />;
   }
 
-  const error = errorComponent([wishlistInstance]);
+  const error = errorComponent([collectionInstance]);
 
   if (error) {
     return (
@@ -40,16 +40,16 @@ const WishList = ({ navigation }: NavigationInjectedProps) => {
 
   return (
     <SafeWithHeader style={{ flex: 1 }}>
-      <Content padder scrollEnabled={wishList.items.length > 0}>
-        {wishList.items.length === 0
+      <Content padder scrollEnabled={collection.items.length > 0}>
+        {collection.items.length === 0
           ? (
             <Text note style={{ textAlign: 'center', padding: 24 }}>
-              No whiskies on the wish list yet.
+              No whiskies in the collection yet.
             </Text>
           )
           : (
             <List>
-              {wishList.items.map(i => <WhiskyResult key={i} id={i} />)}
+              {collection.items.map(i => <WhiskyResult key={i} id={i} />)}
             </List>
           )}
       </Content>
@@ -57,8 +57,8 @@ const WishList = ({ navigation }: NavigationInjectedProps) => {
   );
 };
 
-WishList.navigationOptions = {
-  title: 'Wish List',
+Collection.navigationOptions = {
+  title: 'Collection',
 };
 
-export default WishList;
+export default Collection;

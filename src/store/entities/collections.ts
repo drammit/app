@@ -13,5 +13,5 @@ export const [
   },
   pk: 'UserId',
   resolver: id => get(`/user-lists/collection/${id}`),
-  table: 'collections',
+  table: 'collection',
 });

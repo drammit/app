@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { Text, Button, Content, H3, Spinner } from 'native-base';
+import { Text, Button, Content, H3, Spinner, Left, Right, Icon, ListItem, List } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
@@ -155,38 +155,64 @@ const Profile = ({ navigation }: ProfileProps) => {
       </View>
     );
 
+  const name = profile.name || profile.username;
+  const namePostFix = name[name.length - 1] === 's' ? "'" : "'s";
+
   return (
     <SafeWithHeader style={{ flex: 1 }}>
       <Timeline
         timeline={timeline}
         header={(
           <>
-            <View style={styles.topbar}>
-              <Avatar uri={profile.avatar} style={{ marginRight: 16 }} />
+            <Content padder>
+              <View style={styles.topbar}>
+                <Avatar uri={profile.avatar} style={{ marginRight: 16 }} />
 
-              <View>
-                <H3>{profile.name || profile.username}</H3>
-                <Text>Joined {distanceInWordsToNow(profile.createdAt)} ago</Text>
+                <View>
+                  <H3>{name}</H3>
+                  <Text>Joined {distanceInWordsToNow(profile.createdAt)} ago</Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.figureItems}>
-              <View style={styles.figureItem}>
-                <Text style={styles.figureItemNumber}>{profile.drams}</Text>
-                <Text style={styles.figureItemName}>Drams</Text>
+              <View style={styles.figureItems}>
+                <View style={styles.figureItem}>
+                  <Text style={styles.figureItemNumber}>{profile.drams}</Text>
+                  <Text style={styles.figureItemName}>Drams</Text>
+                </View>
+
+                <View style={styles.figureItem}>
+                  <Text style={styles.figureItemNumber}>{profile.followers}</Text>
+                  <Text style={styles.figureItemName}>Followers</Text>
+                </View>
+
+                <View style={styles.figureItem}>
+                  <Text style={styles.figureItemNumber}>{profile.following}</Text>
+                  <Text style={styles.figureItemName}>Following</Text>
+                </View>
               </View>
 
-              <View style={styles.figureItem}>
-                <Text style={styles.figureItemNumber}>{profile.followers}</Text>
-                <Text style={styles.figureItemName}>Followers</Text>
-              </View>
+              {actions}
+            </Content>
 
-              <View style={styles.figureItem}>
-                <Text style={styles.figureItemNumber}>{profile.following}</Text>
-                <Text style={styles.figureItemName}>Following</Text>
-              </View>
-            </View>
-
-            {actions}
+            <List style={{ marginBottom: 12 }}>
+              <ListItem onPress={() => navigation.navigate('WishList', { id: UserId })}>
+                <Left>
+                  <Text>Wish list</Text>
+                </Left>
+                <Right>
+                  <Icon name="arrow-forward" />
+                </Right>
+              </ListItem>
+              <ListItem onPress={() => navigation.navigate('Collection', { id: UserId })}>
+                <Left>
+                  <Text>
+                    {name}{namePostFix} Collection
+                  </Text>
+                </Left>
+                <Right>
+                  <Icon name="arrow-forward" />
+                </Right>
+              </ListItem>
+            </List>
           </>
         )}
         onFetch={onFetch}
