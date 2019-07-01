@@ -1,9 +1,21 @@
-import React, { useEffect } from 'react';
-import { Body, Card, CardItem, Content, H2, Left, Text, Thumbnail } from 'native-base';
+import React, { useEffect, useReducer } from 'react';
+import {
+  Body,
+  Card,
+  CardItem,
+  Content,
+  H2,
+  Left,
+  Text,
+  Thumbnail,
+  Button,
+  View,
+} from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import DistilleryName from '../../components/Distillery/NameLink';
+import Rating from '../../components/Dram/Rating';
 
 import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
@@ -15,6 +27,56 @@ import { getBottler } from '../../store/entities/bottlers';
 import { errorComponent, paramFromInstance } from '../../core/storeInstances';
 import whiskyName from '../../core/whiskyName';
 import distilleryLocation from '../../core/distilleryLocation';
+import { getWhiskyScore } from '../../store/api/whisky';
+
+interface WhiskyState {
+  isLoading: boolean;
+  isResolved: boolean;
+  avg: number | undefined;
+  user: number | undefined;
+}
+
+interface FetchStart {
+  type: 'FETCH_START';
+}
+
+interface FetchSuccess {
+  type: 'FETCH_SUCCESS';
+  avg: number;
+  user: number;
+}
+
+interface FetchFailed {
+  type: 'FETCH_FAILED';
+}
+
+type WhiskyAction = FetchStart | FetchSuccess | FetchFailed;
+
+const reducer = (state: WhiskyState, action: WhiskyAction): WhiskyState => {
+  switch (action.type) {
+    case 'FETCH_SUCCESS':
+      return {
+        ...state,
+        avg: action.avg,
+        isLoading: false,
+        isResolved: true,
+        user: action.user,
+      };
+    case 'FETCH_START':
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case 'FETCH_FAILED':
+      return {
+        ...state,
+        isLoading: false,
+        isResolved: true,
+      };
+    default:
+      return state;
+  }
+};
 
 type WhiskyDetailsProps = NavigationInjectedProps;
 
@@ -50,6 +112,29 @@ const WhiskyDetails = ({ navigation }: WhiskyDetailsProps) => {
 
   const name = whiskyName(whiskyInstance, distilleryInstance);
   const location = distilleryLocation(regionInstance, countryInstance);
+
+  const [state, dispatch] = useReducer(
+    reducer,
+    {
+      avg: undefined,
+      isLoading: false,
+      isResolved: false,
+      user: undefined,
+    },
+  );
+
+  useEffect(
+    () => {
+      if (!state.isResolved && !state.isLoading) {
+        dispatch({ type: 'FETCH_START' });
+
+        getWhiskyScore(id)
+          .then(({ avg, user }) => dispatch({ type: 'FETCH_SUCCESS', avg, user }))
+          .catch(() => dispatch({ type: 'FETCH_FAILED' }));
+      }
+    },
+    [],
+  );
 
   useEffect(
     () => {
@@ -122,6 +207,49 @@ const WhiskyDetails = ({ navigation }: WhiskyDetailsProps) => {
             </CardItem>
           )}
         </Card>
+
+        <Button block style={{ marginTop: 24 }}>
+          <Text>Add Your Own Review</Text>
+        </Button>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: 12,
+            marginTop: 24,
+          }}
+        >
+          <Button small bordered>
+            <Text>Add to wish list</Text>
+          </Button>
+          <Button small bordered>
+            <Text>Add to my collection</Text>
+          </Button>
+        </View>
+
+        {state.isResolved && (state.avg || state.user) ? (
+          <Card>
+            <CardItem>
+              {state.avg ? (
+                <Left>
+                  <Body>
+                    <Text style={{ marginBottom: 6 }}>Average rating</Text>
+                    <Rating rating={state.avg || 0} showNumber />
+                  </Body>
+                </Left>
+              ) : null}
+              {state.user ? (
+                <Left>
+                  <Body>
+                    <Text style={{ marginBottom: 6 }}>Your rating</Text>
+                    <Rating rating={state.user || 0} showNumber />
+                  </Body>
+                </Left>
+              ) : null}
+            </CardItem>
+          </Card>
+        ) : null}
       </Content>
     </SafeWithHeader>
   );

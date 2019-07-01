@@ -93,7 +93,7 @@ const DramsStack = createStackNavigator(
     defaultNavigationOptions: defaultStackNavigationOptions,
     initialRouteName: 'Whisky', // 'Timeline',
     initialRouteParams: {
-      id: 49704,
+      id: 1517,
     },
   },
 );
