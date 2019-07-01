@@ -15,10 +15,10 @@ import SignUpContinued from './screens/Login/SignUpContinued';
 
 import Timeline from './screens/Timeline/Timeline';
 import DramDetails from './screens/Timeline/DramDetails';
-import PlaceholderDetails from './screens/Timeline/PlaceholderDetails';
 import WelcomeTour from './screens/Timeline/Welcome';
 
 import Distillery from './screens/Distillery/Distillery';
+import Whisky from './screens/Whisky/Whisky';
 
 import Search from './screens/Search/Search';
 import Notifications from './screens/Notifications/Notifications';
@@ -86,12 +86,15 @@ const DramsStack = createStackNavigator(
     },
     Whisky: {
       path: 'whisky',
-      screen: PlaceholderDetails,
+      screen: Whisky,
     },
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Timeline',
+    initialRouteName: 'Whisky', // 'Timeline',
+    initialRouteParams: {
+      id: 49704,
+    },
   },
 );
 
@@ -136,7 +139,7 @@ const ProfileStack = createStackNavigator(
     },
     Whisky: {
       path: 'whisky',
-      screen: PlaceholderDetails,
+      screen: Whisky,
     },
   },
   {
@@ -161,7 +164,7 @@ const SearchStack = createStackNavigator(
     },
     Whisky: {
       path: 'whisky',
-      screen: PlaceholderDetails,
+      screen: Whisky,
     },
   },
   {
@@ -224,7 +227,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Search', // 'Drams',
+    initialRouteName: 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,

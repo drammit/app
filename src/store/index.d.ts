@@ -128,6 +128,28 @@ declare interface StoreCountries {
   [key: number]: StoreCountry;
 }
 
+declare interface CategoryShape {
+  id: number;
+  name: string;
+}
+
+declare type StoreCategory = StoreResolvable<CategoryShape>;
+
+declare interface StoreCategories {
+  [key: number]: StoreCategory;
+}
+
+declare interface BottlerShape {
+  id: number;
+  name: string;
+}
+
+declare type StoreBottler = StoreResolvable<BottlerShape>;
+
+declare interface StoreBottlers {
+  [key: number]: StoreBottler;
+}
+
 declare interface ProfileShape extends UserShape {
   id: number;
   createdAt: Date;
@@ -143,10 +165,6 @@ declare interface StoreProfiles {
   [key: number]: StoreProfile;
 }
 
-declare interface StoreLoading {
-  [table: string]: (string|number)[];
-}
-
 declare interface TimelineShape {
   loading: boolean;
   refreshing: boolean;
@@ -159,6 +177,8 @@ declare interface StoreTimelines {
 }
 
 declare interface StoreShape {
+  bottlers: StoreBottlers;
+  categories: StoreCategories;
   countries: StoreCountries;
   distilleries: StoreDistilleries;
   drams: StoreDrams;

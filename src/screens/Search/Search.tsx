@@ -193,6 +193,7 @@ const Search = () => {
       <Spinner color={colors.grey3} />
     </Content>
   ) : (
+    // @ts-ignore
     <Content
       style={{ flex: 1 }}
       scrollEnabled={localState.results.length > 0}

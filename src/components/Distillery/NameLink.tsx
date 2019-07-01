@@ -6,9 +6,16 @@ interface NameLinkProps extends NavigationInjectedProps {
   distillery: DistilleryShape;
   disableLink?: boolean;
   style?: any;
+  prefix?: string;
 }
 
-const NameLink = ({ style = {}, distillery, navigation, disableLink = false }: NameLinkProps) => (
+const NameLink = ({
+  style = {},
+  distillery,
+  navigation,
+  disableLink = false,
+  prefix = 'distilled by',
+}: NameLinkProps) => (
   <Text
     style={{
       fontSize: 14,
@@ -19,7 +26,7 @@ const NameLink = ({ style = {}, distillery, navigation, disableLink = false }: N
       : () => navigation.navigate('Distillery', { id: distillery.id })
     }
   >
-    distilled by {distillery.name}
+    {prefix} {distillery.name}
   </Text>
 );
 

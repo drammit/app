@@ -7,7 +7,6 @@ export const [countries, getCountries, getCountry] = createLoader<StoreCountries
     id: 0,
     name: '',
   },
-  fetchTypes: ['FETCH_TIMELINE_SUCCESS', 'SEARCH_RECEIVE'],
   resolver: id => get(`/distillery/country/${id}`),
   table: 'countries',
 });

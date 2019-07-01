@@ -115,6 +115,22 @@ const Distillery = ({ navigation }: DistilleryProps) => {
     [distilleryInstance, state.isLoading, state.isResolved, id],
   );
 
+  useEffect(
+    () => {
+      // update the page header if doesn't match
+      if (
+        distilleryInstance.isResolved
+        && !distilleryInstance.error
+        && navigation.getParam('title', '') !== distillery.name
+      ) {
+        navigation.setParams({
+          title: distillery.name,
+        });
+      }
+    },
+    [distillery, distilleryInstance],
+  );
+
   if (!distilleryInstance.isResolved) {
     return null;
   }

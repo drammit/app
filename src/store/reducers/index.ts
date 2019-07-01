@@ -1,5 +1,7 @@
 import { combineReducers, Reducer } from 'redux';
 
+import { bottlers } from '../entities/bottlers';
+import { categories } from '../entities/categories';
 import { countries } from '../entities/countries';
 import { distilleries } from '../entities/distilleries';
 import { drams } from '../entities/drams';
@@ -16,6 +18,8 @@ export default (
   extraReducers?: { [key: string]: Reducer<StoreShape, DrammitAction>,
 }) => combineReducers({
   ...extraReducers,
+  bottlers,
+  categories,
   countries,
   distilleries,
   drams,
