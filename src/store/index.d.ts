@@ -150,6 +150,17 @@ declare interface StoreBottlers {
   [key: number]: StoreBottler;
 }
 
+declare interface UserListShape {
+  UserId: number;
+  items: number[];
+}
+
+declare type StoreUserList = StoreResolvable<UserListShape>;
+
+declare interface StoreUserLists {
+  [key: number]: StoreUserList;
+}
+
 declare interface ProfileShape extends UserShape {
   id: number;
   createdAt: Date;
@@ -179,14 +190,16 @@ declare interface StoreTimelines {
 declare interface StoreShape {
   bottlers: StoreBottlers;
   categories: StoreCategories;
+  collections: StoreUserLists;
   countries: StoreCountries;
   distilleries: StoreDistilleries;
   drams: StoreDrams;
   profiles: StoreProfiles;
-  users: StoreUsers;
-  regions: StoreRegions;
-  whiskies: StoreWhiskies;
-  user: StoreCurrentUser;
   timeline: TimelineShape | undefined;
   timelines: StoreTimelines;
+  regions: StoreRegions;
+  user: StoreCurrentUser;
+  users: StoreUsers;
+  whiskies: StoreWhiskies;
+  'wish-lists': StoreUserLists;
 }

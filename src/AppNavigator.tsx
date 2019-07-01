@@ -24,6 +24,7 @@ import Search from './screens/Search/Search';
 import Notifications from './screens/Notifications/Notifications';
 
 import Profile from './screens/Profile/Profile';
+import WishList from './screens/Profile/WishList';
 import ProfileSettings from './screens/Profile/Settings';
 import SettingsAvatar from './screens/Profile/SettingsAvatar';
 import SettingsDisplayName from './screens/Profile/SettingsDisplayName';
@@ -91,7 +92,7 @@ const DramsStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Whisky', // 'Timeline',
+    initialRouteName: 'Timeline',
     initialRouteParams: {
       id: 1517,
     },
@@ -141,10 +142,14 @@ const ProfileStack = createStackNavigator(
       path: 'whisky',
       screen: Whisky,
     },
+    WishList: {
+      path: 'wish-list',
+      screen: WishList,
+    },
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Profile',
+    initialRouteName: 'WishList', // 'Profile',
   },
 );
 
@@ -227,7 +232,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Drams',
+    initialRouteName: 'Profile', // 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,

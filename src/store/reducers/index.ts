@@ -2,6 +2,7 @@ import { combineReducers, Reducer } from 'redux';
 
 import { bottlers } from '../entities/bottlers';
 import { categories } from '../entities/categories';
+import { collections } from '../entities/collections';
 import { countries } from '../entities/countries';
 import { distilleries } from '../entities/distilleries';
 import { drams } from '../entities/drams';
@@ -9,6 +10,7 @@ import { profiles } from '../entities/profiles';
 import { regions } from '../entities/regions';
 import { users } from '../entities/users';
 import { whiskies } from '../entities/whiskies';
+import { wishLists } from '../entities/wishList';
 
 import user from './user';
 import { singleReducer } from './timeline';
@@ -20,6 +22,7 @@ export default (
   ...extraReducers,
   bottlers,
   categories,
+  collections,
   countries,
   distilleries,
   drams,
@@ -30,4 +33,5 @@ export default (
   user,
   users,
   whiskies,
+  'wish-list': wishLists,
 });
