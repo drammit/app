@@ -37,7 +37,7 @@ const UserResult = ({ id, navigation }: UserResultProps) => {
   return (
     <ListItem
       avatar={image !== ''}
-      onPress={() => navigation.navigate('Profile', { id })}
+      onPress={() => navigation.navigate('ProfilePage', { id })}
     >
       {image
         ? (

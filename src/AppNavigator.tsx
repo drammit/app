@@ -45,7 +45,7 @@ const defaultProfileStack = {
     path: 'collection',
     screen: Collection,
   },
-  Profile: {
+  ProfilePage: {
     path: 'profile',
     screen: Profile,
   },
@@ -153,7 +153,7 @@ const ProfileStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Profile',
+    initialRouteName: 'ProfilePage',
   },
 );
 

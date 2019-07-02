@@ -26,7 +26,7 @@ const UsernameLink = ({
 }: UsernameLinkProps) => (
   <Text
     style={styles.username}
-    onPress={disableLink ? undefined : () => navigation.navigate('Profile', { id: user.id })}
+    onPress={disableLink ? undefined : () => navigation.navigate('ProfilePage', { id: user.id })}
   >
     {fullName ? user.name : user.username}
   </Text>
