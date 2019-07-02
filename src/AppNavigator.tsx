@@ -21,6 +21,9 @@ import Distillery from './screens/Distillery/Distillery';
 import Whisky from './screens/Whisky/Whisky';
 
 import Search from './screens/Search/Search';
+
+import DramReview from './screens/DramReview/DramReview';
+
 import Notifications from './screens/Notifications/Notifications';
 
 import Profile from './screens/Profile/Profile';
@@ -55,21 +58,25 @@ const defaultProfileStack = {
   },
 };
 
+const defaultDramStack = {
+  DramDetails: {
+    path: 'dram',
+    screen: DramDetails,
+  },
+};
+
 const defaultWhiskyStack = {
   Distillery: {
     path: 'distillery',
     screen: Distillery,
   },
+  DramReview: {
+    path: 'dram-review',
+    screen: DramReview,
+  },
   Whisky: {
     path: 'whisky',
     screen: Whisky,
-  },
-};
-
-const defaultDramStack = {
-  DramDetails: {
-    path: 'dram',
-    screen: DramDetails,
   },
 };
 
@@ -114,9 +121,6 @@ const DramsStack = createStackNavigator(
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
     initialRouteName: 'Timeline',
-    initialRouteParams: {
-      id: 1517,
-    },
   },
 );
 
@@ -229,7 +233,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Drams',
+    initialRouteName: 'Search', // 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,

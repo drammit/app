@@ -77,6 +77,7 @@ const Search = () => {
         case 'SET_SEARCH':
           return {
             ...state,
+            page: 1,
             search: action.search,
           };
         case 'SET_RESULTS':
@@ -84,10 +85,12 @@ const Search = () => {
             ...state,
             isEnd: action.results.length === 0,
             isLoading: false,
-            results: [
-              ...state.results,
-              ...action.results,
-            ],
+            results: state.page === 1
+              ? action.results
+              : [
+                ...state.results,
+                ...action.results,
+              ],
           };
         case 'FETCH_SEARCH':
           return {
