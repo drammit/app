@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
 import {
   Body,
   Card,
@@ -10,6 +10,7 @@ import {
   Thumbnail,
   Button,
   View,
+  Icon,
 } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 
@@ -28,6 +29,11 @@ import { errorComponent, paramFromInstance } from '../../core/storeInstances';
 import whiskyName from '../../core/whiskyName';
 import distilleryLocation from '../../core/distilleryLocation';
 import { getWhiskyScore } from '../../store/api/whisky';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentUser } from '../../store/selectors/user';
+import { getWishList } from '../../store/entities/wishList';
+import { getCollection } from '../../store/entities/collections';
+import { addToList, removeFromList } from '../../store/actions/userLists';
 
 interface WhiskyState {
   isLoading: boolean;
@@ -84,6 +90,15 @@ const WhiskyDetails = ({ navigation }: WhiskyDetailsProps) => {
   const id: null | number = navigation.getParam('id', null);
 
   if (!id) return null;
+
+  const loginUser = useSelector(getCurrentUser);
+  const storeDispatch = useDispatch();
+
+  const wishlistInstance = getWishList(loginUser.id);
+  const wishList = wishlistInstance.value;
+
+  const collectionInstance = getCollection(loginUser.id);
+  const collection = collectionInstance.value;
 
   const whiskyInstance: StoreWhisky = getWhisky(id);
   const whisky = whiskyInstance.value;
@@ -152,6 +167,31 @@ const WhiskyDetails = ({ navigation }: WhiskyDetailsProps) => {
     [whisky, whiskyInstance],
   );
 
+  const inWishList = wishList.items.indexOf(id) > -1;
+  const inCollection = collection.items.indexOf(id) > -1;
+
+  const wishListAction = useCallback(
+    () => {
+      if (inWishList) {
+        storeDispatch(removeFromList('wish-list', loginUser.id, id));
+      } else {
+        storeDispatch(addToList('wish-list', loginUser.id, id));
+      }
+    },
+    [inWishList, loginUser.id, id],
+  );
+
+  const collectionAction = useCallback(
+    () => {
+      if (inCollection) {
+        storeDispatch(removeFromList('collection', loginUser.id, id));
+      } else {
+        storeDispatch(addToList('collection', loginUser.id, id));
+      }
+    },
+    [inCollection, loginUser.id, id],
+  );
+
   if (!whiskyInstance.isResolved) {
     return null;
   }
@@ -188,6 +228,15 @@ const WhiskyDetails = ({ navigation }: WhiskyDetailsProps) => {
               </Body>
             </Left>
           </CardItem>
+          {whisky.year !== '' && (
+            <CardItem bordered>
+              <Left>
+                <Body>
+                  <Text note>release: {whisky.year}</Text>
+                </Body>
+              </Left>
+            </CardItem>
+          )}
           {whisky.bottlingSerie !== '' && (
             <CardItem bordered>
               <Left>
@@ -212,21 +261,29 @@ const WhiskyDetails = ({ navigation }: WhiskyDetailsProps) => {
           <Text>Add Your Own Review</Text>
         </Button>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: 12,
-            marginTop: 24,
-          }}
-        >
-          <Button small bordered>
-            <Text>Add to wish list</Text>
-          </Button>
-          <Button small bordered>
-            <Text>Add to my collection</Text>
-          </Button>
-        </View>
+        {(wishlistInstance.isResolved || collectionInstance.isResolved) && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 12,
+              marginTop: 24,
+            }}
+          >
+            {wishlistInstance.isResolved && (
+              <Button small bordered iconLeft={inWishList} onPress={wishListAction}>
+                {inWishList && <Icon name="checkmark" />}
+                <Text>{inWishList ? 'On Wish List' : 'Add to Wish List'}</Text>
+              </Button>
+            )}
+            {collectionInstance.isResolved && (
+              <Button small bordered iconLeft={inCollection} onPress={collectionAction}>
+                {inCollection && <Icon name="checkmark" />}
+                <Text>{inCollection ? 'In Your Collection' : 'Add to Your Collection'}</Text>
+              </Button>
+            )}
+          </View>
+        )}
 
         {state.isResolved && (state.avg || state.user) ? (
           <Card>

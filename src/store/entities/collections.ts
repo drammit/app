@@ -1,6 +1,8 @@
 import createLoader from '../loader/factory';
 import { get } from '../../core/fetch';
 
+import { createUserListReducer } from '../reducers/userLists';
+
 export const [
   collections,
   getCollections,
@@ -12,6 +14,7 @@ export const [
     items: [],
   },
   pk: 'UserId',
+  reducer: createUserListReducer('collection'),
   resolver: id => get(`/user-lists/collection/${id}`),
   table: 'collection',
 });

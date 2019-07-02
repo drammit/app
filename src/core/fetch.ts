@@ -39,7 +39,7 @@ async function handleApiError(response: Response) {
 
 type RequestMethod = 'GET' | 'POST';
 interface RequestBody {
-  [key: string]: string | FileUpload | undefined;
+  [key: string]: string | FileUpload | undefined | number;
 }
 
 export function request(method: RequestMethod = 'GET', url: string, data?: RequestBody) {

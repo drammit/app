@@ -139,10 +139,25 @@ declare interface SearchReceive {
   type: 'SEARCH_RECEIVE';
 }
 
+declare interface UserListAddAction {
+  UserId: number;
+  WhiskyId: number;
+  list: string;
+  type: 'USER_LIST_ADD';
+}
+
+declare interface UserListRemoveAction {
+  UserId: number;
+  WhiskyId: number;
+  list: string;
+  type: 'USER_LIST_REMOVE';
+}
+
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
   | FetchTimelineAction | FetchTimelineRefreshAction | DramSlainteAction | DramCommentAction
   | DramCommentReplaceAction | FetchTimelineRefreshSuccessAction | ProfileFollowAction
   | ProfileUnfollowAction | FetchTimelineRedoAction | ProfileUpdateAvatarAction
-  | ProfileUpdateNameAction | SearchReceive | ExtraInformationAction;
+  | ProfileUpdateNameAction | SearchReceive | ExtraInformationAction | UserListAddAction
+  | UserListRemoveAction;
