@@ -1,17 +1,15 @@
 import { post } from '../../core/fetch';
 
-export const userListAdd = (list: string, UserId: number, WhiskyId: number) => post(
+export const userListAdd = (list: string, WhiskyId: number) => post(
   `/user-lists/${list}/add`,
   {
-    UserId,
     WhiskyId,
   },
 );
 
-export const userListRemove = (list: string, UserId: number, WhiskyId: number) => post(
+export const userListRemove = (list: string, WhiskyId: number) => post(
   `/user-lists/${list}/remove`,
   {
-    UserId,
     WhiskyId,
   },
 );
