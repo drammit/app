@@ -6,7 +6,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 
 const styles = StyleSheet.create({
-  container: {
+  starContainer: {
     padding: 15,
   },
   submitButton: {
@@ -24,7 +24,7 @@ class Notifications extends React.Component<TimelineProps> {
   public render() {
     return (
       <SafeWithHeader style={{ flex: 1 }}>
-        <View style={styles.container}>
+        <View style={styles.starContainer}>
           <Text>Notifications</Text>
         </View>
       </SafeWithHeader>

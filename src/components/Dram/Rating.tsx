@@ -11,7 +11,7 @@ function stateByRating(rating: number, star: 1 | 2 | 3 | 4 | 5) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  starContainer: {
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -23,7 +23,7 @@ interface RatingProps {
 }
 
 const Rating = ({ rating, showNumber = false }: RatingProps) => (
-  <View style={styles.container}>
+  <View style={styles.starContainer}>
     <RatingStar state={stateByRating(rating, 1)} />
     <RatingStar state={stateByRating(rating, 2)} />
     <RatingStar state={stateByRating(rating, 3)} />

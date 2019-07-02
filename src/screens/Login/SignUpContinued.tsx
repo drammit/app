@@ -18,7 +18,7 @@ import { dispatch } from '../../store/store';
 import { login } from '../../store/actions/auth';
 
 const styles = StyleSheet.create({
-  container: {
+  starContainer: {
     padding: 15,
   },
   form: {

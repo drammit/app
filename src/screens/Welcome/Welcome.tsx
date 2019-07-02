@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     width: '90%',
   },
-  container: {
+  starContainer: {
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
@@ -94,7 +94,7 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
           width: '100%',
         }}
       >
-        <SafeWithoutHeader style={styles.container}>
+        <SafeWithoutHeader style={styles.starContainer}>
           <Animated.View
             style={{
               ...styles.top,

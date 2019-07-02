@@ -4,6 +4,7 @@ import { Content, View, Text } from 'native-base';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import WhiskyCard from '../../components/Whisky/WhiskyCard';
+import Rating from '../../components/Form/Rating';
 
 import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
@@ -64,6 +65,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
       <Content padder>
         <WhiskyCard id={id} />
         <View>
+          <Rating rating={score.score} />
           <Text>Add review</Text>
           <Text>{score.score}</Text>
         </View>
