@@ -186,8 +186,6 @@ const Search = () => {
     [localState.isLoading, localState.isEnd, localState.page],
   );
 
-  useEffect(() => localDispatch({ type: 'SET_SEARCH', search: 'Ardbeg' }), []);
-
   const searchResults = localState.isLoading && localState.page === 1 ? (
     <Content padder scrollEnabled={false}>
       <Spinner color={colors.grey3} />

@@ -161,14 +161,14 @@ const SearchStack = createStackNavigator(
   {
     ...defaultProfileStack,
     ...defaultWhiskyStack,
-    Search: {
+    SearchPage: {
       path: 'search',
       screen: Search,
     },
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Whisky', // 'Search',
+    initialRouteName: 'SearchPage',
     initialRouteParams: {
       id: 53587,
     },
@@ -229,7 +229,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Search', // 'Drams',
+    initialRouteName: 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,
