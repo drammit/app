@@ -17,9 +17,10 @@ import distilleryLocation from '../../core/distilleryLocation';
 
 interface WhiskyCardProps {
   id: number;
+  disableLink?: boolean;
 }
 
-const WhiskyCard = ({ id }: WhiskyCardProps) => {
+const WhiskyCard = ({ id, disableLink = false }: WhiskyCardProps) => {
   const whiskyInstance: StoreWhisky = getWhisky(id);
   const whisky = whiskyInstance.value;
 
@@ -72,6 +73,7 @@ const WhiskyCard = ({ id }: WhiskyCardProps) => {
           <Body>
             <H2>{name}</H2>
             <DistilleryName
+              disableLink={disableLink}
               style={{ fontSize: 16, marginTop: 5, marginBottom: 5 }}
               distillery={distillery}
             />

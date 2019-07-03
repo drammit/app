@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
-import { Content, View, Text } from 'native-base';
+import { Content, View, Text, Textarea } from 'native-base';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import WhiskyCard from '../../components/Whisky/WhiskyCard';
@@ -65,8 +65,12 @@ const DramReview = ({ navigation }: DramReviewProps) => {
   return (
     <SafeWithHeader style={{ flex: 1 }}>
       <Content padder scrollEnabled={isScrollEnabled}>
-        <WhiskyCard id={id} />
+        <WhiskyCard disableLink id={id} />
         <View style={{ marginBottom: 24, marginTop: 12, marginLeft: 6 }}>
+          <Textarea
+            rowSpan={3}
+            placeholder="What are your thoughts on this dram?"
+          />
           <Rating
             rating={score.score}
             onUpdate={(newScore: number) => setScore({ ...score, score: newScore })}

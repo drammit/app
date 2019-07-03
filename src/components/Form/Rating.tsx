@@ -105,19 +105,20 @@ const Rating = ({ rating, onUpdate, onStart, onEnd }: RatingProps) => {
   );
 
   return (
-    <View>
+    <View
+      onResponderGrant={onGrant}
+      onResponderMove={onMove}
+      onResponderRelease={onRelease}
+      onStartShouldSetResponderCapture={() => true}
+      onResponderTerminationRequest={() => false}
+      accessible
+      accessibilityRole="adjustable"
+      pointerEvents="box-only"
+    >
       <View style={styles.starAndScore}>
         <View
           style={styles.starContainer}
           onLayout={onLayout}
-          onResponderGrant={onGrant}
-          onResponderMove={onMove}
-          onResponderRelease={onRelease}
-          onStartShouldSetResponderCapture={() => true}
-          onResponderTerminationRequest={() => false}
-          accessible
-          accessibilityRole="adjustable"
-          pointerEvents="box-only"
         >
           <RatingStar width={starWidth} state={stateByRating(score, 1)} />
           <RatingStar width={starWidth} state={stateByRating(score, 2)} />
