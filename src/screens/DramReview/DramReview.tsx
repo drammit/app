@@ -19,6 +19,8 @@ const DramReview = ({ navigation }: DramReviewProps) => {
   const whiskyInstance = getWhisky(id);
   const distilleryInstance = getDistillery(paramFromInstance(whiskyInstance, 'DistilleryId'));
 
+  const [isScrollEnabled, setScrollEnabled] = useState<boolean>(true);
+
   const [score, setScore] = useState<{ isLoading: boolean; isResolved: boolean; score: number }>({
     isLoading: false,
     isResolved: false,
@@ -62,10 +64,15 @@ const DramReview = ({ navigation }: DramReviewProps) => {
 
   return (
     <SafeWithHeader style={{ flex: 1 }}>
-      <Content padder>
+      <Content padder scrollEnabled={isScrollEnabled}>
         <WhiskyCard id={id} />
-        <View>
-          <Rating rating={score.score} />
+        <View style={{ marginBottom: 24, marginTop: 12, marginLeft: 6 }}>
+          <Rating
+            rating={score.score}
+            onUpdate={(newScore: number) => setScore({ ...score, score: newScore })}
+            onStart={() => setScrollEnabled(false)}
+            onEnd={() => setScrollEnabled(true)}
+          />
           <Text>Add review</Text>
           <Text>{score.score}</Text>
         </View>
