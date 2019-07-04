@@ -2,15 +2,16 @@ import React, { useCallback, useEffect, useReducer } from 'react';
 import { View, Item, Icon, Input, Content, Tabs, Tab, Spinner, Text } from 'native-base';
 import { useDebounce } from 'use-debounce';
 import { useDispatch } from 'react-redux';
+import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
 import SafeWithSlimHeader from '../../components/Pages/SafeWithSlimHeader';
+import SearchBar from '../../components/Form/SearchBar';
 import SearchResults from '../../components/Search/Results';
 
 import colors from '../../config/colors';
 
 import { receiveSearchResults } from '../../store/actions/search';
 import { searchQuery } from '../../store/api/search';
-import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
 function tabToFilter(tab: number): SearchFilter {
   switch (tab) {
@@ -135,14 +136,12 @@ const Search = () => {
     [localDispatch],
   );
 
-  const [debouncedSearch] = useDebounce(localState.search, 300);
-
   useEffect(
     () => {
-      if (debouncedSearch.length > 2) {
+      if (localState.search.length > 2) {
         localDispatch({ type: 'FETCH_SEARCH' });
 
-        const result = searchQuery(debouncedSearch, localState.filter, localState.page);
+        const result = searchQuery(localState.search, localState.filter, localState.page);
 
         let cancelCall: any = () => undefined;
         const cancel = new Promise(resolve => cancelCall = resolve);
@@ -166,7 +165,7 @@ const Search = () => {
       // if no search, clear results
       localDispatch({ type: 'CLEAR_RESULTS' });
     },
-    [debouncedSearch, localState.filter, localState.page, dispatch],
+    [localState.search, localState.filter, localState.page, dispatch],
   );
 
   const onChangeTab = useCallback(
@@ -200,10 +199,10 @@ const Search = () => {
       scrollEnabled={localState.results.length > 0}
       onScroll={onScroll}
     >
-      {localState.results.length === 0 && debouncedSearch.length > 3
+      {localState.results.length === 0 && localState.search.length > 3
         ? (
           <View style={{ padding: 24, alignItems: 'center' }}>
-            <Text note>No results for "{debouncedSearch}"</Text>
+            <Text note>No results for "{localState.search}"</Text>
           </View>
         ) : (
           <>
@@ -228,25 +227,11 @@ const Search = () => {
           paddingRight: 8,
         }}
       >
-        <Item
-          style={{
-            backgroundColor: colors.white,
-            paddingBottom: 6,
-            paddingLeft: 8,
-            paddingRight: 8,
-            paddingTop: 6,
-          }}
-        >
-          <Icon active name="search" />
-          <Input
-            style={{ height: 22 }}
-            placeholder="Search..."
-            clearButtonMode="always"
-            value={localState.search}
-            autoCorrect={false}
-            onChangeText={text => localDispatch({ type: 'SET_SEARCH', search: text })}
-          />
-        </Item>
+        <SearchBar
+          value={localState.search}
+          debounce={300}
+          onChange={text => localDispatch({ type: 'SET_SEARCH', search: text })}
+        />
       </View>
       <Tabs
         page={filterToPage(localState.filter)}
