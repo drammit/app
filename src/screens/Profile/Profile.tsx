@@ -194,7 +194,7 @@ const Profile = ({ navigation }: ProfileProps) => {
             </Content>
 
             <List style={{ marginBottom: 12 }}>
-              <ListItem onPress={() => navigation.navigate('WishList', { id: UserId })}>
+              <ListItem noIndent onPress={() => navigation.navigate('WishList', { id: UserId })}>
                 <Left>
                   <Text>Wish list</Text>
                 </Left>
@@ -202,7 +202,7 @@ const Profile = ({ navigation }: ProfileProps) => {
                   <Icon name="arrow-forward" />
                 </Right>
               </ListItem>
-              <ListItem onPress={() => navigation.navigate('Collection', { id: UserId })}>
+              <ListItem noIndent onPress={() => navigation.navigate('Collection', { id: UserId })}>
                 <Left>
                   <Text>
                     {name}{namePostFix} Collection
