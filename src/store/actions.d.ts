@@ -153,6 +153,21 @@ declare interface UserListRemoveAction {
   type: 'USER_LIST_REMOVE';
 }
 
+declare interface FetchFlavoursAction {
+  type: 'FETCH_FLAVOURS';
+}
+
+declare interface FetchFlavoursSuccessAction {
+  type: 'FETCH_FLAVOURS_SUCCESS';
+  payload: {
+    flavours: FlavourShape[];
+  };
+}
+
+declare interface FetchFlavoursFailedAction {
+  type: 'FETCH_FLAVOURS_FAILED';
+}
+
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
@@ -160,4 +175,5 @@ declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserIn
   | DramCommentReplaceAction | FetchTimelineRefreshSuccessAction | ProfileFollowAction
   | ProfileUnfollowAction | FetchTimelineRedoAction | ProfileUpdateAvatarAction
   | ProfileUpdateNameAction | SearchReceive | ExtraInformationAction | UserListAddAction
-  | UserListRemoveAction;
+  | UserListRemoveAction | FetchFlavoursAction | FetchFlavoursSuccessAction
+  | FetchFlavoursFailedAction;

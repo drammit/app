@@ -6,6 +6,7 @@ import { collections } from '../entities/collections';
 import { countries } from '../entities/countries';
 import { distilleries } from '../entities/distilleries';
 import { drams } from '../entities/drams';
+import { flavours } from '../entities/flavours';
 import { profiles } from '../entities/profiles';
 import { regions } from '../entities/regions';
 import { users } from '../entities/users';
@@ -26,6 +27,7 @@ export default (
   countries,
   distilleries,
   drams,
+  flavours,
   profiles,
   regions,
   timeline: singleReducer,

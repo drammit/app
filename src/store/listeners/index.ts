@@ -2,6 +2,7 @@ import { ReduxListenerMiddleware } from 'redux-listeners';
 
 import auth from './auth';
 import dram from './dram';
+import flavour from './flavour';
 import profile from './profile';
 import timeline from './timeline';
 import userLists from './userLists';
@@ -11,6 +12,7 @@ const createListeners = (listenMiddleware: ReduxListenerMiddleware) => {
   [
     ...auth,
     ...dram,
+    ...flavour,
     ...loader,
     ...profile,
     ...timeline,

@@ -18,9 +18,6 @@ import { dispatch } from '../../store/store';
 import { login } from '../../store/actions/auth';
 
 const styles = StyleSheet.create({
-  starContainer: {
-    padding: 15,
-  },
   form: {
     flexDirection: 'row',
   },
@@ -35,6 +32,9 @@ const styles = StyleSheet.create({
   intro: {
     lineHeight: 24,
     marginBottom: 16,
+  },
+  starContainer: {
+    padding: 15,
   },
   submitButton: {
     marginTop: 24,

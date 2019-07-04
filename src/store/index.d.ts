@@ -106,6 +106,19 @@ declare interface StoreDistilleries {
   [key: number]: StoreDistillery;
 }
 
+declare interface FlavourShape {
+  ParentFlavourId: number;
+  id: number;
+  name: string;
+  usage: number;
+}
+
+declare type StoreFlavour = StoreResolvable<FlavourShape>;
+
+declare interface StoreFlavours {
+  [key: number]: StoreFlavour;
+}
+
 declare interface RegionShape {
   id: number;
   name: string;
@@ -194,6 +207,7 @@ declare interface StoreShape {
   countries: StoreCountries;
   distilleries: StoreDistilleries;
   drams: StoreDrams;
+  flavours: StoreFlavours;
   profiles: StoreProfiles;
   timeline: TimelineShape | undefined;
   timelines: StoreTimelines;

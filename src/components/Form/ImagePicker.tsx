@@ -34,7 +34,10 @@ function imageInputProps(props: FormikProps<any>, name: string) {
   };
 }
 
+const defaultAspect: [number, number] = [1, 1];
+
 interface ImagePickerProps {
+  aspect?: [number, number];
   name: string;
   placeholder: string;
   formikProps: FormikProps<any>;
@@ -49,6 +52,8 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps> {
   }
 
   private pickImage = async () => {
+    const { aspect = defaultAspect } = this.props;
+
     if (!await checkAndAskPersmissionsFor(Permissions.CAMERA_ROLL)) {
       Alert.alert('Permissions needed', 'You need to allow Drammit to browse your images');
       return;
@@ -56,7 +61,7 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps> {
 
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect,
       quality: 0.7,
     });
 
@@ -64,6 +69,8 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps> {
   }
 
   private openCamera = async () => {
+    const { aspect = defaultAspect } = this.props;
+
     if (!await checkAndAskPersmissionsFor(Permissions.CAMERA, Permissions.CAMERA_ROLL)) {
       Alert.alert(
         'Permissions needed',
@@ -74,7 +81,7 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps> {
 
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect,
       quality: 0.7,
     });
 
@@ -125,7 +132,7 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps> {
     const image = this.extraProps().value;
 
     return (
-      <View>
+      <View style={{ width: size }}>
         <Button
           style={{
             ...styles.button,

@@ -23,6 +23,7 @@ import Whisky from './screens/Whisky/Whisky';
 import Search from './screens/Search/Search';
 
 import DramReview from './screens/DramReview/DramReview';
+import FlavourPicker from './components/Form/FlavourPicker';
 
 import Notifications from './screens/Notifications/Notifications';
 
@@ -74,10 +75,23 @@ const defaultWhiskyStack = {
     path: 'dram-review',
     screen: DramReview,
   },
+  FlavourPicker: {
+    path: 'dram-review/flavour-picker',
+    screen: FlavourPicker,
+  },
   Whisky: {
     path: 'whisky',
     screen: Whisky,
   },
+};
+
+const hideTabsOnPage = ({ navigation }: any) => {
+  const currentRoutes = navigation.state.routes;
+  const hideTabOn = ['DramDetails', 'DramReview', 'FlavourPicker'];
+
+  return {
+    tabBarVisible: hideTabOn.indexOf(currentRoutes[currentRoutes.length - 1].routeName) === -1,
+  };
 };
 
 const AuthStack = createStackNavigator(
@@ -124,14 +138,7 @@ const DramsStack = createStackNavigator(
   },
 );
 
-DramsStack.navigationOptions = ({ navigation }: any) => {
-  const currentRoutes = navigation.state.routes;
-  const hideTabOn = ['DramDetails'];
-
-  return {
-    tabBarVisible: hideTabOn.indexOf(currentRoutes[currentRoutes.length - 1].routeName) === -1,
-  };
-};
+DramsStack.navigationOptions = hideTabsOnPage;
 
 const ProfileStack = createStackNavigator(
   {
@@ -161,6 +168,8 @@ const ProfileStack = createStackNavigator(
   },
 );
 
+ProfileStack.navigationOptions = hideTabsOnPage;
+
 const SearchStack = createStackNavigator(
   {
     ...defaultProfileStack,
@@ -172,12 +181,14 @@ const SearchStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'DramReview',
+    initialRouteName: 'FlavourPicker', // 'Search',
     initialRouteParams: {
       id: 53587,
     },
   },
 );
+
+SearchStack.navigationOptions = hideTabsOnPage;
 
 function iconByRoutename(routeName: string) {
   switch (routeName) {
