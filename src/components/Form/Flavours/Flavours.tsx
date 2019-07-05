@@ -3,12 +3,12 @@ import { View, Text, Button } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 
-import { getFlavours } from '../../store/entities/flavours';
-import { fetchFlavours } from '../../store/actions/flavour';
+import { getFlavours } from '../../../store/entities/flavours';
+import { fetchFlavours } from '../../../store/actions/flavour';
 
-export const useFlavours = (): [FlavourShape[], boolean, boolean] => {
+export const useFlavours = (search?: string): [FlavourShape[], boolean, boolean] => {
   const dispatch = useDispatch();
-  const StoreFlavours = useSelector(getFlavours);
+  const StoreFlavours: StoreFlavours = useSelector(getFlavours);
   const [loadingState, setLoadingState] = useState<{ isPending: boolean; isResolved: boolean}>({
     isPending: false,
     isResolved: false,
@@ -32,9 +32,20 @@ export const useFlavours = (): [FlavourShape[], boolean, boolean] => {
     [StoreFlavours, loadingState],
   );
 
-  const flavours = Object.keys(StoreFlavours).map(k => StoreFlavours[parseInt(k, 10)].value) || [];
+  const flavours = (
+    Object.keys(StoreFlavours).map(k => StoreFlavours[parseInt(k, 10)].value) || []
+  )
+    .filter((i) => {
+      if (!search || search === '') return true;
+      return i.name.toLowerCase().indexOf(search.toLowerCase()) > -1;
+    })
+    .sort((a, b) => a.name > b.name ? 1 : -1);
 
-  return [flavours, loadingState.isPending, loadingState.isResolved];
+  return [
+    flavours,
+    loadingState.isPending,
+    loadingState.isResolved,
+  ];
 };
 
 interface FlavoursProps extends NavigationInjectedProps {

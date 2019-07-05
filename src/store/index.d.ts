@@ -110,6 +110,7 @@ declare interface FlavourShape {
   ParentFlavourId: number;
   id: number;
   name: string;
+  color: string;
   usage: number;
 }
 

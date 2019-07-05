@@ -23,7 +23,7 @@ import Whisky from './screens/Whisky/Whisky';
 import Search from './screens/Search/Search';
 
 import DramReview from './screens/DramReview/DramReview';
-import FlavourPicker from './components/Form/FlavourPicker';
+import FlavourPicker from './components/Form/Flavours/FlavourPicker';
 
 import Notifications from './screens/Notifications/Notifications';
 

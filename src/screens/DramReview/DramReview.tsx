@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import WhiskyCard from '../../components/Whisky/WhiskyCard';
 import Rating from '../../components/Form/Rating';
-import Flavours from '../../components/Form/Flavours';
+import Flavours from '../../components/Form/Flavours/Flavours';
 
 import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
