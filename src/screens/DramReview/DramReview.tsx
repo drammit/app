@@ -74,6 +74,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
         <WhiskyCard disableLink id={id} />
         <Formik
           initialValues={{
+            flavours: [],
             image: '',
             message: '',
             rating: score,
@@ -113,7 +114,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
                     />
                   </View>
                 </View>
-                <View style={{ marginBottom: 24, marginTop: 12, marginLeft: 6 }}>
+                <View style={{ marginBottom: 12, marginTop: 12, marginLeft: 6 }}>
                   <Rating
                     rating={score.score}
                     onUpdate={(newScore: number) => setScore({ ...score, score: newScore })}
@@ -122,7 +123,10 @@ const DramReview = ({ navigation }: DramReviewProps) => {
                   />
                 </View>
                 <View>
-                  <Flavours WhiskyId={id} />
+                  <Flavours
+                    WhiskyId={id}
+                    onChange={(flavours: number[]) => props.handleChange('flavours')(flavours)}
+                  />
                 </View>
               </View>
               <Button block>

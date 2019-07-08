@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button } from 'native-base';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, Button, Icon } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import { withNavigation, NavigationInjectedProps } from 'react-navigation';
 
 import { getFlavours } from '../../../store/entities/flavours';
 import { fetchFlavours } from '../../../store/actions/flavour';
+
+import Tag from './Tag';
 
 export const useFlavours = (search?: string): [FlavourShape[], boolean, boolean] => {
   const dispatch = useDispatch();
@@ -50,27 +52,60 @@ export const useFlavours = (search?: string): [FlavourShape[], boolean, boolean]
 
 interface FlavoursProps extends NavigationInjectedProps {
   WhiskyId?: number;
+  onChange: (flavours: number[]) => void;
 }
 
-const Flavours = ({ navigation }: FlavoursProps) => {
-  useFlavours();
+const Flavours = ({ navigation, onChange }: FlavoursProps) => {
+  const [flavours, isPending, isResolved] = useFlavours();
+
+  const [picked, setPicked] = useState<number[]>([]);
+
+  useEffect(
+    () => {
+      onChange(picked);
+    },
+    [picked],
+  );
+
+  const onRemove = useCallback(
+    (id: number) => {
+      setPicked(picked.filter(p => p !== id));
+    },
+    [picked],
+  );
 
   return (
-    <View>
-      <Text>
-        Flavours!
-      </Text>
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+      {isResolved && picked.length > 0 && (
+        picked.map((p) => {
+          const flavour = flavours.find(f => f.id === p);
+
+          if (!flavour) return null;
+
+          return (
+            <Tag
+              active
+              key={flavour.id}
+              flavour={flavour}
+              onPress={onRemove}
+            />
+          );
+        })
+    )}
       <Button
+        iconLeft
+        transparent
         onPress={() => navigation.navigate(
           'FlavourPicker',
           {
-            mostUsed: [1, 25, 56],
-            onChange: (items: number[]) => console.log('change', items),
-            picked: [],
+            mostUsed: [],
+            onChange: (items: number[]) => setPicked(items),
+            picked,
           },
         )}
       >
-        <Text>Add Flavour</Text>
+        <Icon name="add" />
+        <Text>Pick Flavours</Text>
       </Button>
     </View>
   );

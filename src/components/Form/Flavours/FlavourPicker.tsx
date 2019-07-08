@@ -185,6 +185,7 @@ const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
                       flexDirection: 'row',
                       flexWrap: 'wrap',
                       padding: 4,
+                      paddingLeft: 10,
                     }}
                   >
                     {picked
@@ -215,6 +216,7 @@ const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
                       flexDirection: 'row',
                       flexWrap: 'wrap',
                       padding: 4,
+                      paddingLeft: 10,
                     }}
                   >
                     {mostUsedWithoutPicked
@@ -246,11 +248,13 @@ const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
                   flexDirection: 'row',
                   flexWrap: 'wrap',
                   padding: 4,
+                  paddingLeft: 10,
                 }}
               >
                 {flavours
                   .filter(f => picked.indexOf(f.id) === -1)
-                  .filter(f => f.name.toLowerCase().indexOf(search.toLowerCase()) > -1)
+                  .filter(f => search === ''
+                    || f.name.toLowerCase().indexOf(search.toLowerCase()) > -1)
                   .filter((f) => {
                     // if all categories
                     if (!categoryId) return true;

@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Icon, Text } from 'native-base';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 
 import colors from '../../../config/colors';
+
+const styles = StyleSheet.create({
+  baseContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexGrow: 0,
+    flexShrink: 1,
+    marginBottom: 6,
+    marginRight: 12,
+    marginTop: 6,
+    paddingBottom: 6,
+    paddingLeft: 7,
+    paddingRight: 7,
+    paddingTop: 6,
+  },
+  icon: {
+    color: '#ffffff',
+    fontSize: 16,
+    marginRight: 3,
+  },
+});
 
 interface FlavourTagProps {
   active?: boolean;
@@ -11,33 +32,20 @@ interface FlavourTagProps {
 }
 
 const FlavourTag = ({ active = false, flavour, onPress }: FlavourTagProps) => {
+  const onPick = useCallback(() => onPress(flavour.id), [flavour.id, onPress]);
+
   return (
     <TouchableOpacity
-      onPress={() => onPress(flavour.id)}
+      onPress={onPick}
       style={{
-        alignItems: 'center',
+        ...styles.baseContainer,
         backgroundColor: active ? flavour.color : colors.grey5,
         borderLeftColor: flavour.color,
         borderLeftWidth: active ? 0 : 6,
-        flexDirection: 'row',
-        flexGrow: 0,
-        flexShrink: 1,
-        margin: 6,
-        paddingBottom: 6,
-        paddingLeft: 7,
-        paddingRight: 7,
-        paddingTop: 6,
       }}
     >
       {active && (
-        <Icon
-          style={{
-            color: '#ffffff',
-            fontSize: 16,
-            marginRight: 3,
-          }}
-          name="close-circle"
-        />
+        <Icon style={styles.icon} name="close-circle" />
       )}
       <Text
         style={{ color: active ? '#ffffff' : '#000000' }}
