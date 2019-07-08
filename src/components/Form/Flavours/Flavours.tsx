@@ -64,8 +64,9 @@ const Flavours = ({ navigation }: FlavoursProps) => {
         onPress={() => navigation.navigate(
           'FlavourPicker',
           {
-            onAdd: (item: any) => console.log('add', item),
-            onRemove: (item: any) => console.log('remove', item),
+            mostUsed: [1, 25, 56],
+            onChange: (items: number[]) => console.log('change', items),
+            picked: [],
           },
         )}
       >

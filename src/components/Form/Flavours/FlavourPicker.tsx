@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Spinner,
   Text,
@@ -25,11 +25,37 @@ import colors from '../../../config/colors';
 type FlavourPickerProps = NavigationInjectedProps;
 
 const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
-  const onAdd = navigation.getParam('onAdd', () => { throw new Error('Provide onAdd'); });
-  const onRemove = navigation.getParam('onRemove', () => { throw new Error('Provide onRemove'); });
+  const mostUsed = navigation.getParam('mostUsed', []);
+  const initialPicked = navigation.getParam('picked', []);
+  const onChange = navigation.getParam('onChange', false);
 
   const [search, setSearch] = useState<string>('');
   const [categoryId, setCategoryId] = useState<number | null>(null);
+  const [picked, setPicked] = useState<number[]>(initialPicked);
+
+  const mostUsedWithoutPicked = mostUsed.filter((m: number) => picked.indexOf(m) === -1);
+
+  const onAddFlavour = useCallback(
+    (id: number) => {
+      setPicked([...picked, id]);
+    },
+    [picked],
+  );
+
+  const onRemoveFlavour = useCallback(
+    (id: number) => {
+      setPicked(picked.filter(p => p !== id));
+    },
+    [picked],
+  );
+
+  useEffect(
+    () => {
+      if (!onChange) return;
+      onChange(picked);
+    },
+    [picked],
+  );
 
   const [flavours, isPending, isResolved] = useFlavours();
 
@@ -116,8 +142,70 @@ const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
                 </ListItem>
               </List>
             )}
+            {(parentCategory || pickedCategory) && (
+              <View style={{ padding: 8, flexDirection: 'row' }}>
+                {parentCategory && (
+                  <Button
+                    iconRight
+                    small
+                    style={{
+                      backgroundColor: parentCategory.color,
+                      marginRight: 4,
+                    }}
+                    onPress={() => setCategoryId(null)}
+                  >
+                    <Text>{parentCategory.name}</Text>
+                    <Icon name="close-circle" />
+                  </Button>
+                )}
+                {pickedCategory && (
+                  <Button
+                    iconRight
+                    small
+                    style={{
+                      backgroundColor: pickedCategory.color,
+                    }}
+                    onPress={() => pickedCategory
+                      && setCategoryId(parentCategory ? parentCategory.id : null)}
+                  >
+                    <Text>{pickedCategory.name}</Text>
+                    <Icon name="close-circle" />
+                  </Button>
+                )}
+              </View>
+            )}
             <Content scrollEnabled>
-              {!pickedCategory && (
+              {picked.length > 0 && (
+                <>
+                  <Separator bordered>
+                    <Text>Picked Flavours</Text>
+                  </Separator>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      padding: 4,
+                    }}
+                  >
+                    {picked
+                      .map((p) => {
+                        const flavour = flavours.find(f => f.id === p);
+
+                        if (!flavour) return null;
+
+                        return (
+                          <Tag
+                            active
+                            key={flavour.id}
+                            flavour={flavour}
+                            onPress={onRemoveFlavour}
+                          />
+                        );
+                      })}
+                  </View>
+                </>
+              )}
+              {!pickedCategory && mostUsedWithoutPicked.length > 0 && (
                 <>
                   <Separator bordered>
                     <Text>Most Used</Text>
@@ -129,41 +217,22 @@ const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
                       padding: 4,
                     }}
                   >
-                    <Text>Paar tags hier</Text>
+                    {mostUsedWithoutPicked
+                      .map((m: number) => {
+                        const flavour = flavours.find(f => f.id === m);
+
+                        if (!flavour) return null;
+
+                        return (
+                          <Tag
+                            key={flavour.id}
+                            flavour={flavour}
+                            onPress={onAddFlavour}
+                          />
+                        );
+                      })}
                   </View>
                 </>
-              )}
-              {(parentCategory || pickedCategory) && (
-                <View style={{ padding: 8, flexDirection: 'row' }}>
-                  {parentCategory && (
-                    <Button
-                      iconRight
-                      small
-                      style={{
-                        backgroundColor: parentCategory.color,
-                        marginRight: 4,
-                      }}
-                      onPress={() => setCategoryId(null)}
-                    >
-                      <Text>{parentCategory.name}</Text>
-                      <Icon name="close-circle" />
-                    </Button>
-                  )}
-                  {pickedCategory && (
-                    <Button
-                      iconRight
-                      small
-                      style={{
-                        backgroundColor: pickedCategory.color,
-                      }}
-                      onPress={() => pickedCategory
-                        && setCategoryId(parentCategory ? parentCategory.id : null)}
-                    >
-                      <Text>{pickedCategory.name}</Text>
-                      <Icon name="close-circle" />
-                    </Button>
-                  )}
-                </View>
               )}
               <Separator bordered>
                 <Text>
@@ -180,6 +249,7 @@ const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
                 }}
               >
                 {flavours
+                  .filter(f => picked.indexOf(f.id) === -1)
                   .filter(f => f.name.toLowerCase().indexOf(search.toLowerCase()) > -1)
                   .filter((f) => {
                     // if all categories
@@ -191,7 +261,13 @@ const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
                     if (parentCategory && f.id === parentCategory.id) return true;
                     return false;
                   })
-                  .map(f => <Tag key={f.id} flavour={f} />)}
+                  .map(f => (
+                    <Tag
+                      key={f.id}
+                      flavour={f}
+                      onPress={onAddFlavour}
+                    />
+                  ))}
               </View>
             </Content>
           </>

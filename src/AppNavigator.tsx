@@ -181,7 +181,7 @@ const SearchStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'FlavourPicker', // 'SearchPage',
+    initialRouteName: 'DramReview', // 'SearchPage',
     initialRouteParams: {
       id: 53587,
     },

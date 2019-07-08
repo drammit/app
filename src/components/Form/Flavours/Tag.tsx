@@ -1,19 +1,25 @@
 import React from 'react';
-import { Text, View } from 'native-base';
+import { Icon, Text } from 'native-base';
+import { TouchableOpacity } from 'react-native';
 
 import colors from '../../../config/colors';
 
 interface FlavourTagProps {
+  active?: boolean;
   flavour: FlavourShape;
+  onPress: (id: number) => void;
 }
 
-const FlavourTag = ({ flavour }: FlavourTagProps) => {
+const FlavourTag = ({ active = false, flavour, onPress }: FlavourTagProps) => {
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => onPress(flavour.id)}
       style={{
-        backgroundColor: colors.grey5,
+        alignItems: 'center',
+        backgroundColor: active ? flavour.color : colors.grey5,
         borderLeftColor: flavour.color,
-        borderLeftWidth: 6,
+        borderLeftWidth: active ? 0 : 6,
+        flexDirection: 'row',
         flexGrow: 0,
         flexShrink: 1,
         margin: 6,
@@ -23,8 +29,22 @@ const FlavourTag = ({ flavour }: FlavourTagProps) => {
         paddingTop: 6,
       }}
     >
-      <Text>{flavour.name}</Text>
-    </View>
+      {active && (
+        <Icon
+          style={{
+            color: '#ffffff',
+            fontSize: 16,
+            marginRight: 3,
+          }}
+          name="close-circle"
+        />
+      )}
+      <Text
+        style={{ color: active ? '#ffffff' : '#000000' }}
+      >
+        {flavour.name}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
