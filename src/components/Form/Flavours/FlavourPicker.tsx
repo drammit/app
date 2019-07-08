@@ -6,13 +6,11 @@ import {
   Content,
   ListItem,
   List,
-  Right,
-  Switch,
   Body,
   Left,
   Icon,
   Separator,
-  ActionSheet,
+  ActionSheet, Button,
 } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 
@@ -42,10 +40,16 @@ const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
       ActionSheet.show(
         {
           cancelButtonIndex: categories.length,
-          options: [...categories.map(c => c.name), 'Cancel'],
+          options: [
+            ...categories.map(c => c.name),
+            'Cancel',
+          ],
           title: categoryId ? 'Pick a sub-category' : 'Pick a category',
         },
-        index => setCategoryId(categories[index].id),
+        (index) => {
+          if (!categories[index]) return;
+          setCategoryId(categories[index].id);
+        },
       );
     },
     [flavours, categoryId],
@@ -128,6 +132,38 @@ const FlavourPicker = ({ navigation }: FlavourPickerProps) => {
                     <Text>Paar tags hier</Text>
                   </View>
                 </>
+              )}
+              {(parentCategory || pickedCategory) && (
+                <View style={{ padding: 8, flexDirection: 'row' }}>
+                  {parentCategory && (
+                    <Button
+                      iconRight
+                      small
+                      style={{
+                        backgroundColor: parentCategory.color,
+                        marginRight: 4,
+                      }}
+                      onPress={() => setCategoryId(null)}
+                    >
+                      <Text>{parentCategory.name}</Text>
+                      <Icon name="close-circle" />
+                    </Button>
+                  )}
+                  {pickedCategory && (
+                    <Button
+                      iconRight
+                      small
+                      style={{
+                        backgroundColor: pickedCategory.color,
+                      }}
+                      onPress={() => pickedCategory
+                        && setCategoryId(parentCategory ? parentCategory.id : null)}
+                    >
+                      <Text>{pickedCategory.name}</Text>
+                      <Icon name="close-circle" />
+                    </Button>
+                  )}
+                </View>
               )}
               <Separator bordered>
                 <Text>
