@@ -114,6 +114,7 @@ const Rating = ({ rating, onUpdate, onStart, onEnd }: RatingProps) => {
       accessible
       accessibilityRole="adjustable"
       pointerEvents="box-only"
+      style={{ flexGrow: 1, width: '100%' }}
     >
       <View style={styles.starAndScore}>
         <View

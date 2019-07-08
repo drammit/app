@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
 import { Content, View, Text, Textarea, Button } from 'native-base';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import WhiskyCard from '../../components/Whisky/WhiskyCard';
 import Rating from '../../components/Form/Rating';
 import Flavours from '../../components/Form/Flavours/Flavours';
+import ImagePicker from '../../components/Form/ImagePicker';
+import ErrorMessage from '../../components/Form/ErrorMessage';
 
 import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
@@ -14,7 +17,11 @@ import { errorComponent, paramFromInstance } from '../../core/storeInstances';
 import { getWhiskyScore } from '../../store/api/whisky';
 
 import colors from '../../config/colors';
-import ImagePicker from '../../components/Form/ImagePicker';
+
+const ReviewSchema = Yup.object().shape({
+  rating: Yup.number()
+    .min(0.5, 'Please rate your dram'),
+});
 
 type DramReviewProps = NavigationInjectedProps;
 
@@ -77,8 +84,9 @@ const DramReview = ({ navigation }: DramReviewProps) => {
             flavours: [],
             image: '',
             message: '',
-            rating: score,
+            rating: score.score,
           }}
+          validationSchema={ReviewSchema}
           onSubmit={console.log}
         >
           {props => (
@@ -103,6 +111,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
                     <Textarea
                       rowSpan={3}
                       placeholder="What are your thoughts on this dram?"
+                      onChangeText={text => props.handleChange('message')(text)}
                     />
                   </View>
                   <View style={{ width: 80, flexShrink: 0, marginLeft: 6 }}>
@@ -114,22 +123,35 @@ const DramReview = ({ navigation }: DramReviewProps) => {
                     />
                   </View>
                 </View>
-                <View style={{ marginBottom: 12, marginTop: 12, marginLeft: 6 }}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    marginBottom: 12,
+                    marginLeft: 6,
+                    marginTop: 12,
+                  }}
+                >
                   <Rating
                     rating={score.score}
-                    onUpdate={(newScore: number) => setScore({ ...score, score: newScore })}
+                    onUpdate={(newScore: number) => {
+                      setScore({ ...score, score: newScore });
+                      props.handleChange('rating')(newScore);
+                    }}
                     onStart={() => setScrollEnabled(false)}
                     onEnd={() => setScrollEnabled(true)}
                   />
+                  <ErrorMessage>{props.touched.rating && props.errors.rating}</ErrorMessage>
                 </View>
-                <View>
-                  <Flavours
-                    WhiskyId={id}
-                    onChange={(flavours: number[]) => props.handleChange('flavours')(flavours)}
-                  />
-                </View>
+                <Flavours
+                  WhiskyId={id}
+                  onChange={(flavours: number[]) => props.handleChange('flavours')(flavours)}
+                />
               </View>
-              <Button block>
+              <Button
+                block
+                disabled={props.isSubmitting}
+                onPress={props.isSubmitting ? () => undefined : props.handleSubmit}
+              >
                 <Text>Place Review</Text>
               </Button>
             </View>
