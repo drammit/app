@@ -6,9 +6,18 @@ interface GetDramsParams {
   UserId?: number;
 }
 
+interface DramData {
+  message?: string;
+  rating: number;
+  flavours: number[];
+  WhiskyId: number;
+  name: string;
+}
+
 export const getDrams = (params: GetDramsParams) => get('/dram/list', params);
 export const slainteDram = (DramId: number) => post(`/dram/${DramId}/slainte`);
 export const commentDram = (DramId: number, comment: string) => post(
   `/dram/${DramId}/comment`,
   { comment },
 );
+export const postDram = (data: DramData) => post('/dram', { ...data });

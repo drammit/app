@@ -181,7 +181,7 @@ const SearchStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'DramReview', // 'SearchPage',
+    initialRouteName: 'SearchPage', // 'DramReview', // 'SearchPage',
     initialRouteParams: {
       id: 53587,
     },

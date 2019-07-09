@@ -38,8 +38,9 @@ async function handleApiError(response: Response) {
 }
 
 type RequestMethod = 'GET' | 'POST';
+type RequestBodyParamTypes = string | FileUpload | undefined | number;
 interface RequestBody {
-  [key: string]: string | FileUpload | undefined | number;
+  [key: string]: RequestBodyParamTypes | RequestBodyParamTypes[];
 }
 
 export function request(method: RequestMethod = 'GET', url: string, data?: RequestBody) {

@@ -19,6 +19,9 @@ import { errorComponent, paramFromInstance } from '../../core/storeInstances';
 import { getWhiskyScore } from '../../store/api/whisky';
 
 import colors from '../../config/colors';
+import { postDram } from '../../store/api/drams';
+import { Alert } from 'react-native';
+import whiskyName from '../../core/whiskyName';
 
 const ReviewSchema = Yup.object().shape({
   rating: Yup.number()
@@ -62,12 +65,21 @@ const DramReview = ({ navigation }: DramReviewProps) => {
     [score.isResolved, score.isLoading],
   );
 
+  const name = whiskyName(whiskyInstance, distilleryInstance);
+
   const onSubmit = useCallback(
-    (values) => {
-      console.log(values);
-      setIsPosted(true);
+    ({ message, rating, flavours }, props) => {
+      postDram({ name, message, rating, flavours, WhiskyId: id })
+        .then((result) => {
+          console.log(result);
+          setIsPosted(true);
+        })
+        .catch((err) => {
+          Alert.alert('Something went wrong', err.message);
+          props.setSubmitting(false);
+        });
     },
-    [],
+    [name],
   );
 
   if (!whiskyInstance.isResolved || !distilleryInstance.isResolved || !score.isResolved) {
@@ -189,6 +201,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
 };
 
 DramReview.navigationOptions = {
+  gesturesEnabled: false,
   headerBackTitle: 'Save',
   title: 'Add Review',
 };
