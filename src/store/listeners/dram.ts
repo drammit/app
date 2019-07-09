@@ -1,5 +1,6 @@
-import { slainteDram, commentDram } from '../api/drams';
-import { replaceComment } from '../actions/dram';
+import { slainteDram, commentDram, uploadDram } from '../api/drams';
+import { replaceComment, uploadDramImageFailed, uploadDramImageSuccess } from '../actions/dram';
+import { fileFromURI } from '../../core/files';
 
 const listeners: DispatchListener[] = [
   {
@@ -16,6 +17,16 @@ const listeners: DispatchListener[] = [
         });
     },
     type: ['DRAM_COMMENT'],
+  },
+  {
+    listener: (dispatch, action: any) => {
+      if (action.uri) {
+        uploadDram(action.id, fileFromURI(action.uri))
+          .then(({ image }) => dispatch(uploadDramImageSuccess(action.id, image)))
+          .catch(() => dispatch(uploadDramImageFailed(action.id)));
+      }
+    },
+    type: ['UPLOAD_DRAM_PHOTO'],
   },
 ];
 

@@ -173,6 +173,23 @@ declare interface FetchFlavoursFailedAction {
   type: 'FETCH_FLAVOURS_FAILED';
 }
 
+declare interface UploadDramPhoto {
+  type: 'UPLOAD_DRAM_PHOTO';
+  id: number;
+  uri: string;
+}
+
+declare interface UploadDramPhotoSuccess {
+  type: 'UPLOAD_DRAM_PHOTO_SUCCESS';
+  id: number;
+  image: string;
+}
+
+declare interface UploadDramPhotoFailed {
+  type: 'UPLOAD_DRAM_PHOTO_FAILED';
+  id: number;
+}
+
 declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserInfoAction
   | ClearUserInfoAction | FetchInformationAction | FetchInformationSuccessAction
   | FetchInformationFailedAction | RefreshAuthAction | FetchTimelineSuccessAction
@@ -181,4 +198,5 @@ declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserIn
   | ProfileUnfollowAction | FetchTimelineRedoAction | ProfileUpdateAvatarAction
   | ProfileUpdateNameAction | SearchReceive | ExtraInformationAction | UserListAddAction
   | UserListRemoveAction | FetchFlavoursAction | FetchFlavoursSuccessAction
-  | FetchFlavoursFailedAction | DramAddAction;
+  | FetchFlavoursFailedAction | DramAddAction | UploadDramPhoto | UploadDramPhotoSuccess
+  | UploadDramPhotoFailed;

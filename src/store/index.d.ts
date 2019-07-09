@@ -1,6 +1,6 @@
 /* Redux Listener Types */
 declare interface DispatchListener {
-  type: string[] | string;
+  type: DrammitAction['type'][] | DrammitAction['type'];
   listener: import('redux-listeners').ReduxListener;
 }
 
@@ -201,6 +201,11 @@ declare interface StoreTimelines {
   [key: number]: TimelineShape;
 }
 
+declare interface UploadItem {
+  id: number;
+  type: 'dram' | 'other';
+}
+
 declare interface StoreShape {
   bottlers: StoreBottlers;
   categories: StoreCategories;
@@ -215,6 +220,7 @@ declare interface StoreShape {
   regions: StoreRegions;
   user: StoreCurrentUser;
   users: StoreUsers;
+  uploading: UploadItem[];
   whiskies: StoreWhiskies;
   'wish-lists': StoreUserLists;
 }

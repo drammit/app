@@ -20,7 +20,7 @@ import { errorComponent, paramFromInstance } from '../../core/storeInstances';
 import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
 import { getWhiskyScore } from '../../store/api/whisky';
-import { addDram } from '../../store/actions/dram';
+import { addDram, uploadDramImage } from '../../store/actions/dram';
 import { dispatch } from '../../store/store';
 import { postDram } from '../../store/api/drams';
 
@@ -71,11 +71,13 @@ const DramReview = ({ navigation }: DramReviewProps) => {
   const name = whiskyName(whiskyInstance, distilleryInstance);
 
   const onSubmit = useCallback(
-    ({ message, rating, flavours }, props) => {
+    ({ message, rating, flavours, image }, props) => {
       postDram({ name, message, rating, flavours, WhiskyId: id })
         .then((result) => {
           dispatch(addDram(result));
           setIsPosted(true);
+
+          if (image) dispatch(uploadDramImage(result.id, image));
         })
         .catch((err) => {
           Alert.alert('Something went wrong', err.message);

@@ -16,6 +16,7 @@ import { wishLists } from '../entities/wishList';
 import user from './user';
 import { singleReducer } from './timeline';
 import timelines from './timelines';
+import uploading from './uploading';
 
 export default (
   extraReducers?: { [key: string]: Reducer<StoreShape, DrammitAction>,
@@ -32,6 +33,7 @@ export default (
   regions,
   timeline: singleReducer,
   timelines,
+  uploading,
   user,
   users,
   whiskies,

@@ -27,3 +27,20 @@ export const addDram = (dram: DramShape): DramAddAction => ({
   dram,
   type: 'DRAM_ADD',
 });
+
+export const uploadDramImage = (id: number, uri: string): UploadDramPhoto => ({
+  id,
+  type: 'UPLOAD_DRAM_PHOTO',
+  uri,
+});
+
+export const uploadDramImageSuccess = (id: number, image: string): UploadDramPhotoSuccess => ({
+  id,
+  image,
+  type: 'UPLOAD_DRAM_PHOTO_SUCCESS',
+});
+
+export const uploadDramImageFailed = (id: number): UploadDramPhotoFailed => ({
+  id,
+  type: 'UPLOAD_DRAM_PHOTO_FAILED',
+});
