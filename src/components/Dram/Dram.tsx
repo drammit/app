@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Card, CardItem, Body, Text, Left, Button } from 'native-base';
+import { Card, CardItem, Body, Text, Left, Button, Spinner } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
@@ -11,6 +11,7 @@ import { getWhisky } from '../../store/entities/whiskies';
 import { getUser, getUsers } from '../../store/entities/users';
 import { getDistillery } from '../../store/entities/distilleries';
 import { slainteDram } from '../../store/actions/dram';
+import { isUploadingByType } from '../../store/selectors/uploading';
 
 import Comment from './Comment';
 import Rating from './Rating';
@@ -73,6 +74,8 @@ const Dram = ({
   const userInstance = getUser(paramFromInstance(dramInstance, 'UserId'));
   const distilleryInstance = getDistillery(paramFromInstance(whiskyInstance, 'DistilleryId'));
 
+  const isUploading = useSelector(isUploadingByType('dram', id));
+
   if (
     dramInstance.isPending
     || userInstance.isPending
@@ -88,7 +91,6 @@ const Dram = ({
 
   const dram = dramInstance.value;
   const user = userInstance.value;
-  const whisky = whiskyInstance.value;
   const distillery = distilleryInstance.value;
 
   const slaintes: SlainteWithUser[] = dram.slaintes.map((s: DramSlainteShape) => ({
@@ -134,9 +136,15 @@ const Dram = ({
           </Left>
         ) : headerContent}
       </CardItem>
-      {dram.image ? (
-        <CardItem cardBody {...goToDetailsProps}>
-          <Image aspectRatio={16 / 9} uri={dram.image} />
+      {(dram.image || isUploading) ? (
+        <CardItem
+          cardBody
+          {...goToDetailsProps}
+          style={{ justifyContent: 'center' }}
+        >
+          {isUploading
+            ? <Spinner color={colors.grey3} />
+            : <Image aspectRatio={16 / 9} uri={dram.image} />}
         </CardItem>
       ) : null}
       {dram.message ? (

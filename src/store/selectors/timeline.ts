@@ -1,4 +1,4 @@
-export const getTimeline = (state: StoreShape): TimelineShape => state.timeline;
+export const getTimeline = (state: StoreShape): TimelineShape | undefined => state.timeline;
 export const getUserTimelines = (state: StoreShape): StoreTimelines => state.timelines;
 export const getUserTimeline =
   (UserId: number) => (state: StoreShape) => getUserTimelines(state)[UserId];
