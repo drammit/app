@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavigationInjectedProps } from 'react-navigation';
-import { Content, View, Text, Textarea, Button } from 'native-base';
+import { Content, View, Text, Textarea, Button, Spinner } from 'native-base';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -10,6 +10,8 @@ import Rating from '../../components/Form/Rating';
 import Flavours from '../../components/Form/Flavours/Flavours';
 import ImagePicker from '../../components/Form/ImagePicker';
 import ErrorMessage from '../../components/Form/ErrorMessage';
+
+import Success from './Success';
 
 import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
@@ -32,6 +34,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
   const distilleryInstance = getDistillery(paramFromInstance(whiskyInstance, 'DistilleryId'));
 
   const [isScrollEnabled, setScrollEnabled] = useState<boolean>(true);
+  const [isPosted, setIsPosted] = useState<boolean>(false);
   const [formWidth, setFormWidth] = useState<number | string>('auto');
 
   const [score, setScore] = useState<{ isLoading: boolean; isResolved: boolean; score: number }>({
@@ -59,8 +62,22 @@ const DramReview = ({ navigation }: DramReviewProps) => {
     [score.isResolved, score.isLoading],
   );
 
-  if (!whiskyInstance.isResolved || !distilleryInstance.isResolved) {
-    return null;
+  const onSubmit = useCallback(
+    (values) => {
+      console.log(values);
+      setIsPosted(true);
+    },
+    [],
+  );
+
+  if (!whiskyInstance.isResolved || !distilleryInstance.isResolved || !score.isResolved) {
+    return (
+      <SafeWithHeader style={{ flex: 1 }}>
+        <Content padder scrollEnabled={false}>
+          <Spinner color={colors.grey3} />
+        </Content>
+      </SafeWithHeader>
+    );
   }
 
   const error = errorComponent([whiskyInstance, distilleryInstance]);
@@ -75,78 +92,87 @@ const DramReview = ({ navigation }: DramReviewProps) => {
     );
   }
 
+  if (isPosted) return <Success id={id} />;
+
   return (
     <SafeWithHeader style={{ flex: 1 }}>
-      <Content padder scrollEnabled={isScrollEnabled} contentContainerStyle={{ flex: 1 }}>
-        <WhiskyCard disableLink id={id} />
-        <Formik
-          initialValues={{
-            flavours: [],
-            image: '',
-            message: '',
-            rating: score.score,
-          }}
-          validationSchema={ReviewSchema}
-          onSubmit={console.log}
-        >
-          {props => (
-            <View style={{ justifyContent: 'space-between', flex: 1 }}>
-              <View>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    borderBottomColor: colors.grey4,
-                    borderBottomWidth: 1,
-                    flexDirection: 'row',
-                    flexGrow: 0,
-                    flexShrink: 1,
-                    justifyContent: 'space-between',
-                    marginBottom: 12,
-                    marginTop: 12,
-                    paddingBottom: 12,
-                  }}
-                  onLayout={e => setFormWidth(e.nativeEvent.layout.width - 86)}
-                >
-                  <View style={{ width: formWidth }}>
-                    <Textarea
-                      rowSpan={3}
-                      placeholder="What are your thoughts on this dram?"
-                      onChangeText={text => props.handleChange('message')(text)}
-                    />
-                  </View>
-                  <View style={{ width: 80, flexShrink: 0, marginLeft: 6 }}>
-                    <ImagePicker
-                      name="image"
-                      aspect={[16, 9]}
-                      formikProps={props}
-                      placeholder="Add Photo"
-                    />
-                  </View>
-                </View>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    marginBottom: 12,
-                    marginLeft: 6,
-                    marginTop: 12,
-                  }}
-                >
-                  <Rating
-                    rating={score.score}
-                    onUpdate={(newScore: number) => {
-                      setScore({ ...score, score: newScore });
-                      props.handleChange('rating')(newScore);
-                    }}
-                    onStart={() => setScrollEnabled(false)}
-                    onEnd={() => setScrollEnabled(true)}
+      <Formik
+        initialValues={{
+          flavours: [],
+          image: '',
+          message: '',
+          rating: score.score,
+        }}
+        validationSchema={ReviewSchema}
+        onSubmit={onSubmit}
+      >
+        {props => (
+          <View style={{ flex: 1 }}>
+            <Content
+              padder
+              scrollEnabled={isScrollEnabled}
+              contentContainerStyle={{
+                flex: 1,
+                opacity: props.isSubmitting ? 0.5 : 1,
+              }}
+            >
+              <WhiskyCard disableLink id={id} />
+              <View
+                style={{
+                  alignItems: 'center',
+                  borderBottomColor: colors.grey4,
+                  borderBottomWidth: 1,
+                  flexDirection: 'row',
+                  flexGrow: 0,
+                  flexShrink: 1,
+                  justifyContent: 'space-between',
+                  marginBottom: 12,
+                  marginTop: 12,
+                  paddingBottom: 12,
+                }}
+                onLayout={e => setFormWidth(e.nativeEvent.layout.width - 86)}
+              >
+                <View style={{ width: formWidth }}>
+                  <Textarea
+                    rowSpan={3}
+                    placeholder="What are your thoughts on this dram?"
+                    onChangeText={text => props.handleChange('message')(text)}
                   />
-                  <ErrorMessage>{props.touched.rating && props.errors.rating}</ErrorMessage>
                 </View>
-                <Flavours
-                  WhiskyId={id}
-                  onChange={(flavours: number[]) => props.handleChange('flavours')(flavours)}
-                />
+                <View style={{ width: 80, flexShrink: 0, marginLeft: 6 }}>
+                  <ImagePicker
+                    name="image"
+                    aspect={[16, 9]}
+                    formikProps={props}
+                    placeholder="Add Photo"
+                  />
+                </View>
               </View>
+              <View
+                style={{
+                  alignItems: 'center',
+                  marginBottom: 12,
+                  marginLeft: 6,
+                  marginTop: 12,
+                }}
+              >
+                <Rating
+                  rating={score.score}
+                  onUpdate={(newScore: number) => {
+                    setScore({ ...score, score: newScore });
+                    props.handleChange('rating')(newScore);
+                  }}
+                  onStart={() => setScrollEnabled(false)}
+                  onEnd={() => setScrollEnabled(true)}
+                />
+                <ErrorMessage>{props.touched.rating && props.errors.rating}</ErrorMessage>
+              </View>
+              <Flavours
+                WhiskyId={id}
+                onChange={(flavours: number[]) => props.handleChange('flavours')(flavours)}
+              />
+            </Content>
+            <View style={{ paddingLeft: 8, paddingRight: 8 }}>
               <Button
                 block
                 disabled={props.isSubmitting}
@@ -155,9 +181,9 @@ const DramReview = ({ navigation }: DramReviewProps) => {
                 <Text>Place Review</Text>
               </Button>
             </View>
-          )}
-        </Formik>
-      </Content>
+          </View>
+        )}
+      </Formik>
     </SafeWithHeader>
   );
 };
