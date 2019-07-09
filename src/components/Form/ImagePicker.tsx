@@ -1,7 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, Alert } from 'react-native';
-import { Button, View, Text, ActionSheet } from 'native-base';
+import { Alert, Image, StyleSheet } from 'react-native';
+import { ActionSheet, Button, Text, View } from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
+import { MediaTypeOptions } from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
 import { checkAndAskPersmissionsFor } from '../../core/permissions';
@@ -62,6 +63,7 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps> {
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect,
+      mediaTypes: MediaTypeOptions.Images,
       quality: 0.7,
     });
 
@@ -82,6 +84,7 @@ class ImagePickerWrapper extends React.Component<ImagePickerProps> {
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect,
+      mediaTypes: MediaTypeOptions.Images,
       quality: 0.7,
     });
 
