@@ -3,6 +3,7 @@ import { NavigationInjectedProps } from 'react-navigation';
 import { Content, View, Text, Textarea, Button, Spinner } from 'native-base';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { Alert } from 'react-native';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import WhiskyCard from '../../components/Whisky/WhiskyCard';
@@ -13,15 +14,17 @@ import ErrorMessage from '../../components/Form/ErrorMessage';
 
 import Success from './Success';
 
+import whiskyName from '../../core/whiskyName';
+import { errorComponent, paramFromInstance } from '../../core/storeInstances';
+
 import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
-import { errorComponent, paramFromInstance } from '../../core/storeInstances';
 import { getWhiskyScore } from '../../store/api/whisky';
+import { addDram } from '../../store/actions/dram';
+import { dispatch } from '../../store/store';
+import { postDram } from '../../store/api/drams';
 
 import colors from '../../config/colors';
-import { postDram } from '../../store/api/drams';
-import { Alert } from 'react-native';
-import whiskyName from '../../core/whiskyName';
 
 const ReviewSchema = Yup.object().shape({
   rating: Yup.number()
@@ -71,7 +74,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
     ({ message, rating, flavours }, props) => {
       postDram({ name, message, rating, flavours, WhiskyId: id })
         .then((result) => {
-          console.log(result);
+          dispatch(addDram(result));
           setIsPosted(true);
         })
         .catch((err) => {

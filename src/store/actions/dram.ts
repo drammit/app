@@ -22,3 +22,8 @@ export const replaceComment = (
   id,
   type: 'DRAM_COMMENT_REPLACE',
 });
+
+export const addDram = (dram: DramShape): DramAddAction => ({
+  dram,
+  type: 'DRAM_ADD',
+});

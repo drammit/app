@@ -101,6 +101,11 @@ declare interface DramCommentAction {
   id: number;
 }
 
+declare interface DramAddAction {
+  type: 'DRAM_ADD';
+  dram: DramShape;
+}
+
 declare interface DramCommentReplaceAction {
   type: 'DRAM_COMMENT_REPLACE';
   DramId: number;
@@ -176,4 +181,4 @@ declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserIn
   | ProfileUnfollowAction | FetchTimelineRedoAction | ProfileUpdateAvatarAction
   | ProfileUpdateNameAction | SearchReceive | ExtraInformationAction | UserListAddAction
   | UserListRemoveAction | FetchFlavoursAction | FetchFlavoursSuccessAction
-  | FetchFlavoursFailedAction;
+  | FetchFlavoursFailedAction | DramAddAction;

@@ -102,7 +102,7 @@ const WhiskyCard = ({ id, disableLink = false }: WhiskyCardProps) => {
           </Left>
         </CardItem>
       )}
-      {bottler.id !== 2 && (
+      {bottlerInstance.isResolved && bottler.id !== 2 && (
         <CardItem bordered>
           <Left>
             <Body>

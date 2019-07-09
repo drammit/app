@@ -16,6 +16,8 @@ const items = (
           .map(dram => dram.id)
           .filter(id => state.indexOf(id) === -1),
       ];
+    case 'DRAM_ADD':
+      return [action.dram.id, ...state];
     default:
       return state;
   }
@@ -64,9 +66,7 @@ const timeline = combineReducers({
 });
 
 export const singleReducer = (state: TimelineShape | undefined, action: DrammitAction) => {
-  if (typeof (action as any).UserId !== 'undefined') {
-    return state;
-  }
+  if (typeof (action as any).UserId !== 'undefined') return state;
 
   return timeline(state, action);
 };

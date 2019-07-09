@@ -16,6 +16,17 @@ export const [drams, getDrams, getDram] = createLoader<StoreDrams, DramShape>({
   fetchTypes: ['FETCH_TIMELINE_SUCCESS'],
   reducer: (state = {}, action) => {
     switch (action.type) {
+      case 'DRAM_ADD':
+        return {
+          ...state,
+          [action.dram.id]: {
+            isPending: false,
+            isResolved: true,
+            value: {
+              ...action.dram,
+            },
+          },
+        };
       case 'DRAM_SLAINTE': {
         const slaintes = state[action.DramId] ? state[action.DramId].value.slaintes : [];
         const slainteIndex = slaintes

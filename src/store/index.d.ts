@@ -41,14 +41,14 @@ declare interface DramCommentShape {
 declare interface DramShape {
   UserId: number;
   WhiskyId: number;
+  comments: DramCommentShape[];
+  createdAt: Date;
   id: number;
+  image?: string;
+  message?: string;
   name: string;
   rating: number;
   slaintes: DramSlainteShape[];
-  comments: DramCommentShape[];
-  image?: string;
-  message?: string;
-  createdAt: Date;
 }
 
 type StoreDram = StoreResolvable<DramShape>;
