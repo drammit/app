@@ -1,17 +1,18 @@
 import React, { useCallback } from 'react';
 import { ActionSheet, Button, Icon } from 'native-base';
 import { Alert } from 'react-native';
+import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 
 import { reportDram } from '../../store/api/drams';
 import { dispatch } from '../../store/store';
 import { removeDram } from '../../store/actions/dram';
 
-interface OptionsProps {
+interface OptionsProps extends NavigationInjectedProps {
   dram: DramShape;
   currentUser: StoreCurrentUser;
 }
 
-const Options = ({ dram, currentUser }: OptionsProps) => {
+const Options = ({ dram, currentUser, navigation }: OptionsProps) => {
   const isSelf = dram.UserId === currentUser.id;
 
   const onOptions = useCallback(
@@ -35,6 +36,10 @@ const Options = ({ dram, currentUser }: OptionsProps) => {
 
       const handleChoice = isSelf
         ? (index: number) => {
+          if (index === 0) {
+            navigation.navigate('DramReview', { DramId: dram.id });
+          }
+
           if (index === 1) {
             Alert.alert(
               'Remove Dram',
@@ -70,7 +75,7 @@ const Options = ({ dram, currentUser }: OptionsProps) => {
         handleChoice,
       );
     },
-    [isSelf],
+    [isSelf, dram],
   );
 
   return (
@@ -80,4 +85,4 @@ const Options = ({ dram, currentUser }: OptionsProps) => {
   );
 };
 
-export default Options;
+export default withNavigation(Options);

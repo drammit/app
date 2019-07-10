@@ -49,6 +49,7 @@ declare interface DramShape {
   name: string;
   rating: number;
   slaintes: DramSlainteShape[];
+  flavours: FlavourShape['id'][];
 }
 
 type StoreDram = StoreResolvable<DramShape>;

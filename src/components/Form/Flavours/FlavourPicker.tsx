@@ -18,7 +18,7 @@ import SafeWithHeader from '../../Pages/SafeWithHeader';
 import SearchBar from '../SearchBar';
 import Tag from './Tag';
 
-import { useFlavours } from './Flavours';
+import useFlavours from './useFlavours';
 
 import colors from '../../../config/colors';
 

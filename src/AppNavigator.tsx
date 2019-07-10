@@ -134,7 +134,10 @@ const DramsStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'Timeline',
+    initialRouteName: 'DramReview', // 'Timeline',
+    initialRouteParams: {
+      DramId: 9414,
+    },
   },
 );
 

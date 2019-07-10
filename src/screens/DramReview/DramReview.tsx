@@ -16,6 +16,7 @@ import Success from './Success';
 
 import whiskyName from '../../core/whiskyName';
 import { errorComponent, paramFromInstance } from '../../core/storeInstances';
+import createDramImageUrl from '../../core/dramImageUrl';
 
 import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
@@ -23,6 +24,7 @@ import { getWhiskyScore } from '../../store/api/whisky';
 import { addDram, uploadDramImage } from '../../store/actions/dram';
 import { dispatch } from '../../store/store';
 import { postDram } from '../../store/api/drams';
+import { getDram } from '../../store/entities/drams';
 
 import colors from '../../config/colors';
 
@@ -34,9 +36,15 @@ const ReviewSchema = Yup.object().shape({
 type DramReviewProps = NavigationInjectedProps;
 
 const DramReview = ({ navigation }: DramReviewProps) => {
-  const id = navigation.getParam('id');
+  const DramId = navigation.getParam('DramId', false);
+  const dramInstance = getDram(DramId);
+  const dram = dramInstance.value;
+  const isEdit = Boolean(DramId);
 
-  const whiskyInstance = getWhisky(id);
+  const WhiskyIdParam = navigation.getParam('WhiskyId', false);
+  const WhiskyId = WhiskyIdParam || paramFromInstance(dramInstance, 'WhiskyId');
+
+  const whiskyInstance = getWhisky(WhiskyId);
   const distilleryInstance = getDistillery(paramFromInstance(whiskyInstance, 'DistilleryId'));
 
   const [isScrollEnabled, setScrollEnabled] = useState<boolean>(true);
@@ -51,28 +59,43 @@ const DramReview = ({ navigation }: DramReviewProps) => {
 
   useEffect(
     () => {
-      if (!score.isResolved && !score.isLoading) {
+      if (
+        !isEdit
+        && !score.isResolved
+        && !score.isLoading
+      ) {
         setScore({ ...score, isLoading: true });
 
-        getWhiskyScore(id)
+        getWhiskyScore(WhiskyId)
           .then(({ user }) => user || 0)
           .catch(() => 0)
           .then(newScore => setScore({
-            ...score,
             isLoading: false,
             isResolved: true,
             score: newScore,
           }));
+      } else if (
+        isEdit
+        && !score.isResolved
+        && !score.isLoading
+        && dramInstance.isResolved
+      ) {
+        setScore({
+          isLoading: false,
+          isResolved: true,
+          score: dramInstance.value.rating,
+        });
       }
     },
-    [score.isResolved, score.isLoading],
+    [isEdit, score.isResolved, score.isLoading, dramInstance.isResolved, dramInstance.value],
   );
 
   const name = whiskyName(whiskyInstance, distilleryInstance);
+  const imageUri = createDramImageUrl(dram.image);
 
   const onSubmit = useCallback(
     ({ message, rating, flavours, image }, props) => {
-      postDram({ name, message, rating, flavours, WhiskyId: id })
+      postDram({ name, message, rating, flavours, WhiskyId })
         .then((result) => {
           dispatch(addDram(result));
           setIsPosted(true);
@@ -97,7 +120,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
     );
   }
 
-  const error = errorComponent([whiskyInstance, distilleryInstance]);
+  const error = errorComponent([dramInstance, whiskyInstance, distilleryInstance]);
 
   if (error) {
     return (
@@ -109,15 +132,15 @@ const DramReview = ({ navigation }: DramReviewProps) => {
     );
   }
 
-  if (isPosted) return <Success id={id} />;
+  if (isPosted) return <Success id={WhiskyId} />;
 
   return (
     <SafeWithHeader style={{ flex: 1 }}>
       <Formik
         initialValues={{
-          flavours: [],
-          image: '',
-          message: '',
+          flavours: dram.flavours,
+          image: imageUri,
+          message: dram.message,
           rating: score.score,
         }}
         validationSchema={ReviewSchema}
@@ -133,7 +156,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
                 opacity: props.isSubmitting ? 0.5 : 1,
               }}
             >
-              <WhiskyCard disableLink id={id} />
+              <WhiskyCard disableLink id={WhiskyId} />
               <View
                 style={{
                   alignItems: 'center',
@@ -153,6 +176,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
                   <Textarea
                     rowSpan={3}
                     placeholder="What are your thoughts on this dram?"
+                    value={props.values.message}
                     onChangeText={text => props.handleChange('message')(text)}
                   />
                 </View>
@@ -185,7 +209,8 @@ const DramReview = ({ navigation }: DramReviewProps) => {
                 <ErrorMessage>{props.touched.rating && props.errors.rating}</ErrorMessage>
               </View>
               <Flavours
-                WhiskyId={id}
+                WhiskyId={WhiskyId}
+                flavours={props.values.flavours}
                 onChange={(flavours: number[]) => props.handleChange('flavours')(flavours)}
               />
             </Content>
@@ -205,10 +230,14 @@ const DramReview = ({ navigation }: DramReviewProps) => {
   );
 };
 
-DramReview.navigationOptions = {
-  gesturesEnabled: false,
-  headerBackTitle: 'Save',
-  title: 'Add Review',
+DramReview.navigationOptions = ({ navigation }: NavigationInjectedProps) => {
+  const DramId = navigation.getParam('DramId', false);
+
+  return {
+    gesturesEnabled: false,
+    headerBackTitle: 'Save',
+    title: DramId ? 'Edit Review' : 'Add Review',
+  };
 };
 
 export default DramReview;

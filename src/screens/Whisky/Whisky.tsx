@@ -191,7 +191,7 @@ const WhiskyDetails = ({ navigation }: WhiskyDetailsProps) => {
         <Button
           block
           style={{ marginTop: 24 }}
-          onPress={() => navigation.navigate('DramReview', { id })}
+          onPress={() => navigation.navigate('DramReview', { WhiskyId: id })}
         >
           <Text>Add Your Own Review</Text>
         </Button>

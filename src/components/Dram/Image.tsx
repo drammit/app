@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Image, View } from 'react-native';
 
-import { envVar } from '../../core/env';
-
-const STATIC_ROOT = envVar('STATIC_ROOT');
+import createDramImageUrl from '../../core/dramImageUrl';
 
 interface DramImageProps {
   uri?: string;
@@ -17,12 +15,7 @@ const DramImage = ({ uri, aspectRatio }: DramImageProps) => {
   const [width, setWidth] = useState<string | number>(defaultWidth);
   const [height, setHeight] = useState<string | number>(defaultHeight);
 
-  const completeUri = [
-    STATIC_ROOT,
-    '/drams/',
-    uri,
-    '_800.jpg',
-  ].join('');
+  const completeUri = createDramImageUrl(uri);
 
   return (
     <View style={{ width, height }}>

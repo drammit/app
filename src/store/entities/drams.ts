@@ -8,6 +8,7 @@ export const [drams, getDrams, getDram] = createLoader<StoreDrams, DramShape>({
     WhiskyId: 0,
     comments: [],
     createdAt: new Date(),
+    flavours: [],
     id: 0,
     name: '',
     rating: 0,

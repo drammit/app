@@ -19,6 +19,8 @@ import { warn } from './core/log';
 
 import store from './store/store';
 
+import { FlavourProvider } from './components/Form/Flavours/useFlavours';
+
 const AppContainer = createAppContainer(AppNavigator);
 
 function setupTopLevelNavigator(ref: NavigationContainerComponent) {
@@ -58,9 +60,11 @@ class App extends React.Component<{}, AppState> {
     return (
       <Provider store={store}>
         <StyleProvider style={components(platform)}>
-          <Root>
-            <AppContainer ref={setupTopLevelNavigator} />
-          </Root>
+          <FlavourProvider>
+            <Root>
+              <AppContainer ref={setupTopLevelNavigator} />
+            </Root>
+          </FlavourProvider>
         </StyleProvider>
       </Provider>
     );
