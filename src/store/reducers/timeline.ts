@@ -18,6 +18,8 @@ const items = (
       ];
     case 'DRAM_ADD':
       return [action.dram.id, ...state];
+    case 'DRAM_REMOVE':
+      return state.filter(d => d !== action.id);
     default:
       return state;
   }

@@ -23,3 +23,4 @@ export const commentDram = (DramId: number, comment: string) => post(
 );
 export const postDram = (data: DramData) => post('/dram', { ...data });
 export const uploadDram = (id: number, image?: FileUpload) => post(`/dram/${id}/upload`, { image });
+export const removeDram = (id: number) => post(`/dram/${id}/remove`);

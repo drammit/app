@@ -27,6 +27,11 @@ export const [drams, getDrams, getDram] = createLoader<StoreDrams, DramShape>({
             },
           },
         };
+      case 'DRAM_REMOVE': {
+        const clone = { ...state };
+        delete clone[action.id];
+        return clone;
+      }
       case 'DRAM_SLAINTE': {
         const slaintes = state[action.DramId] ? state[action.DramId].value.slaintes : [];
         const slainteIndex = slaintes

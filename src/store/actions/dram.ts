@@ -44,3 +44,8 @@ export const uploadDramImageFailed = (id: number): UploadDramPhotoFailed => ({
   id,
   type: 'UPLOAD_DRAM_PHOTO_FAILED',
 });
+
+export const removeDram = (id: number): DramRemoveAction => ({
+  id,
+  type: 'DRAM_REMOVE',
+});

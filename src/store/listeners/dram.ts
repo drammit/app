@@ -1,4 +1,4 @@
-import { slainteDram, commentDram, uploadDram } from '../api/drams';
+import { slainteDram, commentDram, uploadDram, removeDram } from '../api/drams';
 import { replaceComment, uploadDramImageFailed, uploadDramImageSuccess } from '../actions/dram';
 import { fileFromURI } from '../../core/files';
 
@@ -27,6 +27,10 @@ const listeners: DispatchListener[] = [
       }
     },
     type: ['UPLOAD_DRAM_PHOTO'],
+  },
+  {
+    listener: (dispatch, action: any) => removeDram(action.id),
+    type: ['DRAM_REMOVE'],
   },
 ];
 
