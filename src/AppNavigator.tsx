@@ -181,10 +181,7 @@ const SearchStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'DramReview', // 'SearchPage',
-    initialRouteParams: {
-      id: 53587,
-    },
+    initialRouteName: 'SearchPage',
   },
 );
 
@@ -244,7 +241,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Search', // 'Drams',
+    initialRouteName: 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,
