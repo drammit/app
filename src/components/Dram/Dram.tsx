@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Card, CardItem, Body, Text, Left, Button, Spinner } from 'native-base';
+import { Card, CardItem, Body, Text, Left, Button, Spinner, Right, Icon } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { distanceInWordsToNow } from 'date-fns';
@@ -18,6 +18,7 @@ import Rating from './Rating';
 import Image from './Image';
 import IconSlainte from './IconSlainte';
 import IconComment from './IconComment';
+import Options from './Options';
 import Avatar from '../User/Avatar';
 import UsernameLink from '../User/UsernameLink';
 import DistilleryNameLink from '../Distillery/NameLink';
@@ -65,6 +66,7 @@ const Dram = ({
   const dispatch = useDispatch();
   const currentUser: StoreCurrentUser = useSelector(getCurrentUser);
   const dramInstance = getDram(id);
+  const dram = dramInstance.value;
   const onSlainte = useCallback(() => dispatch(slainteDram(id, currentUser.id)), [id, currentUser]);
   const users = useSelector((state: StoreShape) => getUsers(state));
   const selectUser = useCallback((UserId: number) => users[UserId], [users]);
@@ -89,7 +91,6 @@ const Dram = ({
   const error = errorComponent([dramInstance, userInstance, whiskyInstance, distilleryInstance]);
   if (error) return <Card><CardItem><Body>{error}</Body></CardItem></Card>;
 
-  const dram = dramInstance.value;
   const user = userInstance.value;
   const distillery = distilleryInstance.value;
 
@@ -135,6 +136,9 @@ const Dram = ({
             {headerContent}
           </Left>
         ) : headerContent}
+        <Right>
+          <Options dram={dram} currentUser={currentUser} />
+        </Right>
       </CardItem>
       {(dram.image || isUploading) ? (
         <CardItem
