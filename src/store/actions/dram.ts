@@ -28,6 +28,11 @@ export const addDram = (dram: DramShape): DramAddAction => ({
   type: 'DRAM_ADD',
 });
 
+export const updateDram = (dram: DramShape): DramUpdateAction => ({
+  dram,
+  type: 'DRAM_UPDATE',
+});
+
 export const uploadDramImage = (id: number, uri: string): UploadDramPhoto => ({
   id,
   type: 'UPLOAD_DRAM_PHOTO',

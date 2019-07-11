@@ -21,9 +21,9 @@ import createDramImageUrl from '../../core/dramImageUrl';
 import { getWhisky } from '../../store/entities/whiskies';
 import { getDistillery } from '../../store/entities/distilleries';
 import { getWhiskyScore } from '../../store/api/whisky';
-import { addDram, uploadDramImage } from '../../store/actions/dram';
+import { addDram, uploadDramImage, updateDram } from '../../store/actions/dram';
 import { dispatch } from '../../store/store';
-import { postDram } from '../../store/api/drams';
+import { postDram, editDram } from '../../store/api/drams';
 import { getDram } from '../../store/entities/drams';
 
 import colors from '../../config/colors';
@@ -95,19 +95,31 @@ const DramReview = ({ navigation }: DramReviewProps) => {
 
   const onSubmit = useCallback(
     ({ message, rating, flavours, image }, props) => {
-      postDram({ name, message, rating, flavours, WhiskyId })
-        .then((result) => {
-          dispatch(addDram(result));
-          setIsPosted(true);
+      const sendToAPI = isEdit
+        ? () => editDram(DramId, { name, message, rating, flavours, WhiskyId })
+          .then((result) => {
+            dispatch(updateDram(result));
 
-          if (image) dispatch(uploadDramImage(result.id, image));
-        })
+            if (image && image !== imageUri) dispatch(uploadDramImage(DramId, image));
+
+            Alert.alert('Your review has been updated');
+            navigation.goBack();
+          })
+        : () => postDram({ name, message, rating, flavours, WhiskyId })
+          .then((result) => {
+            dispatch(addDram(result));
+            setIsPosted(true);
+
+            if (image) dispatch(uploadDramImage(result.id, image));
+          });
+
+      sendToAPI()
         .catch((err) => {
           Alert.alert('Something went wrong', err.message);
           props.setSubmitting(false);
         });
     },
-    [name],
+    [name, imageUri],
   );
 
   if (!whiskyInstance.isResolved || !distilleryInstance.isResolved || !score.isResolved) {
@@ -220,7 +232,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
                 disabled={props.isSubmitting}
                 onPress={props.isSubmitting ? () => undefined : props.handleSubmit}
               >
-                <Text>Place Review</Text>
+                <Text>{isEdit ? 'Update Review' : 'Place Review'}</Text>
               </Button>
             </View>
           </View>

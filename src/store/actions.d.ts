@@ -106,6 +106,11 @@ declare interface DramAddAction {
   dram: DramShape;
 }
 
+declare interface DramUpdateAction {
+  type: 'DRAM_UPDATE';
+  dram: DramShape;
+}
+
 declare interface DramRemoveAction {
   type: 'DRAM_REMOVE';
   id: number;
@@ -204,4 +209,4 @@ declare type DrammitAction = LoginAction | LogoutAction | InitAction | SetUserIn
   | ProfileUpdateNameAction | SearchReceive | ExtraInformationAction | UserListAddAction
   | UserListRemoveAction | FetchFlavoursAction | FetchFlavoursSuccessAction
   | FetchFlavoursFailedAction | DramAddAction | UploadDramPhoto | UploadDramPhotoSuccess
-  | UploadDramPhotoFailed | DramRemoveAction;
+  | UploadDramPhotoFailed | DramRemoveAction | DramUpdateAction;

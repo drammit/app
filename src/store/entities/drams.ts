@@ -17,6 +17,18 @@ export const [drams, getDrams, getDram] = createLoader<StoreDrams, DramShape>({
   fetchTypes: ['FETCH_TIMELINE_SUCCESS'],
   reducer: (state = {}, action) => {
     switch (action.type) {
+      case 'DRAM_UPDATE':
+        return {
+          ...state,
+          [action.dram.id]: {
+            isPending: false,
+            isResolved: true,
+            value: {
+              ...state[action.dram.id].value,
+              ...action.dram,
+            },
+          },
+        };
       case 'DRAM_ADD':
         return {
           ...state,
