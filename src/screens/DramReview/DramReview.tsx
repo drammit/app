@@ -96,7 +96,7 @@ const DramReview = ({ navigation }: DramReviewProps) => {
   const onSubmit = useCallback(
     ({ message, rating, flavours, image }, props) => {
       const sendToAPI = isEdit
-        ? () => editDram(DramId, { name, message, rating, flavours, WhiskyId })
+        ? () => editDram(DramId, { name, message, rating, flavours, WhiskyId }, image === '')
           .then((result) => {
             dispatch(updateDram(result));
 

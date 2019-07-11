@@ -38,7 +38,7 @@ async function handleApiError(response: Response) {
 }
 
 type RequestMethod = 'GET' | 'POST';
-type RequestBodyParamTypes = string | FileUpload | undefined | number;
+type RequestBodyParamTypes = string | FileUpload | undefined | number | boolean;
 interface RequestBody {
   [key: string]: RequestBodyParamTypes | RequestBodyParamTypes[];
 }
