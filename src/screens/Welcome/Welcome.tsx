@@ -19,11 +19,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     width: '90%',
   },
-  starContainer: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
   introContainer: {
     alignItems: 'center',
     marginTop: 40,
@@ -36,7 +31,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
   },
+  startContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
   top: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
   },
@@ -94,7 +95,7 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
           width: '100%',
         }}
       >
-        <SafeWithoutHeader style={styles.starContainer}>
+        <SafeWithoutHeader style={styles.startContainer}>
           <Animated.View
             style={{
               ...styles.top,
