@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useReducer } from 'react';
-import { View, Item, Icon, Input, Content, Tabs, Tab, Spinner, Text } from 'native-base';
-import { useDebounce } from 'use-debounce';
+import { View, Content, Tabs, Tab, Spinner, Text } from 'native-base';
 import { useDispatch } from 'react-redux';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
@@ -236,6 +235,7 @@ const Search = () => {
       <Tabs
         page={filterToPage(localState.filter)}
         onChangeTab={onChangeTab}
+        tabBarActiveTextColor={colors.green}
       >
         <Tab heading="All">{searchResults}</Tab>
         <Tab heading="Whisky">{searchResults}</Tab>

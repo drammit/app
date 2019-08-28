@@ -9,9 +9,9 @@ import { Provider } from 'react-redux';
 import AppNavigator from './AppNavigator';
 
 // @ts-ignore
-import components from './native-base-theme/components';
+import getTheme from './native-base-theme/components';
 // @ts-ignore
-import platform from './native-base-theme/variables/platform';
+import commonColor from './native-base-theme/variables/commonColor';
 
 import { getItemsAsync } from './core/storage';
 import { setTopLevelNavigator } from './core/navigation';
@@ -59,7 +59,7 @@ class App extends React.Component<{}, AppState> {
 
     return (
       <Provider store={store}>
-        <StyleProvider style={components(platform)}>
+        <StyleProvider style={getTheme(commonColor)}>
           <FlavourProvider>
             <Root>
               <AppContainer ref={setupTopLevelNavigator} />
