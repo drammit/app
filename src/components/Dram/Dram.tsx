@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Card, CardItem, Body, Text, Left, Button, Spinner, Right, Icon } from 'native-base';
 import { NavigationInjectedProps, withNavigation } from 'react-navigation';
 import { useSelector, useDispatch } from 'react-redux';
-import { distanceInWordsToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 
 import { getCurrentUser } from '../../store/selectors/user';
 import { getDram } from '../../store/entities/drams';
@@ -123,7 +123,7 @@ const Dram = ({
   const headerContent = (
     <Body>
       <UsernameLink user={user} />
-      <Text style={styles.date}>{distanceInWordsToNow(dram.createdAt)} ago</Text>
+      <Text style={styles.date}>{formatDistanceToNow(dram.createdAt)} ago</Text>
     </Body>
   );
 

@@ -1,8 +1,28 @@
-import { fetch } from './actions';
-import { registerResolver } from './listeners';
 import { Reducer } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { parseISO } from 'date-fns';
+
+import { fetch } from './actions';
+import { registerResolver } from './listeners';
+
+function transformDates<T>(input: T): T {
+  const dateKeys = ['createdAt', 'updatedAt'];
+
+  if (Object.keys(input).every(key => dateKeys.indexOf(key) === -1)) return input;
+
+  const copy = { ...input };
+
+  dateKeys.forEach((key) => {
+    // @ts-ignore
+    if (typeof copy[key] === 'string') {
+    // @ts-ignore
+      copy[key] = parseISO(copy[key]);
+    }
+  });
+
+  return copy;
+}
 
 /**
  * E: Type of table entry shape
@@ -79,7 +99,7 @@ function createLoader<T, E>({
             [item[pk] || '']: {
               isPending: false,
               isResolved: true,
-              value: item,
+              value: transformDates(item),
             },
           }),
           {},

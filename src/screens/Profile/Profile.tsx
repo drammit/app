@@ -3,7 +3,7 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { Text, Button, Content, H3, Spinner, Left, Right, Icon, ListItem, List } from 'native-base';
 import { NavigationInjectedProps } from 'react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { distanceInWordsToNow } from 'date-fns';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
 import Message from '../../components/Message/Message';
@@ -170,7 +170,7 @@ const Profile = ({ navigation }: ProfileProps) => {
 
                 <View>
                   <H3>{name}</H3>
-                  <Text>Joined {distanceInWordsToNow(profile.createdAt)} ago</Text>
+                  <Text>Joined {formatDistanceToNow(profile.createdAt)} ago</Text>
                 </View>
               </View>
               <View style={styles.figureItems}>
