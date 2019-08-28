@@ -36,12 +36,14 @@ const TimelinePage = ({ navigation }: TimelineProps) => {
     [],
   );
 
+  if (!timeline) return null;
+
   const isLoading = isTimelineLoading(timeline);
   const items = getTimelineItems(timeline);
 
-  if (!isLoading && items.length === 0) {
+  if (!isLoading && items.length === 0 && navigation.isFocused()) {
     // redirect to WelcomeTour is focused
-    if (navigation.isFocused()) navigation.navigate('WelcomeTour');
+    navigation.navigate('WelcomeTour');
   }
 
   return (

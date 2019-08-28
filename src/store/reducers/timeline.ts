@@ -27,6 +27,7 @@ const items = (
 
 const loading = (state: boolean = true, action: DrammitAction): boolean => {
   switch (action.type) {
+    case 'LOGIN':
     case 'FETCH_TIMELINE':
       return true;
     case 'FETCH_TIMELINE_SUCCESS':

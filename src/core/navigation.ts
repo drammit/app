@@ -26,6 +26,7 @@ export function navigate(routeName: string, params?: NavigationParams) {
   if (!navigator) {
     queuedNavigations.push(action);
   } else {
-    navigator.dispatch(action);
+    // make sure to always put in async pool
+    setTimeout(() => navigator.dispatch(action), 0);
   }
 }
