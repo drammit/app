@@ -77,9 +77,12 @@ const WhiskyCard = ({ id, disableLink = false }: WhiskyCardProps) => {
               style={{ fontSize: 16, marginTop: 5, marginBottom: 5 }}
               distillery={distillery}
             />
-            <Text note style={{ marginBottom: 5 }}>
-              {category.name} from {location}
-            </Text>
+            {location || category.name ? (
+              <Text note style={{ marginBottom: 5 }}>
+                {categoryInstance.isResolved ? `${category.name} ` : ''}
+                {location ? `from ${location}` : ''}
+              </Text>
+            ) : null}
             <Text note>bottled at: {whisky.abv}% Vol.</Text>
           </Body>
         </Left>
