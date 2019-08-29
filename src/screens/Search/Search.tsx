@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useReducer } from 'react';
-import { View, Content, Tabs, Tab, Spinner, Text } from 'native-base';
+import { View, Content, Tabs, Tab, Spinner, Text, Button } from 'native-base';
 import { useDispatch } from 'react-redux';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 
@@ -11,23 +11,22 @@ import colors from '../../config/colors';
 
 import { receiveSearchResults } from '../../store/actions/search';
 import { searchQuery } from '../../store/api/search';
+import { NavigationInjectedProps } from 'react-navigation';
 
 function tabToFilter(tab: number): SearchFilter {
   switch (tab) {
-    case 3:
-      return 'distillery';
     case 2:
       return 'user';
     case 1:
-      return 'whisky';
+      return 'distillery';
     case 0:
     default:
-      return 'all';
+      return 'whisky';
   }
 }
 
 function filterToPage(filter: SearchFilter): number {
-  return ['all', 'whisky', 'user', 'distillery'].indexOf(filter);
+  return ['whisky', 'distillery', 'user'].indexOf(filter);
 }
 
 interface SetSearch {
@@ -60,7 +59,7 @@ interface SetPage {
 
 type SearchActions = SetSearch | SetFilter | SetResults | FetchSearch | ClearSearch | SetPage;
 
-const Search = () => {
+const Search = ({ navigation }: NavigationInjectedProps) => {
   const dispatch = useDispatch();
 
   const [localState, localDispatch] = useReducer(
@@ -83,7 +82,7 @@ const Search = () => {
         case 'SET_RESULTS':
           return {
             ...state,
-            isEnd: action.results.length === 0,
+            isEnd: action.results.length < 20,
             isLoading: false,
             results: state.page === 1
               ? action.results
@@ -116,7 +115,7 @@ const Search = () => {
       }
     },
     {
-      filter: 'all',
+      filter: 'whisky',
       isEnd: false,
       isLoading: false,
       page: 1,
@@ -213,6 +212,15 @@ const Search = () => {
             {localState.isLoading && <Spinner color={colors.grey3} />}
           </>
         )}
+      {localState.isEnd && localState.filter === 'whisky' && (
+        <Button
+          full
+          light
+          onPress={() => navigation.navigate('AddNewWhisky')}
+        >
+          <Text>Cannot find the whisky? Tap to add.</Text>
+        </Button>
+      )}
     </Content>
   );
 
@@ -237,10 +245,9 @@ const Search = () => {
         onChangeTab={onChangeTab}
         tabBarActiveTextColor={colors.green}
       >
-        <Tab heading="All">{searchResults}</Tab>
         <Tab heading="Whisky">{searchResults}</Tab>
-        <Tab heading="User">{searchResults}</Tab>
         <Tab heading="Distillery">{searchResults}</Tab>
+        <Tab heading="User">{searchResults}</Tab>
       </Tabs>
     </SafeWithSlimHeader>
   );

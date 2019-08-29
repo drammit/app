@@ -20,6 +20,10 @@ import WelcomeTour from './screens/Timeline/Welcome';
 import Distillery from './screens/Distillery/Distillery';
 import Whisky from './screens/Whisky/Whisky';
 
+import AddNewWhisky from './screens/AddNew/Whisky';
+import AddDistillery from './screens/AddNew/Distillery';
+import AddBottler from './screens/AddNew/Bottler';
+
 import Search from './screens/Search/Search';
 
 import DramReview from './screens/DramReview/DramReview';
@@ -82,6 +86,21 @@ const defaultWhiskyStack = {
   Whisky: {
     path: 'whisky',
     screen: Whisky,
+  },
+};
+
+const defaultAddStack = {
+  AddBottler: {
+    path: 'add-bottler',
+    screen: AddBottler,
+  },
+  AddDistillery: {
+    path: 'add-distillery',
+    screen: AddDistillery,
+  },
+  AddNewWhisky: {
+    path: 'add-new-whisky',
+    screen: AddNewWhisky,
   },
 };
 
@@ -174,6 +193,7 @@ const SearchStack = createStackNavigator(
   {
     ...defaultProfileStack,
     ...defaultWhiskyStack,
+    ...defaultAddStack,
     SearchPage: {
       path: 'search',
       screen: Search,
@@ -181,7 +201,7 @@ const SearchStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'SearchPage',
+    initialRouteName: 'AddNewWhisky', // 'SearchPage',
   },
 );
 
@@ -241,7 +261,7 @@ const MainStack = createBottomTabNavigator(
         );
       },
     }),
-    initialRouteName: 'Drams',
+    initialRouteName: 'Search', // 'Drams',
     tabBarOptions: {
       activeTintColor: colors.lightGreen,
       inactiveTintColor: colors.grey1,

@@ -56,7 +56,7 @@ const DistilleryResult = ({ id, navigation }: DistilleryResultProps) => {
       )}
       <Body>
         <Text>{distilleryName}</Text>
-        <Text note>from {location}</Text>
+        {location ? <Text note>from {location}</Text> : <Text note>...</Text>}
       </Body>
       <Right>
         <Icon name="arrow-forward" />
