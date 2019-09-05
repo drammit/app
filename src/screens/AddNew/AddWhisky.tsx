@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
 import {
-  View,
-  Text,
   Content,
   Form,
   Item,
@@ -12,18 +9,13 @@ import {
   Right,
   Input,
   Left,
-  Button,
 } from 'native-base';
-import { NavigationInjectedProps } from 'react-navigation';
 
 import SafeWithHeader from '../../components/Pages/SafeWithHeader';
+import PickerButton, { ForeignValue } from '../../components/Form/ForeignPicker/PickerButton';
+import colors from '../../config/colors';
 
-interface ForeignValue {
-  id: number;
-  name: string;
-}
-
-const Whisky = ({ navigation }: NavigationInjectedProps) => {
+const AddWhisky = () => {
   const [category, setCategory] = useState<number>(3);
   const [distillery, setDistillery] = useState<ForeignValue | undefined>(undefined);
   const [bottler, setBottler] = useState<ForeignValue>({ name: 'Distillery bottling', id: 2 });
@@ -40,23 +32,12 @@ const Whisky = ({ navigation }: NavigationInjectedProps) => {
               <Label>Distillery</Label>
             </Left>
             <Right>
-              <Button
-                transparent
-                onPress={() => {
-                  navigation.navigate(
-                    'AddDistillery',
-                    {
-                      onChange: onChangeDistillery,
-                      value: distillery,
-                    },
-                  );
-                }}
-              >
-                <Text style={{ color: '#050505' }}>
-                  {distillery ? distillery.name : 'Pick distillery'}
-                </Text>
-                <Icon name="arrow-forward" />
-              </Button>
+              <PickerButton
+                value={distillery}
+                page="PickDistillery"
+                onChange={onChangeDistillery}
+                placeholder="Pick distillery"
+              />
             </Right>
           </Item>
           <Item picker>
@@ -91,21 +72,12 @@ const Whisky = ({ navigation }: NavigationInjectedProps) => {
               <Label>Bottler</Label>
             </Left>
             <Right>
-              <Button
-                transparent
-                onPress={() => {
-                  navigation.navigate(
-                    'AddBottler',
-                    {
-                      onChange: onChangeBottler,
-                      value: bottler,
-                    },
-                  );
-                }}
-              >
-                <Text style={{ color: '#050505' }}>{bottler.name}</Text>
-                <Icon name="arrow-forward" />
-              </Button>
+              <PickerButton
+                value={bottler}
+                page="AddBottler"
+                onChange={onChangeBottler}
+                placeholder="Pick bottler"
+              />
             </Right>
           </Item>
           <Item stackedLabel>
@@ -156,8 +128,8 @@ const Whisky = ({ navigation }: NavigationInjectedProps) => {
   );
 };
 
-Whisky.navigationOptions = {
+AddWhisky.navigationOptions = {
   title: 'Add whisky bottle',
 };
 
-export default Whisky;
+export default AddWhisky;

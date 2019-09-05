@@ -6,11 +6,19 @@ import colors from '../../config/colors';
 
 interface SearchBarProps {
   value: string;
+  autoFocus?: boolean;
+  placeholder?: string;
   debounce?: number;
   onChange: (value: string) => void;
 }
 
-const SearchBar = ({ value, debounce = 0, onChange }: SearchBarProps) => {
+const SearchBar = ({
+  value,
+  debounce = 0,
+  onChange,
+  placeholder = 'Search...',
+  autoFocus = true,
+}: SearchBarProps) => {
   const [localValue, setLocalValue] = useState<string>(value);
   const [debouncedValue] = useDebounce(localValue, debounce);
 
@@ -36,10 +44,11 @@ const SearchBar = ({ value, debounce = 0, onChange }: SearchBarProps) => {
       <Icon active name="search" />
       <Input
         style={{ height: 22 }}
-        placeholder="Search..."
+        placeholder={placeholder}
         clearButtonMode="always"
         value={localValue}
         autoCorrect={false}
+        autoFocus={autoFocus}
         onChangeText={text => setLocalValue(text)}
       />
     </Item>

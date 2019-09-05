@@ -11,18 +11,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const Distillery = ({}: NavigationInjectedProps) => {
+const AddBottler = ({}: NavigationInjectedProps) => {
   return (
     <SafeWithHeader style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Text>Pick Distillery</Text>
+        <Text>Pick Bottler</Text>
       </View>
     </SafeWithHeader>
   );
 };
 
-Distillery.navigationOptions = {
-  title: 'Choose distillery',
+AddBottler.navigationOptions = {
+  title: 'Choose bottler',
 };
 
-export default Distillery;
+export default AddBottler;

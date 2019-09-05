@@ -20,9 +20,10 @@ import WelcomeTour from './screens/Timeline/Welcome';
 import Distillery from './screens/Distillery/Distillery';
 import Whisky from './screens/Whisky/Whisky';
 
-import AddNewWhisky from './screens/AddNew/Whisky';
-import AddDistillery from './screens/AddNew/Distillery';
-import AddBottler from './screens/AddNew/Bottler';
+import AddWhisky from './screens/AddNew/AddWhisky';
+import AddDistillery from './screens/AddNew/AddDistillery';
+import AddBottler from './screens/AddNew/AddBottler';
+import PickDistillery from './screens/AddNew/PickDistillery';
 
 import Search from './screens/Search/Search';
 
@@ -44,6 +45,7 @@ import colors from './config/colors';
 const defaultStackNavigationOptions = {
   headerStyle: {
     backgroundColor: colors.green,
+    borderBottomColor: colors.green,
   },
   headerTintColor: colors.light,
 };
@@ -98,9 +100,13 @@ const defaultAddStack = {
     path: 'add-distillery',
     screen: AddDistillery,
   },
-  AddNewWhisky: {
-    path: 'add-new-whisky',
-    screen: AddNewWhisky,
+  AddWhisky: {
+    path: 'add-whisky',
+    screen: AddWhisky,
+  },
+  PickDistillery: {
+    path: 'pick-distillery',
+    screen: PickDistillery,
   },
 };
 
@@ -201,7 +207,7 @@ const SearchStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavigationOptions,
-    initialRouteName: 'AddNewWhisky', // 'SearchPage',
+    initialRouteName: 'AddWhisky', // 'SearchPage',
   },
 );
 

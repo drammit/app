@@ -216,7 +216,7 @@ const Search = ({ navigation }: NavigationInjectedProps) => {
         <Button
           full
           light
-          onPress={() => navigation.navigate('AddNewWhisky')}
+          onPress={() => navigation.navigate('AddWhisky')}
         >
           <Text>Cannot find the whisky? Tap to add.</Text>
         </Button>
